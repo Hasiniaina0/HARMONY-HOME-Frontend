@@ -22,6 +22,7 @@ export default function SignInScreen({ navigation }) {
 
   const handleConnection = () => {
     fetch("http://192.168.1.145:3000/users/signin", {
+    fetch("http://192.168.1.108:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -42,10 +43,7 @@ export default function SignInScreen({ navigation }) {
   };
 
   return (
-   
-    <ImageBackground
-      style={styles.backgroundImage}
-    >
+    <ImageBackground style={styles.backgroundImage}>
       <View style={styles.container}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Image source={require("../assets/logo.png")} style={styles.logo} />
@@ -53,6 +51,9 @@ export default function SignInScreen({ navigation }) {
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
         <Text style={styles.slogan}>de vie et de partage</Text>
       
+        <View>
+          <Text>Email:</Text>
+        </View>
         <View style={styles.inputsContainer}>
         <View><Text>Email:</Text></View>
           <TextInput
