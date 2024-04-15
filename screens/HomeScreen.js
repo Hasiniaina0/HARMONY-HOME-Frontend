@@ -11,10 +11,10 @@ export default function HomeScreen({navigation}) {
       <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
       <Text style={styles.slogan}>sages dans une colocation pleine</Text>
       <Text style={styles.slogan}>de vie et de partage</Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Connexion')}>
+      <TouchableOpacity style={styles.button} >
         <Text style={styles.buttonText}>Se connecter</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.signUpButton}>
+      <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.signUpButtonText}>Pas encore de compte ?</Text>
       </TouchableOpacity>
     </View>

@@ -1,18 +1,23 @@
 import { View, Image, TouchableOpacity, TextInput, CheckBox, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { DatePickerInput } from 'react-native-paper-dates';
 
-export default function ConnexionHebergeurScreen  () {
-
+export default function ConnexionLocataireScreen  () {
+  const [nom, setNom] = React.useState('');
+  const [prenom, setPrenom] = React.useState('');
+  const [inputDate, setInputDate] = React.useState(undefined);
+  const [email, setEmail] = React.useState((''));
+  const [numPhone, setNumPhone] = React.useState((''));
+  const [mdp, setMdp] = React.useState((''));
+  const [mdpConfirm, setMdpConfirm] = React.useState((''));
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.logoButton}>
-        <Image source={require('../assets/ajoutProfil.jpg')} style={styles.logo} />
-      </TouchableOpacity>
+     
       <View style={styles.bottomContainer}>
-       
-          <View>
-            <Text styles= {styles.text}>Se connecter avec :</Text>
-          </View>
-          <View style={styles.connectWithContainer}>
+      <View>
+            <Text>Se connecter avec :</Text>
+      </View>
+        <View style={styles.connectWithContainer}>
           <TouchableOpacity style={styles.socialButton}>
             <Image source={require('../assets/facebook-icon.png')} style={styles.socialIcon} />
           </TouchableOpacity>
@@ -20,17 +25,20 @@ export default function ConnexionHebergeurScreen  () {
             <Image source={require('../assets/google-icon.png')} style={styles.socialIcon} />
           </TouchableOpacity>
         </View>
-         <View>
-            <Text styles={styles.text}>Ou créer</Text>
-          </View>
         <View style={styles.inputsContainer}>
-          <TextInput style={styles.input} placeholder="Nom" />
-          <TextInput style={styles.input} placeholder="Prénom" />
-          <TextInput style={styles.input} placeholder="Date de naissance" />
-          <TextInput style={styles.input} placeholder="Email" />
-          <TextInput style={styles.input} placeholder="Numéro de téléphone" />
-          <TextInput style={styles.input} placeholder="Mot de passe" secureTextEntry={true} />
-          <TextInput style={styles.input} placeholder="Confirmation mot de passe" secureTextEntry={true} />
+          <TextInput style={styles.input} placeholder="Nom" value = {nom}   onChangeText={nom => setNom(nom)} />
+          <TextInput style={styles.input} placeholder="Prénom" value ={prenom} onChangeText={prenom => setPrenom(prenom)}/>
+            <DatePickerInput style={styles.date}
+                locale="fr"
+                label="date de naissance"
+                value={inputDate}
+                onChange={(d) => setInputDate(d)}
+                inputMode="start"
+            />
+          <TextInput style={styles.input} placeholder="Email" value = {email} onChangeText={email => setPrenom(email)} />
+          <TextInput style={styles.input} placeholder="Numéro de téléphone" value = {numPhone} onChangeText={numPhone => setPrenom(numPhone)}/>
+          <TextInput style={styles.input} placeholder="Mot de passe" secureTextEntry={true} value={mdp} onChangeText={mdp => setPrenom(mdp)} />
+          <TextInput style={styles.input} placeholder="Confirmation mot de passe" secureTextEntry={true} value = {mdpConfirm} onChangeText={mdpConfirm => setPrenom(mdpConfirm)} />
           {/* <View style={styles.checkBoxContainer}>
             <CheckBox />
             <Text style={styles.checkBoxText}>J'accepte les termes et les conditions générales</Text>
@@ -59,7 +67,7 @@ const styles = StyleSheet.create({
   },
   tex:{
     marginBottom:20,
-    
+
 
   },
   logo: {
