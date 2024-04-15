@@ -1,15 +1,54 @@
 import { View, Image, TouchableOpacity, TextInput, CheckBox, Text, StyleSheet } from 'react-native';
 import React from 'react';
-// import { DatePickerInput } from 'react-native-paper-dates';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login, logout } from "../reducers/user";
 
-export default function ConnexionLocataireScreen  () {
+
+export default function ConnexionLocataireScreen  ({navigation}) {
   const [nom, setNom] = React.useState('');
   const [prenom, setPrenom] = React.useState('');
-  const [inputDate, setInputDate] = React.useState(undefined);
-  const [email, setEmail] = React.useState((''));
-  const [numPhone, setNumPhone] = React.useState((''));
-  const [mdp, setMdp] = React.useState((''));
-  const [mdpConfirm, setMdpConfirm] = React.useState((''));
+  const [email, setEmail] = useState((''));
+  const [numPhone, setNumPhone] = useState((''));
+  const [mdp, setMdp] = useState((''));
+  const [mdpConfirm, setMdpConfirm] = useState((''));
+  const dispatch = useDispatch();
+
+  const handleConnection = () => {
+
+    if (mdp !== mdpConfirm) {
+      alert("Les mots de passe ne correspondent pas");
+      return;
+    }
+
+    fetch("http://192.168.1.145:3000/users/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nom,  
+        prenom,
+        email,
+        numPhone,
+        password: mdp,
+        confirmPassword: mdpConfirm
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          dispatch(login({ email: data.email, token: data.token }));
+          setNom("");
+          setPrenom("");
+          setEmail("");
+          setNumPhone("");
+          setMdp("");
+          setMdpConfirm("");
+          navigation.navigate("SignUp");
+        }
+      });
+
+  };
+
   return (
     <View style={styles.container}>
      
@@ -47,7 +86,7 @@ export default function ConnexionLocataireScreen  () {
             <Text style={styles.checkBoxText}>J'accepte les termes et les conditions générales</Text>
           </View> */}
         </View>
-        <TouchableOpacity style={styles.connectButton}>
+        <TouchableOpacity style={styles.connectButton} onPress={() => handleConnection()}>
           <Text style={styles.connectButtonText}>Se connecter</Text>
         </TouchableOpacity>
       </View>
