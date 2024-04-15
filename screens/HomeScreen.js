@@ -11,6 +11,7 @@ import {
 
 export default function HomeScreen({ navigation }) {
   return (
+<<<<<<< HEAD
     <ImageBackground
       source={require("../assets/background.png")}
       style={styles.backgroundImage}
@@ -31,6 +32,22 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
       </View>
     </ImageBackground>
+=======
+    <ImageBackground source={require('../assets/background.png')} style={styles.backgroundImage}>
+    <View style={styles.container}>
+      <Image source={require('../assets/logo.png')} style={styles.logo} />
+      <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
+      <Text style={styles.slogan}>sages dans une colocation pleine</Text>
+      <Text style={styles.slogan}>de vie et de partage</Text>
+      <TouchableOpacity style={styles.button} >
+        <Text style={styles.buttonText}>Se connecter</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignUp')}>
+        <Text style={styles.signUpButtonText}>Pas encore de compte ?</Text>
+      </TouchableOpacity>
+    </View>
+  </ImageBackground>
+>>>>>>> ae954a297fb43ad4ff67f0d4f79045d240e543fb
   );
 }
 
