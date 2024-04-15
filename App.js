@@ -10,6 +10,11 @@ import MessagesScreen from "./screens/MessagesScreen"; // page message
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import user from "./reducers/user";
+
+const store = configureStore({
+  reducer: { user },
+});
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
