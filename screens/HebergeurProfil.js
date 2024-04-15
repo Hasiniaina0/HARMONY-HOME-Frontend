@@ -146,4 +146,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
+  maj: {
+    color: "white",
+    backgroundColor: "#4FAAAF",
+    padding: 10,
+    borderRadius: 20,
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+    fontSize: 15,
+  },
 });
