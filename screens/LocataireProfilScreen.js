@@ -8,56 +8,56 @@ import {
   Button,
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
-import { DatePickerInput } from "react-native-paper-dates";
+//import { DatePickerInput } from "react-native-paper-dates";
+import { useState } from "react";
 
-const [nom, setNom] = useState("");
-const [prenom, setPrenom] = useState("");
-const [inputDate, setInputDate] = useState(undefined);
-const [email, setEmail] = useState("");
-const [numPhone, setNumPhone] = useState("");
-const [apropos, setApropos] = useState("");
-const [description, setDescription] = useState("");
+export default function LocataireProfilScreen() {
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [inputDate, setInputDate] = useState(undefined);
+  const [email, setEmail] = useState("");
+  const [numPhone, setNumPhone] = useState("");
+  const [apropos, setApropos] = useState("");
+  const [description, setDescription] = useState("");
 
-const [selectedImage1, setSelectedImage1] = useState(null);
-const [selectedImage2, setSelectedImage2] = useState(null);
+  const [selectedImage1, setSelectedImage1] = useState(null);
+  const [selectedImage2, setSelectedImage2] = useState(null);
 
-const handleSaveProfil = () => {
-  console.log("profil enregistré", {
-    nom,
-    prenom,
-    inputDate,
-    email,
-    numPhone,
-    apropos,
-    description,
-  });
-};
+  const handleSaveProfil = () => {
+    console.log("profil enregistré", {
+      nom,
+      prenom,
+      inputDate,
+      email,
+      numPhone,
+      apropos,
+      description,
+    });
+  };
+  // ajouter une image à partir de la gallerie du téléphone
 
-// ajouter une image à partir de la gallerie du téléphone
+  const handleSelectImage1 = () => {
+    ImagePicker.launchImageLibrary({}, (response) => {
+      if (response.error) {
+        console.error("Erreur lors de la sélection d'image:", response.error);
+      } else {
+        console.log("Image sélectionnée:", response.uri);
+        setSelectedImage1(response.uri);
+      }
+    });
+  };
 
-const handleSelectImage1 = () => {
-  ImagePicker.launchImageLibrary({}, (response) => {
-    if (response.error) {
-      console.error("Erreur lors de la sélection d'image:", response.error);
-    } else {
-      console.log("Image sélectionnée:", response.uri);
-      setSelectedImage1(response.uri);
-    }
-  });
-};
+  const handleSelectImage2 = () => {
+    ImagePicker.launchImageLibrary({}, (response) => {
+      if (response.error) {
+        console.error("Erreur lors de la sélection d'image:", response.error);
+      } else {
+        console.log("Image sélectionnée:", response.uri);
+        setSelectedImage2(response.uri);
+      }
+    });
+  };
 
-const handleSelectImage2 = () => {
-  ImagePicker.launchImageLibrary({}, (response) => {
-    if (response.error) {
-      console.error("Erreur lors de la sélection d'image:", response.error);
-    } else {
-      console.log("Image sélectionnée:", response.uri);
-      setSelectedImage2(response.uri);
-    }
-  });
-};
-
-export default function HebergeurProfilScreen() {
   return (
     <View style={styles.inputsContainer}>
       <TextInput
@@ -94,19 +94,19 @@ export default function HebergeurProfilScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Qui serait votre colocataire idéal ?"
+        placeholder="A propos de toi ?!"
         secureTextEntry={true}
         value={apropos}
         onChangeText={(apropos) => setApropos(apropos)}
       />
       <TextInput
         style={styles.input}
-        placeholder="Parlez nous de vous !"
+        placeholder="Parle nous de toi !"
         secureTextEntry={true}
         value={description}
         onChangeText={(description) => setDescription(description)}
       />
-      <Text> Insérez des photos de votre logement </Text>
+      <Text> Partage des photos de ce qui te représente </Text>
       <View style={styles.image}>
         {selectedImage1 && (
           <Image

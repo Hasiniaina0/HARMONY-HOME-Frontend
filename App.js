@@ -7,6 +7,7 @@ import SignInScreen from "./screens/SignInScreen"; // Page de connexion
 import ConnexionHebergeurScreen from "./screens/ConnexionHebergeurScreen";
 import ConnexionLocataireScreen from "./screens/ConnexionLocataireScreen";
 import MessagesScreen from "./screens/MessagesScreen"; // page message
+import LocataireProfilScreen from "./screens/LocataireProfilScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -52,7 +53,10 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
-
+          <Stack.Screen
+            name="LocataireProfil"
+            component={LocataireProfilScreen}
+          />
           <Stack.Screen
             name="ConnexionHebergeur"
             component={ConnexionHebergeurScreen}

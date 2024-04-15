@@ -36,7 +36,7 @@ export default function SignInScreen({ navigation }) {
           dispatch(login({ email: data.email, token: data.token }));
           setEmail("");
           setPassword("");
-          navigation.navigate("SignUp");
+          navigation.navigate("LocataireProfil");
         }
       });
   };

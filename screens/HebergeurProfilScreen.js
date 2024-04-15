@@ -8,7 +8,8 @@ import {
   Button,
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
-import { DatePickerInput } from "react-native-paper-dates";
+//import { DatePickerInput } from "react-native-paper-dates";
+import { useState } from "react";
 
 const [nom, setNom] = useState("");
 const [prenom, setPrenom] = useState("");
@@ -57,7 +58,7 @@ const handleSelectImage2 = () => {
   });
 };
 
-export default function LocataireProfilScreen() {
+export default function HebergeurProfilScreen() {
   return (
     <View style={styles.inputsContainer}>
       <TextInput
@@ -94,19 +95,19 @@ export default function LocataireProfilScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholder="A propos de toi ?!"
+        placeholder="Qui serait votre colocataire idéal ?"
         secureTextEntry={true}
         value={apropos}
         onChangeText={(apropos) => setApropos(apropos)}
       />
       <TextInput
         style={styles.input}
-        placeholder="Parle nous de toi !"
+        placeholder="Parlez nous de vous !"
         secureTextEntry={true}
         value={description}
         onChangeText={(description) => setDescription(description)}
       />
-      <Text> Partage des photos de ce qui te représente </Text>
+      <Text> Insérez des photos de votre logement </Text>
       <View style={styles.image}>
         {selectedImage1 && (
           <Image
