@@ -1,6 +1,6 @@
 import { View, Image, TouchableOpacity, TextInput, CheckBox, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import { DatePickerInput } from 'react-native-paper-dates';
+// import { DatePickerInput } from 'react-native-paper-dates';
 
 export default function ConnexionLocataireScreen  () {
   const [nom, setNom] = React.useState('');
@@ -25,16 +25,19 @@ export default function ConnexionLocataireScreen  () {
             <Image source={require('../assets/google-icon.png')} style={styles.socialIcon} />
           </TouchableOpacity>
         </View>
+        <View>
+            <Text>Ou créer:</Text>
+      </View>
         <View style={styles.inputsContainer}>
           <TextInput style={styles.input} placeholder="Nom" value = {nom}   onChangeText={nom => setNom(nom)} />
           <TextInput style={styles.input} placeholder="Prénom" value ={prenom} onChangeText={prenom => setPrenom(prenom)}/>
-            <DatePickerInput style={styles.date}
-                locale="fr"
+            {/* <DatePickerInput style={styles.date}
+                locale="en"
                 label="date de naissance"
                 value={inputDate}
                 onChange={(d) => setInputDate(d)}
                 inputMode="start"
-            />
+            /> */}
           <TextInput style={styles.input} placeholder="Email" value = {email} onChangeText={email => setPrenom(email)} />
           <TextInput style={styles.input} placeholder="Numéro de téléphone" value = {numPhone} onChangeText={numPhone => setPrenom(numPhone)}/>
           <TextInput style={styles.input} placeholder="Mot de passe" secureTextEntry={true} value={mdp} onChangeText={mdp => setPrenom(mdp)} />
@@ -65,7 +68,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop:20,
   },
-  tex:{
+  date: {
+    
+    marginTop:400,
+  },
+  text:{
     marginBottom:20,
 
 

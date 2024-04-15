@@ -13,25 +13,25 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SignInScreen({ navigation }) {
-  const [signInUsername, setSignInUsername] = useState("");
-  const [signInPassword, setSignInPassword] = useState("");
-  const [email, setEmail] = React.useState("");
-  const [mdp, setMdp] = React.useState("");
+  // const [signInNom, setSignInNom] = useState("");
+  // const [signInPassword, setSignInPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleConnection = () => {
     fetch("http://192.168.1.66:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: signInUsername,
-        password: signInPassword,
+        email: email,
+        password: password,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          dispatch(login({ username: signInUsername, token: data.token }));
-          setSignInUsername("");
+          dispatch(login({ email: email, token: data.token }));
+          setSignInNom("");
           setSignInPassword("");
         }
       });
@@ -39,7 +39,6 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <ImageBackground
-      source={require("../assets/background.png")}
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
@@ -47,6 +46,7 @@ export default function SignInScreen({ navigation }) {
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
         <Text style={styles.slogan}>de vie et de partage</Text>
+        <View><Text>Email:</Text></View>
         <View style={styles.inputsContainer}>
           <TextInput
             style={styles.input}
@@ -54,13 +54,13 @@ export default function SignInScreen({ navigation }) {
             value={email}
             onChangeText={(email) => setEmail(email)}
           />
-
+        <View><Text>Mot de passe</Text></View>
           <TextInput
             style={styles.input}
             placeholder="Mot de passe"
             secureTextEntry={true}
-            value={mdp}
-            onChangeText={(mdp) => setMdp(mdp)}
+            value={password}
+            onChangeText={(password) => setPassword(password)}
           />
         </View>
         <TouchableOpacity
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   slogan: {
     fontSize: 16,
-    color: "white",
+    color: "black",
     alignItems: "center",
     justifyContent: "center",
   },
