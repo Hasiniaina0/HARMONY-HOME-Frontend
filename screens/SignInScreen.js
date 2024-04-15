@@ -12,7 +12,7 @@ import { login, logout } from "../reducers/user";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function HomeScreen({ navigation }) {
+export default function SignInScreen({ navigation }) {
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
   const [email, setEmail] = React.useState("");
