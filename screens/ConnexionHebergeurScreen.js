@@ -38,10 +38,10 @@ export default function ConnexionLocataireScreen  () {
                 onChange={(d) => setInputDate(d)}
                 inputMode="start"
             /> */}
-          <TextInput style={styles.input} placeholder="Email" value = {email} onChangeText={email => setPrenom(email)} />
-          <TextInput style={styles.input} placeholder="Numéro de téléphone" value = {numPhone} onChangeText={numPhone => setPrenom(numPhone)}/>
-          <TextInput style={styles.input} placeholder="Mot de passe" secureTextEntry={true} value={mdp} onChangeText={mdp => setPrenom(mdp)} />
-          <TextInput style={styles.input} placeholder="Confirmation mot de passe" secureTextEntry={true} value = {mdpConfirm} onChangeText={mdpConfirm => setPrenom(mdpConfirm)} />
+          <TextInput style={styles.input} placeholder="Email" value = {email} onChangeText={email => setEmail(email)} />
+          <TextInput style={styles.input} placeholder="Numéro de téléphone" value = {numPhone} onChangeText={numPhone => setNumPhone(numPhone)}/>
+          <TextInput style={styles.input} placeholder="Mot de passe" secureTextEntry={true} value={mdp} onChangeText={mdp => setMdp(mdp)} />
+          <TextInput style={styles.input} placeholder="Confirmation mot de passe" secureTextEntry={true} value = {mdpConfirm} onChangeText={mdpConfirm => setMdpConfirm(mdpConfirm)} />
           {/* <View style={styles.checkBoxContainer}>
             <CheckBox />
             <Text style={styles.checkBoxText}>J'accepte les termes et les conditions générales</Text>
