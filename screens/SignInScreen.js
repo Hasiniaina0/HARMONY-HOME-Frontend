@@ -6,19 +6,22 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
   TextInput,
 } from "react-native";
 import { login, logout } from "../reducers/user";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function SignInScreen({ navigation }) {
-  // const [signInNom, setSignInNom] = useState("");
-  // const [signInPassword, setSignInPassword] = useState("");
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleConnection = () => {
+    fetch("http://192.168.1.145:3000/users/signin", {
     fetch("http://192.168.1.108:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,33 +33,36 @@ export default function SignInScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          dispatch(login({ email: email, token: data.token }));
-          setSignInNom("");
-          setSignInPassword("");
+          dispatch(login({ email: data.email, token: data.token }));
+          setEmail("");
+          setPassword("");
+          navigation.navigate("SignUp");
         }
       });
+
   };
 
   return (
     <ImageBackground style={styles.backgroundImage}>
       <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
         <Text style={styles.slogan}>de vie et de partage</Text>
+      
         <View>
           <Text>Email:</Text>
         </View>
         <View style={styles.inputsContainer}>
+        <View><Text>Email:</Text></View>
           <TextInput
             style={styles.input}
             placeholder="Email"
             value={email}
             onChangeText={(email) => setEmail(email)}
           />
-          <View>
-            <Text>Mot de passe</Text>
-          </View>
+        <View><Text>Mot de passe</Text></View>
           <TextInput
             style={styles.input}
             placeholder="Mot de passe"
@@ -71,8 +77,10 @@ export default function SignInScreen({ navigation }) {
         >
           <Text style={styles.signInButtonText}>Connexion</Text>
         </TouchableOpacity>
+        </KeyboardAvoidingView>
       </View>
     </ImageBackground>
+  
   );
 }
 
