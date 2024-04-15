@@ -19,7 +19,7 @@ export default function SignInScreen({ navigation }) {
   const [password, setPassword] = useState("");
 
   const handleConnection = () => {
-    fetch("http://192.168.1.66:3000/users/signin", {
+    fetch("http://192.168.1.108:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -38,15 +38,15 @@ export default function SignInScreen({ navigation }) {
   };
 
   return (
-    <ImageBackground
-      style={styles.backgroundImage}
-    >
+    <ImageBackground style={styles.backgroundImage}>
       <View style={styles.container}>
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
         <Text style={styles.slogan}>de vie et de partage</Text>
-        <View><Text>Email:</Text></View>
+        <View>
+          <Text>Email:</Text>
+        </View>
         <View style={styles.inputsContainer}>
           <TextInput
             style={styles.input}
@@ -54,7 +54,9 @@ export default function SignInScreen({ navigation }) {
             value={email}
             onChangeText={(email) => setEmail(email)}
           />
-        <View><Text>Mot de passe</Text></View>
+          <View>
+            <Text>Mot de passe</Text>
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Mot de passe"
