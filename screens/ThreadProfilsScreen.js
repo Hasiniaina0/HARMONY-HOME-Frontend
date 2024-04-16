@@ -10,9 +10,6 @@ import {
 } from "react-native";
 
 export default function ThreadProfilsScreen() {
-  return (
-    
-    
-  )
+  return <View></View>;
 }
 const styles = StyleSheet.create({});
