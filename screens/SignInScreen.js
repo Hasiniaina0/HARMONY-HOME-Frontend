@@ -22,7 +22,7 @@ export default function SignInScreen({ navigation }) {
   const ADRESS_IP = process.env.ADRESS_IP;
 
   const handleConnection = () => {
-    fetch(`http://${ADRESS_IP}:3000/users/signin`, {
+    fetch(`http://192.168.1.108:3000/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
