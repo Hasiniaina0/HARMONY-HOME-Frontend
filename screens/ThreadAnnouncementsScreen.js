@@ -17,23 +17,23 @@ export default function ThreadAnnouncementsScreen() {
   const [users, setUsers] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
-  const data = [
-    {
-      id: 1,
-      title: "Magnifique appartement en plein centre-ville",
-      city: "Paris",
-      description: "Appartement lumineux et moderne avec vue imprenable",
-      image: require("../assets/background.png"),
-    },
-    {
-      id: 2,
-      title: "Charmante maison à la campagne",
-      city: "Provence",
-      description:
-        "Maison rustique entourée de vignobles et de champs de lavande",
-      image: require("../assets/background.png"),
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     title: "Magnifique appartement en plein centre-ville",
+  //     city: "Paris",
+  //     description: "Appartement lumineux et moderne avec vue imprenable",
+  //     image: require("../assets/background.png"),
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Charmante maison à la campagne",
+  //     city: "Provence",
+  //     description:
+  //       "Maison rustique entourée de vignobles et de champs de lavande",
+  //     image: require("../assets/background.png"),
+  //   },
+  // ];
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users`)
@@ -71,7 +71,7 @@ export default function ThreadAnnouncementsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {data.map((user) => (
+      {users.map((user) => (
         <View style={styles.announcementContainer} key={user._id}>
           <TouchableOpacity
             onPress={() => handleFavorite()}

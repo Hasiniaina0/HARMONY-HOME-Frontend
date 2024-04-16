@@ -40,7 +40,11 @@ export default function SignInScreen({ navigation }) {
           dispatch(login({ email: data.email, token: data.token }));
           setEmail("");
           setPassword("");
-          navigation.navigate("HebergeurProfil");
+          if (data.statut === "hebergeur") {
+            navigation.navigate("ThreadAnnouncements");
+          } else {
+            navigation.navigate("ThreadProfils");
+          }
         } else {
           // Erreur de connexion
           setErrorMessage(data.error);
