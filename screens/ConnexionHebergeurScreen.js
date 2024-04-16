@@ -62,7 +62,10 @@ export default function ConnexionHebergeurScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <Formik
         initialValues={{
           nom: "",
@@ -188,7 +191,7 @@ export default function ConnexionHebergeurScreen({ navigation }) {
           </View>
         )}
       </Formik>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
