@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     paddingHorizontal: 10,
-    color: "white",
+    color: "black",
     backgroundColor: "white",
   },
   forgotPassword: {
