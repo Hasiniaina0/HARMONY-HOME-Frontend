@@ -1,35 +1,55 @@
-import { View, Image, TouchableOpacity, TextInput, CheckBox, Text, StyleSheet,KeyboardAvoidingView ,Platform} from 'react-native';
-import React from 'react';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  CheckBox,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, logout } from "../reducers/user";
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import * as Yup from "yup";
+import { Formik } from "formik";
 
-
-export default function ConnexionLocataireScreen  ({navigation}) {
-  const [nom, setNom] = React.useState('');
-  const [prenom, setPrenom] = React.useState('');
-  const [email, setEmail] = useState((''));
-  const [numPhone, setNumPhone] = useState((''));
-  const [mdp, setMdp] = useState((''));
-  const [mdpConfirm, setMdpConfirm] = useState((''));
+export default function ConnexionLocataireScreen({ navigation }) {
+  const [nom, setNom] = React.useState("");
+  const [prenom, setPrenom] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [numPhone, setNumPhone] = useState("");
+  const [mdp, setMdp] = useState("");
+  const [mdpConfirm, setMdpConfirm] = useState("");
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
 
 
   const validationSchema = Yup.object().shape({
-    nom: Yup.string().required('Le nom est requis'),
-    prenom: Yup.string().required('Le prénom est requis'),
-    email: Yup.string().email('Format email invalide').required('L\'email est requis'),
-    numPhone: Yup.string().matches(/^[0-9]{10}$/, 'Le numéro de téléphone doit comporter 10 chiffres').required('Le numéro de téléphone est requis'),
-    password: Yup.string().required('Le mot de passe est requis'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Les mots de passe doivent correspondre').required('La confirmation du mot de passe est requise'),
+    nom: Yup.string().required("Le nom est requis"),
+    prenom: Yup.string().required("Le prénom est requis"),
+    email: Yup.string()
+      .email("Format email invalide")
+      .required("L'email est requis"),
+    numPhone: Yup.string()
+      .matches(
+        /^[0-9]{10}$/,
+        "Le numéro de téléphone doit comporter 10 chiffres"
+      )
+      .required("Le numéro de téléphone est requis"),
+    password: Yup.string().required("Le mot de passe est requis"),
+    confirmPassword: Yup.string()
+      .oneOf(
+        [Yup.ref("password"), null],
+        "Les mots de passe doivent correspondre"
+      )
+      .required("La confirmation du mot de passe est requise"),
   });
 
   const handleConnection = (values) => {
-
     if (values.password !== values.confirmPassword) {
       alert("Les mots de passe ne correspondent pas");
       return;
@@ -53,104 +73,163 @@ export default function ConnexionLocataireScreen  ({navigation}) {
           navigation.navigate("SignUp");
         }
       });
-
-     
-
-
   };
 
   return (
-    
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <Formik
-          initialValues={{ nom: '', prenom: '', email: '', numPhone: '', password: '', confirmPassword: '' }} //définit les valeurs initiales des champs du formulaire.
-          validationSchema={validationSchema} //un schéma de validation Yup qui définit les règles de validation pour chaque champ du formulaire.
-          onSubmit={(values) => handleConnection(values)} //une fonction appelée lorsque le formulaire sera soumis avec des valeurs valides
-        >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (  // une fonction de rendu qui reçoit des propriétés et des fonctions utiles de <Formik>
-     
-      <View style={styles.bottomContainer}>
-      <View>
-            <Text>Se connecter avec :</Text>
-      </View>
-        <View style={styles.connectWithContainer}>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image source={require('../assets/facebook-icon.png')} style={styles.socialIcon} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image source={require('../assets/google-icon.png')} style={styles.socialIcon} />
-          </TouchableOpacity>
-        </View>
-        <View>
-            <Text>Ou créer:</Text>
-      </View>
-      
-        <View style={styles.inputsContainer}>
-          <TextInput style={styles.input} placeholder="Nom" value = {values.nom}   onChangeText={handleChange('nom')} onBlur={handleBlur('nom')} />
-          {touched.nom && errors.nom && <Text style={styles.error}>{errors.nom}</Text>}
+        initialValues={{
+          nom: "",
+          prenom: "",
+          email: "",
+          numPhone: "",
+          password: "",
+          confirmPassword: "",
+        }} //définit les valeurs initiales des champs du formulaire.
+        validationSchema={validationSchema} //un schéma de validation Yup qui définit les règles de validation pour chaque champ du formulaire.
+        onSubmit={(values) => handleConnection(values)} //une fonction appelée lorsque le formulaire sera soumis avec des valeurs valides
+      >
+        {(
+          { handleChange, handleBlur, handleSubmit, values, errors, touched } // une fonction de rendu qui reçoit des propriétés et des fonctions utiles de <Formik>
+        ) => (
+          <View style={styles.bottomContainer}>
+            <View>
+              <Text>Se connecter avec :</Text>
+            </View>
+            <View style={styles.connectWithContainer}>
+              <TouchableOpacity style={styles.socialButton}>
+                <Image
+                  source={require("../assets/facebook-icon.png")}
+                  style={styles.socialIcon}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.socialButton}>
+                <Image
+                  source={require("../assets/google-icon.png")}
+                  style={styles.socialIcon}
+                />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text>Ou créer:</Text>
+            </View>
 
-          <TextInput style={styles.input} placeholder="Prénom" value ={values.prenom} onChangeText={handleChange('prenom')} onBlur={handleBlur('prenom')}/>
-          {touched.prenom && errors.prenom && <Text style={styles.error}>{errors.prenom}</Text>}
-            {/* <DatePickerInput style={styles.date}
+            <View style={styles.inputsContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Nom"
+                value={values.nom}
+                onChangeText={handleChange("nom")}
+                onBlur={handleBlur("nom")}
+              />
+              {touched.nom && errors.nom && (
+                <Text style={styles.error}>{errors.nom}</Text>
+              )}
+
+              <TextInput
+                style={styles.input}
+                placeholder="Prénom"
+                value={values.prenom}
+                onChangeText={handleChange("prenom")}
+                onBlur={handleBlur("prenom")}
+              />
+              {touched.prenom && errors.prenom && (
+                <Text style={styles.error}>{errors.prenom}</Text>
+              )}
+              {/* <DatePickerInput style={styles.date}
                 locale="en"
                 label="date de naissance"
                 value={inputDate}
                 onChange={(d) => setInputDate(d)}
                 inputMode="start"
             /> */}
-          <TextInput style={styles.input} placeholder="Email" value = {values.email} onChangeText={handleChange('email')} onBlur={handleBlur('email')} />
-          {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={values.email}
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+              />
+              {touched.email && errors.email && (
+                <Text style={styles.error}>{errors.email}</Text>
+              )}
 
-          <TextInput style={styles.input} placeholder="Numéro de téléphone" value = {values.numPhone} onChangeText={handleChange('numPhone')} onBlur={handleBlur('numPhone')}/>
-          {touched.numPhone && errors.numPhone && <Text style={styles.error}>{errors.numPhone}</Text>}
+              <TextInput
+                style={styles.input}
+                placeholder="Numéro de téléphone"
+                value={values.numPhone}
+                onChangeText={handleChange("numPhone")}
+                onBlur={handleBlur("numPhone")}
+              />
+              {touched.numPhone && errors.numPhone && (
+                <Text style={styles.error}>{errors.numPhone}</Text>
+              )}
 
-          <TextInput style={styles.input} placeholder="Mot de passe" secureTextEntry={true} value={values.password} onChangeText={handleChange('password')} onBlur={handleBlur('password')} />
-          {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
+              <TextInput
+                style={styles.input}
+                placeholder="Mot de passe"
+                secureTextEntry={true}
+                value={values.password}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+              />
+              {touched.password && errors.password && (
+                <Text style={styles.error}>{errors.password}</Text>
+              )}
 
-          <TextInput style={styles.input} placeholder="Confirmation mot de passe" secureTextEntry={true} value = {values.confirmPassword} onChangeText={handleChange('confirmPassword')} onBlur={handleBlur('confirmPassword')} />
-          {touched.confirmPassword && errors.confirmPassword && <Text style={styles.error}>{errors.confirmPassword}</Text>}
-          {/* <View style={styles.checkBoxContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Confirmation mot de passe"
+                secureTextEntry={true}
+                value={values.confirmPassword}
+                onChangeText={handleChange("confirmPassword")}
+                onBlur={handleBlur("confirmPassword")}
+              />
+              {touched.confirmPassword && errors.confirmPassword && (
+                <Text style={styles.error}>{errors.confirmPassword}</Text>
+              )}
+              {/* <View style={styles.checkBoxContainer}>
             <CheckBox />
             <Text style={styles.checkBoxText}>J'accepte les termes et les conditions générales</Text>
           </View> */}
-        </View>
-        <TouchableOpacity style={styles.connectButton} onPress={handleSubmit}>
-          <Text style={styles.connectButtonText}>Se connecter</Text>
-        </TouchableOpacity>
-        
-      </View>
-      )}
+            </View>
+            <TouchableOpacity
+              style={styles.connectButton}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.connectButtonText}>Se connecter</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </Formik>
-    </View>
-  
+    </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor:'white',
-
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
   },
   error: {
-    color: 'red',
+    color: "red",
     marginBottom: 7,
   },
   logoButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop:20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
   },
   date: {
-    
-    marginTop:400,
+    marginTop: 400,
   },
-  text:{
-    marginBottom:20,
-
-
+  text: {
+    marginBottom: 20,
   },
   logo: {
     width: 150,
@@ -158,13 +237,13 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center",
     marginBottom: 50,
-    width:'90%',
+    width: "90%",
   },
   connectWithContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 20,
   },
   socialButton: {
@@ -175,35 +254,34 @@ const styles = StyleSheet.create({
     height: 50,
   },
   inputsContainer: {
-    width: '90%',
+    width: "90%",
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 0.5,
     marginBottom: 10,
     paddingHorizontal: 10,
-    
   },
   checkBoxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   checkBoxText: {
     marginLeft: 10,
   },
   connectButton: {
-    backgroundColor: '#4FAAAF',
+    backgroundColor: "#4FAAAF",
     padding: 10,
     borderRadius: 20,
     marginBottom: 20,
-    paddingLeft:15,
-    paddingRight:15,
+    paddingLeft: 15,
+    paddingRight: 15,
     marginTop: 30,
   },
   connectButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
 });
