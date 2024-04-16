@@ -19,10 +19,12 @@ export default function SignInScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  const ADRESS_IP = process.env.ADRESS_IP;
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+
 
   const handleConnection = () => {
-    fetch(`http://${ADRESS_IP}:3000/users/signin`, {
+    fetch(`${BACKEND_URL}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

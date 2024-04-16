@@ -24,7 +24,9 @@ export default function ConnexionLocataireScreen({ navigation }) {
   const [mdp, setMdp] = useState("");
   const [mdpConfirm, setMdpConfirm] = useState("");
   const dispatch = useDispatch();
-  const ADRESS_IP = process.env.ADRESS_IP;
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+
 
   const validationSchema = Yup.object().shape({
     nom: Yup.string().required("Le nom est requis"),
@@ -53,7 +55,7 @@ export default function ConnexionLocataireScreen({ navigation }) {
       return;
     }
 
-    fetch("http://192.168.1.145:3000/users/signup", {
+    fetch(`${BACKEND_URL}/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
