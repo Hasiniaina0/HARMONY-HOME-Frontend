@@ -19,7 +19,7 @@ export default function SignInScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  const ADRESS_IP = process.env.ADRESS_IP;
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   const handleConnection = () => {
     fetch(`http://192.168.1.108:3000/users/signin`, {
