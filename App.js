@@ -6,6 +6,7 @@ import SignUpScreen from "./screens/SignUpScreen"; // Page d'inscription
 import SignInScreen from "./screens/SignInScreen"; // Page de connexion
 import MessagesScreen from "./screens/MessagesScreen"; // page message
 import LocataireProfilScreen from "./screens/LocataireProfilScreen";
+import HebergeurProfilScreen from "./screens/HebergeurProfilScreen"; // page hebergeur profil
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -55,7 +56,11 @@ export default function App() {
             name="LocataireProfil"
             component={LocataireProfilScreen}
           />
-          
+          <Stack.Screen
+            name="HebergeurProfil"
+            component={HebergeurProfilScreen}
+          />
+
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
       </NavigationContainer>

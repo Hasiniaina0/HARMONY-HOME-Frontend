@@ -22,7 +22,7 @@ export default function LocataireProfilScreen() {
   const [numPhone, setNumPhone] = useState("");
   const [apropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const handleSaveProfil = () => {
     console.log("profil enregistré", {
@@ -39,7 +39,7 @@ export default function LocataireProfilScreen() {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("Vous avez refuser l'accès au photo");
+      alert("Vous avez refusé l'accès aux photos");
       return;
     }
 
@@ -48,10 +48,11 @@ export default function LocataireProfilScreen() {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.3,
+      multiple: true,
     });
 
-    if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+    if (!result.cancelled) {
+      setSelectedImages([...selectedImages, ...result.assets]);
     }
   };
 
@@ -62,7 +63,7 @@ export default function LocataireProfilScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <Image source={require("../assets/logo.png")} style={styles.logo} />
-        <Text> Je mets à jours mes informations </Text>
+        <Text style={styles.title}> Je mets à jours mes informations </Text>
         <TextInput
           style={styles.input}
           placeholder="Nom"
@@ -109,17 +110,13 @@ export default function LocataireProfilScreen() {
         />
         <Text> Partage des photos de ce qui te représente </Text>
         <View style={styles.imageContainer}>
-          {selectedImage && (
-            <Image source={{ uri: selectedImage }} style={styles.image} />
-          )}
-          <Button
-            title="Ajouter une image"
-            onPress={showImagePicker}
-            color="white"
-          />
-          {selectedImage && (
-            <Image source={{ uri: selectedImage }} style={styles.image} />
-          )}
+          {selectedImages.map((image, index) => (
+            <Image
+              key={index}
+              source={{ uri: image.uri }}
+              style={styles.image}
+            />
+          ))}
           <Button
             title="Ajouter une image"
             onPress={showImagePicker}
@@ -143,6 +140,13 @@ const styles = StyleSheet.create({
   logo: {
     height: 300,
     width: 300,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    // fontFamily: "Poppins",
+    textAlign: "center",
+    marginBottom: 20,
   },
   input: {
     height: 40,

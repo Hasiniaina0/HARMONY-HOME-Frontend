@@ -40,7 +40,7 @@ export default function SignInScreen({ navigation }) {
           dispatch(login({ email: data.email, token: data.token }));
           setEmail("");
           setPassword("");
-          navigation.navigate("LocataireProfil");
+          navigation.navigate("HebergeurProfil");
         } else {
           // Erreur de connexion
           setErrorMessage(data.error);
@@ -101,7 +101,9 @@ export default function SignInScreen({ navigation }) {
         >
           <Text style={styles.signInButtonText}>Connexion</Text>
         </TouchableOpacity>
-        {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+        {errorMessage && (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        )}
       </KeyboardAvoidingView>
       <Modal
         animationType="slide"

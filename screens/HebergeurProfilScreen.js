@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   Button,
+  TextInput,
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
 //import { DatePickerInput } from "react-native-paper-dates";
