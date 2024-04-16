@@ -3,7 +3,6 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  CheckBox,
   Text,
   StyleSheet,
   KeyboardAvoidingView,
@@ -16,6 +15,9 @@ import { login, logout } from "../reducers/user";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
+// import { DatePickerInput } from 'react-native-paper-dates';
+
+
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -89,29 +91,29 @@ export default function SignUpScreen({ navigation }) {
           { handleChange, handleBlur, handleSubmit, values, errors, touched } // une fonction de rendu qui reçoit des propriétés et des fonctions utiles de <Formik>
         ) => (
           <View style={styles.bottomContainer}>
-            <View>
-              <Text>Se connecter avec :</Text>
+            <View >
+              <Text style = {styles.text1} >Se connecter avec :</Text>
             </View>
             <View style={styles.connectWithContainer}>
               <TouchableOpacity style={styles.socialButton}>
                 <Image
                   source={require("../assets/facebook-icon.png")}
-                  style={styles.socialIcon}
+                  style={styles.socialIcon} alt="icon-facebook"
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton}>
                 <Image
                   source={require("../assets/google-icon.png")}
-                  style={styles.socialIcon}
+                  style={styles.socialIcon} alt="icon-google"
                 />
               </TouchableOpacity>
             </View>
             <View>
-              <Text>Ou créer:</Text>
+              <Text style = {styles.text1}>Ou créer:</Text>
             </View>
 
             <View style={styles.inputsContainer}>
-
+          <Text>Choisissez votre statut : </Text>
           <Picker
             selectedValue={values.statut}
             onValueChange={(itemValue, itemIndex) => handleChange("statut")(itemValue)}  style={[styles.input, styles.picker]} // Ajoutez le style pour le picker
@@ -141,13 +143,13 @@ export default function SignUpScreen({ navigation }) {
               {touched.prenom && errors.prenom && (
                 <Text style={styles.error}>{errors.prenom}</Text>
               )}
-              {/* <DatePickerInput style={styles.date}
+               {/* <DatePickerInput style={styles.date}
                 locale="en"
                 label="date de naissance"
                 value={inputDate}
                 onChange={(d) => setInputDate(d)}
                 inputMode="start"
-            /> */}
+            />  */}
               <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -218,42 +220,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
   },
+  text1: {
+    fontSize: 15,
+    marginBottom: 10,
+    textAlign: "left",
+  },
   input: {
     height: 40,
-    borderColor: "black",
+    borderColor: "gray",
     borderWidth: 0.5,
     marginBottom: 10,
     paddingHorizontal: 10,
   },
   picker: {
     borderWidth: 1,
-    borderColor: "black", // Couleur de la bordure
-    borderRadius: 5, // Optionnel : pour arrondir les coins
+    borderColor: "black",
+    borderRadius: 5,
   },
   error: {
     color: "red",
     marginBottom: 7,
   },
-  logoButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  date: {
-    marginTop: 400,
-  },
-  text: {
-    marginBottom: 20,
-  },
-  logo: {
-    width: 150,
-    height: 150,
-  },
   bottomContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+    marginTop: 50,
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 0,
     width: "90%",
   },
   connectWithContainer: {
@@ -270,21 +262,6 @@ const styles = StyleSheet.create({
   inputsContainer: {
     width: "90%",
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 0.5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  checkBoxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  checkBoxText: {
-    marginLeft: 10,
-  },
   connectButton: {
     backgroundColor: "#4FAAAF",
     padding: 10,
@@ -299,3 +276,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+

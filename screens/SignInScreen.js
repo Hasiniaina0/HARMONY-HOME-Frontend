@@ -20,6 +20,7 @@ export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -40,7 +41,15 @@ export default function SignInScreen({ navigation }) {
           setEmail("");
           setPassword("");
           navigation.navigate("LocataireProfil");
+        } else {
+          // Erreur de connexion
+          setErrorMessage(data.error);
         }
+      })
+      .catch((error) => {
+        // Erreur lors de la connexion au serveur
+        console.error("Error:", error);
+        setErrorMessage("Une erreur s'est produite lors de la connexion.");
       });
   };
 
@@ -92,6 +101,7 @@ export default function SignInScreen({ navigation }) {
         >
           <Text style={styles.signInButtonText}>Connexion</Text>
         </TouchableOpacity>
+        {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
       </KeyboardAvoidingView>
       <Modal
         animationType="slide"
