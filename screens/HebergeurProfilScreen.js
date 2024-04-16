@@ -11,54 +11,54 @@ import ImagePicker from "react-native-image-picker";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
 
-const [nom, setNom] = useState("");
-const [prenom, setPrenom] = useState("");
-const [inputDate, setInputDate] = useState(undefined);
-const [email, setEmail] = useState("");
-const [numPhone, setNumPhone] = useState("");
-const [apropos, setApropos] = useState("");
-const [description, setDescription] = useState("");
-
-const [selectedImage1, setSelectedImage1] = useState(null);
-const [selectedImage2, setSelectedImage2] = useState(null);
-
-const handleSaveProfil = () => {
-  console.log("profil enregistré", {
-    nom,
-    prenom,
-    inputDate,
-    email,
-    numPhone,
-    apropos,
-    description,
-  });
-};
-
-// ajouter une image à partir de la gallerie du téléphone
-
-const handleSelectImage1 = () => {
-  ImagePicker.launchImageLibrary({}, (response) => {
-    if (response.error) {
-      console.error("Erreur lors de la sélection d'image:", response.error);
-    } else {
-      console.log("Image sélectionnée:", response.uri);
-      setSelectedImage1(response.uri);
-    }
-  });
-};
-
-const handleSelectImage2 = () => {
-  ImagePicker.launchImageLibrary({}, (response) => {
-    if (response.error) {
-      console.error("Erreur lors de la sélection d'image:", response.error);
-    } else {
-      console.log("Image sélectionnée:", response.uri);
-      setSelectedImage2(response.uri);
-    }
-  });
-};
-
 export default function HebergeurProfilScreen() {
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [inputDate, setInputDate] = useState(undefined);
+  const [email, setEmail] = useState("");
+  const [numPhone, setNumPhone] = useState("");
+  const [apropos, setApropos] = useState("");
+  const [description, setDescription] = useState("");
+
+  const [selectedImage1, setSelectedImage1] = useState(null);
+  const [selectedImage2, setSelectedImage2] = useState(null);
+
+  const handleSaveProfil = () => {
+    console.log("profil enregistré", {
+      nom,
+      prenom,
+      inputDate,
+      email,
+      numPhone,
+      apropos,
+      description,
+    });
+  };
+
+  // ajouter une image à partir de la gallerie du téléphone
+
+  const handleSelectImage1 = () => {
+    ImagePicker.launchImageLibrary({}, (response) => {
+      if (response.error) {
+        console.error("Erreur lors de la sélection d'image:", response.error);
+      } else {
+        console.log("Image sélectionnée:", response.uri);
+        setSelectedImage1(response.uri);
+      }
+    });
+  };
+
+  const handleSelectImage2 = () => {
+    ImagePicker.launchImageLibrary({}, (response) => {
+      if (response.error) {
+        console.error("Erreur lors de la sélection d'image:", response.error);
+      } else {
+        console.log("Image sélectionnée:", response.uri);
+        setSelectedImage2(response.uri);
+      }
+    });
+  };
+
   return (
     <View style={styles.inputsContainer}>
       <TextInput
@@ -73,14 +73,14 @@ export default function HebergeurProfilScreen() {
         value={prenom}
         onChangeText={(prenom) => setPrenom(prenom)}
       />
-      <DatePickerInput
+      {/* <DatePickerInput
         style={styles.date}
         locale="fr"
         label="date de naissance"
         value={inputDate}
         onChange={(d) => setInputDate(d)}
         inputMode="start"
-      />
+      /> */}
       <TextInput
         style={styles.input}
         placeholder="Email"

@@ -72,14 +72,14 @@ export default function LocataireProfilScreen() {
         value={prenom}
         onChangeText={(prenom) => setPrenom(prenom)}
       />
-      <DatePickerInput
+      {/* <DatePickerInput
         style={styles.date}
         locale="fr"
         label="date de naissance"
         value={inputDate}
         onChange={(d) => setInputDate(d)}
         inputMode="start"
-      />
+      /> */}
       <TextInput
         style={styles.input}
         placeholder="Email"
