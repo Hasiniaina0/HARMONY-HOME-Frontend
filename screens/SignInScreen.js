@@ -45,48 +45,45 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <ImageBackground style={styles.backgroundImage}>
-      <View style={styles.container}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <Image source={require("../assets/logo.png")} style={styles.logo} />
-          <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
-          <Text style={styles.slogan}>sages dans une colocation pleine</Text>
-          <Text style={styles.slogan}>de vie et de partage</Text>
+      {/* <View style={styles.container}> */}
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
+        <Text style={styles.slogan}>sages dans une colocation pleine</Text>
+        <Text style={styles.slogan}>de vie et de partage</Text>
 
+        <View style={styles.inputsContainer}>
           <View>
-            <Text>Email:</Text>
+            <Text>Email :</Text>
           </View>
-          <View style={styles.inputsContainer}>
-            <View>
-              <Text>Email:</Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={(email) => setEmail(email)}
-            />
-            <View>
-              <Text>Mot de passe</Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Mot de passe"
-              secureTextEntry={true}
-              value={password}
-              onChangeText={(password) => setPassword(password)}
-            />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={(email) => setEmail(email)}
+          />
+          <View>
+            <Text>Mot de passe :</Text>
           </View>
-          <TouchableOpacity
-            style={styles.signInButton}
-            onPress={() => handleConnection()}
-          >
-            <Text style={styles.signInButtonText}>Connexion</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Mot de passe"
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.signInButton}
+          onPress={() => handleConnection()}
+        >
+          <Text style={styles.signInButtonText}>Connexion</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+      {/* </View> */}
     </ImageBackground>
   );
 }
