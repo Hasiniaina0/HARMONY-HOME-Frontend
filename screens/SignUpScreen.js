@@ -17,8 +17,6 @@ import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
 // import { DatePickerInput } from 'react-native-paper-dates';
 
-
-
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -63,7 +61,7 @@ export default function SignUpScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           dispatch(login({ email: data.email, token: data.token }));
-          navigation.navigate("Home");
+          navigation.navigate("ThreadAnnouncements");
         }
       });
   };
@@ -82,7 +80,6 @@ export default function SignUpScreen({ navigation }) {
           password: "",
           confirmPassword: "",
           statut: "hebergeur",
-
         }} //définit les valeurs initiales des champs du formulaire.
         validationSchema={validationSchema} //un schéma de validation Yup qui définit les règles de validation pour chaque champ du formulaire.
         onSubmit={(values) => handleConnection(values)} //une fonction appelée lorsque le formulaire sera soumis avec des valeurs valides
@@ -91,36 +88,41 @@ export default function SignUpScreen({ navigation }) {
           { handleChange, handleBlur, handleSubmit, values, errors, touched } // une fonction de rendu qui reçoit des propriétés et des fonctions utiles de <Formik>
         ) => (
           <View style={styles.bottomContainer}>
-            <View >
-              <Text style = {styles.text1} >Se connecter avec :</Text>
+            <View>
+              <Text style={styles.text1}>Se connecter avec :</Text>
             </View>
             <View style={styles.connectWithContainer}>
               <TouchableOpacity style={styles.socialButton}>
                 <Image
                   source={require("../assets/facebook-icon.png")}
-                  style={styles.socialIcon} alt="icon-facebook"
+                  style={styles.socialIcon}
+                  alt="icon-facebook"
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton}>
                 <Image
                   source={require("../assets/google-icon.png")}
-                  style={styles.socialIcon} alt="icon-google"
+                  style={styles.socialIcon}
+                  alt="icon-google"
                 />
               </TouchableOpacity>
             </View>
             <View>
-              <Text style = {styles.text1}>Ou créer:</Text>
+              <Text style={styles.text1}>Ou créer:</Text>
             </View>
 
             <View style={styles.inputsContainer}>
-          <Text>Choisissez votre statut : </Text>
-          <Picker
-            selectedValue={values.statut}
-            onValueChange={(itemValue, itemIndex) => handleChange("statut")(itemValue)}  style={[styles.input, styles.picker]} // Ajoutez le style pour le picker
-          >
-            <Picker.Item label="Hébergeur" value="hebergeur" />
-            <Picker.Item label="Locataire" value="locataire" />
-          </Picker>
+              <Text>Choisissez votre statut : </Text>
+              <Picker
+                selectedValue={values.statut}
+                onValueChange={(itemValue, itemIndex) =>
+                  handleChange("statut")(itemValue)
+                }
+                style={[styles.input, styles.picker]} // Ajoutez le style pour le picker
+              >
+                <Picker.Item label="Hébergeur" value="hebergeur" />
+                <Picker.Item label="Locataire" value="locataire" />
+              </Picker>
 
               <TextInput
                 style={styles.input}
@@ -143,7 +145,7 @@ export default function SignUpScreen({ navigation }) {
               {touched.prenom && errors.prenom && (
                 <Text style={styles.error}>{errors.prenom}</Text>
               )}
-               {/* <DatePickerInput style={styles.date}
+              {/* <DatePickerInput style={styles.date}
                 locale="en"
                 label="date de naissance"
                 value={inputDate}
@@ -183,7 +185,7 @@ export default function SignUpScreen({ navigation }) {
               {touched.password && errors.password && (
                 <Text style={styles.error}>{errors.password}</Text>
               )}
-           {/* Confirmation mot de passe */}
+              {/* Confirmation mot de passe */}
               <TextInput
                 style={styles.input}
                 placeholder="Confirmation mot de passe"
@@ -204,7 +206,7 @@ export default function SignUpScreen({ navigation }) {
               style={styles.connectButton}
               onPress={handleSubmit}
             >
-              <Text style={styles.connectButtonText}>Se connecter</Text>
+              <Text style={styles.connectButtonText}>S'inscrire'</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -276,4 +278,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
