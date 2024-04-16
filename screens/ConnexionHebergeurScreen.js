@@ -12,10 +12,13 @@ export default function ConnexionHebergeurScreen  ({navigation}) {
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
+  // Expression régulière pour la validation de l'e-mail
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
   const validationSchema = Yup.object().shape({
     nom: Yup.string().required('Le nom est requis'),
     prenom: Yup.string().required('Le prénom est requis'),
-    email: Yup.string().email('Format email invalide').required('L\'email est requis'),
+    email: Yup.string().matches(emailRegex, 'Format email invalide').required('L\'email est requis'),
     numPhone: Yup.string().matches(/^[0-9]{10}$/, 'Le numéro de téléphone doit comporter 10 chiffres').required('Le numéro de téléphone est requis'),
     password: Yup.string().required('Le mot de passe est requis'),
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Les mots de passe doivent correspondre').required('La confirmation du mot de passe est requise'),
