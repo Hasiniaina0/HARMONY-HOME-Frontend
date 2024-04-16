@@ -9,14 +9,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  Modal,
 } from "react-native";
 import { login, logout } from "../reducers/user";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -41,9 +44,15 @@ export default function SignInScreen({ navigation }) {
       });
   };
 
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
   return (
-    <ImageBackground style={styles.backgroundImage}>
-      {/* <View style={styles.container}> */}
+    <ImageBackground
+      source={require("../assets/background.png")}
+      style={styles.backgroundImage}
+    >
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -74,6 +83,9 @@ export default function SignInScreen({ navigation }) {
             onChangeText={(password) => setPassword(password)}
           />
         </View>
+        <TouchableOpacity onPress={() => toggleModal()}>
+          <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.signInButton}
           onPress={() => handleConnection()}
@@ -81,7 +93,47 @@ export default function SignInScreen({ navigation }) {
           <Text style={styles.signInButtonText}>Connexion</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-      {/* </View> */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalInnerContainer}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Mot de passe oublié</Text>
+              <Text>
+                Si vous avez oublié votre mot de passe, veuillez entrer votre
+                adresse e-mail enregistrée. Nous vous enverrons un lien pour
+                réinitialiser votre mot de passe.
+              </Text>
+              <TextInput
+                style={styles.modalInput}
+                placeholder="Adresse e-mail"
+                value={email}
+                onChangeText={(email) => setEmail(email)}
+              />
+              <TouchableOpacity
+                style={styles.sendButton}
+                onPress={() => {
+                  // Ajoutez ici la logique pour envoyer le lien de réinitialisation
+                  // et fermer la modal après l'envoi
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.sendButtonText}>Envoyer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ImageBackground>
   );
 }
@@ -102,20 +154,30 @@ const styles = StyleSheet.create({
     height: 320,
   },
   slogan: {
-    fontSize: 16,
-    color: "black",
+    fontSize: 20,
+    color: "white",
     alignItems: "center",
     justifyContent: "center",
   },
   inputsContainer: {
     width: "90%",
+    marginTop: 20,
   },
   input: {
     height: 40,
+    width: 250,
     borderColor: "gray",
     borderWidth: 0.5,
+    borderRadius: 5,
     marginBottom: 10,
     paddingHorizontal: 10,
+    color: "white",
+    backgroundColor: "white",
+  },
+  forgotPassword: {
+    justifyContent: "flex-end",
+    margin: 20,
+    color: "white",
   },
   signInButton: {
     backgroundColor: "#4FAAAF",
@@ -129,5 +191,51 @@ const styles = StyleSheet.create({
   signInButtonText: {
     color: "white",
     fontSize: 15,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalInnerContainer: {
+    backgroundColor: "#fff",
+    margin: 20,
+    borderRadius: 10,
+    padding: 20,
+    position: "relative",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#4FAAAF",
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    width: "100%",
+  },
+  sendButton: {
+    backgroundColor: "#007BFF",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: "100%",
+    alignItems: "center",
+    backgroundColor: "#4FAAAF",
+  },
+  sendButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
