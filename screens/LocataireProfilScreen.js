@@ -8,7 +8,7 @@ import {
   Button,
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
-//import { DatePickerInput } from "react-native-paper-dates";
+import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
 
 export default function LocataireProfilScreen() {
