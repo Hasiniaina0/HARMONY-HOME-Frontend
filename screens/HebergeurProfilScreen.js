@@ -11,8 +11,9 @@ import {
   Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-//import { DatePickerInput } from "react-native-paper-dates";
+import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
+//import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {
   const [nom, setNom] = useState("");
@@ -55,7 +56,7 @@ export default function HebergeurProfilScreen() {
     });
 
     if (!result.cancelled) {
-      setSelectedImages(result.assets[0].uri);
+      setSelectedImages(result.assets.map((asset) => asset.uri));
     }
   };
 
@@ -79,14 +80,14 @@ export default function HebergeurProfilScreen() {
           value={prenom}
           onChangeText={(prenom) => setPrenom(prenom)}
         />
-        {/* <DatePickerInput
-        style={styles.date}
-        locale="fr"
-        label="date de naissance"
-        value={inputDate}
-        onChange={(d) => setInputDate(d)}
-        inputMode="start"
-      /> */}
+        <DatePickerInput
+          style={styles.date}
+          locale="fr"
+          label="Date de naissance"
+          value={inputDate}
+          onChange={(d) => setInputDate(d)}
+          inputMode="start"
+        />
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -108,7 +109,7 @@ export default function HebergeurProfilScreen() {
         />
         <TextInput
           style={styles.input}
-          placeholder="Parlez nous de vous !"
+          placeholder="Décrivez votre logement"
           secureTextEntry={true}
           value={description}
           onChangeText={(description) => setDescription(description)}
@@ -145,6 +146,7 @@ const styles = StyleSheet.create({
   logo: {
     height: 300,
     width: 300,
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
@@ -159,6 +161,14 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+  date: {
+    height: 40,
+    borderColor: "black",
+    borderWidth: 0.5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "white",
   },
   maj: {
     color: "white",
@@ -188,5 +198,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "gray",
     marginRight: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 5,
   },
 });
