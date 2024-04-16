@@ -9,10 +9,12 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
+
 //import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {
@@ -26,15 +28,27 @@ export default function HebergeurProfilScreen() {
   const [selectedImages, setSelectedImages] = useState([]);
 
   const handleSaveProfil = () => {
-    console.log("profil enregistré", {
-      nom,
-      prenom,
-      inputDate,
-      email,
-      numPhone,
-      apropos,
-      description,
+    fetch(`${BACKEND_URL}/users/profil`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nom,
+        prenom,
+        email,
+        numPhone,
+        password,
+        description,
+        apropos,
+      }),
     });
+    const data = response.json();
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+          "Une erreur est survenue lors de la mise à jour du profil"
+      );
+    }
+    console.log("Profil mis à jour:", data);
   };
 
   // ajouter une image à partir de la galerie du téléphone
@@ -56,12 +70,15 @@ export default function HebergeurProfilScreen() {
     });
 
     if (!result.cancelled) {
-      setSelectedImages(result.assets.map((asset) => asset.uri));
+      setSelectedImages([
+        ...selectedImages,
+        ...result.assets.map((asset) => asset.uri),
+      ]);
     }
   };
 
   return (
-    <View style={styles.inputsContainer}>
+    <SafeAreaView style={styles.inputsContainer}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -81,7 +98,7 @@ export default function HebergeurProfilScreen() {
           onChangeText={(prenom) => setPrenom(prenom)}
         />
         <DatePickerInput
-          style={styles.date}
+          style={[styles.date, Platform.OS === "ios" && styles.dateIOS]}
           locale="fr"
           label="Date de naissance"
           value={inputDate}
@@ -117,11 +134,7 @@ export default function HebergeurProfilScreen() {
         <Text> Insérez des photos de votre logement </Text>
         <View style={styles.imageContainer}>
           {selectedImages.map((image, index) => (
-            <Image
-              key={index}
-              source={{ uri: image.uri }}
-              style={styles.image}
-            />
+            <Image key={index} source={{ uri: image }} style={styles.image} />
           ))}
           <Button
             title="Ajouter une image"
@@ -133,7 +146,7 @@ export default function HebergeurProfilScreen() {
           <Text style={styles.buttonText}>Mettre à jour</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -196,7 +209,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 10,
-    backgroundColor: "gray",
     marginRight: 10,
   },
   image: {

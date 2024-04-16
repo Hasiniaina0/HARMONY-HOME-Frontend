@@ -9,6 +9,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
 } from "react-native";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
@@ -24,17 +25,34 @@ export default function LocataireProfilScreen() {
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
 
+  // save la mise à jour
   const handleSaveProfil = () => {
-    console.log("profil enregistré", {
-      nom,
-      prenom,
-      inputDate,
-      email,
-      numPhone,
-      apropos,
-      description,
+    fetch(`${BACKEND_URL}/users/profil`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nom,
+        prenom,
+        email,
+        numPhone,
+        password,
+        description,
+        apropos,
+      }),
     });
+
+    const data = response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+          "Une erreur est survenue lors de la mise à jour du profil"
+      );
+    }
+
+    console.log("Profil mis à jour:", data);
   };
+
   const showImagePicker = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -57,7 +75,7 @@ export default function LocataireProfilScreen() {
   };
 
   return (
-    <View style={styles.inputsContainer}>
+    <SafeAreaView style={styles.inputsContainer}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -127,7 +145,7 @@ export default function LocataireProfilScreen() {
           <Text style={styles.buttonText}>Mettre à jour</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
 

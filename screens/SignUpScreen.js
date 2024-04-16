@@ -15,6 +15,7 @@ import { login, logout } from "../reducers/user";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
+import RNPickerSelect from 'react-native-picker-select';
 // import { DatePickerInput } from 'react-native-paper-dates';
 
 export default function SignUpScreen({ navigation }) {
@@ -61,7 +62,7 @@ export default function SignUpScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           dispatch(login({ email: data.email, token: data.token }));
-          navigation.navigate("ThreadAnnouncements");
+          navigation.navigate("Home");
         }
       });
   };
@@ -113,16 +114,17 @@ export default function SignUpScreen({ navigation }) {
 
             <View style={styles.inputsContainer}>
               <Text>Choisissez votre statut : </Text>
-              <Picker
-                selectedValue={values.statut}
-                onValueChange={(itemValue, itemIndex) =>
+              <RNPickerSelect
+                value={values.statut}
+                onValueChange={(itemValue) =>
                   handleChange("statut")(itemValue)
                 }
-                style={[styles.input, styles.picker]} // Ajoutez le style pour le picker
-              >
-                <Picker.Item label="Hébergeur" value="hebergeur" />
-                <Picker.Item label="Locataire" value="locataire" />
-              </Picker>
+                items={[
+                  { label: 'Hébergeur', value: 'hebergeur' },
+                  { label: 'Locataire', value: 'locataire' },
+                ]}
+                style={{ ...pickerSelectStyles }}
+              />
 
               <TextInput
                 style={styles.input}
@@ -206,7 +208,7 @@ export default function SignUpScreen({ navigation }) {
               style={styles.connectButton}
               onPress={handleSubmit}
             >
-              <Text style={styles.connectButtonText}>S'inscrire'</Text>
+              <Text style={styles.connectButtonText}>S'inscrire</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -214,6 +216,28 @@ export default function SignUpScreen({ navigation }) {
     </KeyboardAvoidingView>
   );
 }
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
