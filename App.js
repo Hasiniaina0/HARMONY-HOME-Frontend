@@ -4,8 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen"; // Page d'accueil
 import SignUpScreen from "./screens/SignUpScreen"; // Page d'inscription
 import SignInScreen from "./screens/SignInScreen"; // Page de connexion
-import ConnexionHebergeurScreen from "./screens/ConnexionHebergeurScreen";
-import ConnexionLocataireScreen from "./screens/ConnexionLocataireScreen";
 import MessagesScreen from "./screens/MessagesScreen"; // page message
 import LocataireProfilScreen from "./screens/LocataireProfilScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -57,14 +55,7 @@ export default function App() {
             name="LocataireProfil"
             component={LocataireProfilScreen}
           />
-          <Stack.Screen
-            name="ConnexionHebergeur"
-            component={ConnexionHebergeurScreen}
-          />
-          <Stack.Screen
-            name="ConnexionLocataire"
-            component={ConnexionLocataireScreen}
-          />
+          
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
