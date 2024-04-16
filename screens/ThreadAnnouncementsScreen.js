@@ -46,11 +46,11 @@ export default function ThreadAnnouncementsScreen() {
       );
   }, []);
 
-  const handleFavorite = (id) => {
+  const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
   };
 
-  const handleContact = (id) => {
+  const handleContact = () => {
     // Logique pour contacter l'annonceur
   };
 
@@ -71,23 +71,23 @@ export default function ThreadAnnouncementsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {data.map((announcement) => (
-        <View style={styles.announcementContainer} key={announcement.id}>
+      {data.map((user) => (
+        <View style={styles.announcementContainer} key={user._id}>
           <TouchableOpacity
-            onPress={() => handleFavorite(announcement.id)}
+            onPress={() => handleFavorite()}
             style={styles.favoriteButton}
           >
             <Ionicons name="heart-outline" size={15} color="#007BFF" />
           </TouchableOpacity>
           <View style={styles.imageContainer}>
-            <Image source={announcement.image} style={styles.image} />
+            <Image source={{ uri: user.photo }} style={styles.image} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{announcement.title}</Text>
-            <Text style={styles.location}>{announcement.city}</Text>
-            <Text style={styles.description}>{announcement.description}</Text>
+            <Text style={styles.title}>{user.prenom}</Text>
+            <Text style={styles.location}>{user.city}</Text>
+            <Text style={styles.description}>{user.description}</Text>
             <TouchableOpacity
-              onPress={() => handleContact(announcement.id)}
+              onPress={() => handleContact()}
               style={styles.contactButton}
             >
               <Text style={styles.contactButtonText}>Contacter</Text>
@@ -96,17 +96,26 @@ export default function ThreadAnnouncementsScreen() {
         </View>
       ))}
       <View style={styles.bottomBar}>
-        <TouchableOpacity onPress={handleMessages} style={styles.bottomButton}>
+        <TouchableOpacity
+          onPress={() => handleMessages()}
+          style={styles.bottomButton}
+        >
           <Ionicons
             name="chatbubble-ellipses-outline"
             size={24}
             color="#007BFF"
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleProfile} style={styles.bottomButton}>
+        <TouchableOpacity
+          onPress={() => handleProfile()}
+          style={styles.bottomButton}
+        >
           <Ionicons name="person-outline" size={24} color="#007BFF" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleFavorites} style={styles.bottomButton}>
+        <TouchableOpacity
+          onPress={() => handleFavorites()}
+          style={styles.bottomButton}
+        >
           <Ionicons name="heart-outline" size={24} color="#007BFF" />
         </TouchableOpacity>
       </View>
