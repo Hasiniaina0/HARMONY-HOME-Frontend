@@ -10,7 +10,7 @@ import { Formik } from 'formik';
 export default function ConnexionHebergeurScreen  ({navigation}) {
 
   const dispatch = useDispatch();
-  const ADRESS_IP = process.env.ADRESS_IP;
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   const validationSchema = Yup.object().shape({
     nom: Yup.string().required('Le nom est requis'),
@@ -28,7 +28,7 @@ export default function ConnexionHebergeurScreen  ({navigation}) {
       return;
     }
 
-    fetch(`http://${ADRESS_IP}:3000/users/signup`, {
+    fetch(`${BACKEND_URL}/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
