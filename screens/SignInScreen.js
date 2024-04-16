@@ -22,7 +22,7 @@ export default function SignInScreen({ navigation }) {
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   const handleConnection = () => {
-    fetch(`http://192.168.1.108:3000/users/signin`, {
+    fetch(`${BACKEND_URL}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -36,7 +36,7 @@ export default function SignInScreen({ navigation }) {
           dispatch(login({ email: data.email, token: data.token }));
           setEmail("");
           setPassword("");
-          navigation.navigate("SignUp");
+          navigation.navigate("LocataireProfil");
         }
       });
   };
