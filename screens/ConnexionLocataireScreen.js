@@ -26,8 +26,6 @@ export default function ConnexionLocataireScreen({ navigation }) {
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
-
-
   const validationSchema = Yup.object().shape({
     nom: Yup.string().required("Le nom est requis"),
     prenom: Yup.string().required("Le prénom est requis"),
