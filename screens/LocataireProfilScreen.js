@@ -6,10 +6,13 @@ import {
   Text,
   StyleSheet,
   Button,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import ImagePicker from "react-native-image-picker";
-import { DatePickerInput } from "react-native-paper-dates";
+//import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
+import * as ImagePicker from "expo-image-picker";
 
 export default function LocataireProfilScreen() {
   const [nom, setNom] = useState("");
@@ -19,9 +22,7 @@ export default function LocataireProfilScreen() {
   const [numPhone, setNumPhone] = useState("");
   const [apropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
-
-  const [selectedImage1, setSelectedImage1] = useState(null);
-  const [selectedImage2, setSelectedImage2] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSaveProfil = () => {
     console.log("profil enregistré", {
@@ -34,45 +35,47 @@ export default function LocataireProfilScreen() {
       description,
     });
   };
-  // ajouter une image à partir de la gallerie du téléphone
+  const showImagePicker = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
-  const handleSelectImage1 = () => {
-    ImagePicker.launchImageLibrary({}, (response) => {
-      if (response.error) {
-        console.error("Erreur lors de la sélection d'image:", response.error);
-      } else {
-        console.log("Image sélectionnée:", response.uri);
-        setSelectedImage1(response.uri);
-      }
-    });
-  };
+    if (permissionResult.granted === false) {
+      alert("Vous avez refuser l'accès au photo");
+      return;
+    }
 
-  const handleSelectImage2 = () => {
-    ImagePicker.launchImageLibrary({}, (response) => {
-      if (response.error) {
-        console.error("Erreur lors de la sélection d'image:", response.error);
-      } else {
-        console.log("Image sélectionnée:", response.uri);
-        setSelectedImage2(response.uri);
-      }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.3,
     });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    }
   };
 
   return (
     <View style={styles.inputsContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Nom"
-        value={nom}
-        onChangeText={(nom) => setNom(nom)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Prénom"
-        value={prenom}
-        onChangeText={(prenom) => setPrenom(prenom)}
-      />
-      {/* <DatePickerInput
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <Text> Je mets à jours mes informations </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Nom"
+          value={nom}
+          onChangeText={(nom) => setNom(nom)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Prénom"
+          value={prenom}
+          onChangeText={(prenom) => setPrenom(prenom)}
+        />
+        {/* <DatePickerInput
         style={styles.date}
         locale="fr"
         label="date de naissance"
@@ -80,68 +83,70 @@ export default function LocataireProfilScreen() {
         onChange={(d) => setInputDate(d)}
         inputMode="start"
       /> */}
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={(email) => setEmail(email)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Numéro de téléphone"
-        value={numPhone}
-        onChangeText={(numPhone) => setNumPhone(numPhone)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="A propos de toi ?!"
-        secureTextEntry={true}
-        value={apropos}
-        onChangeText={(apropos) => setApropos(apropos)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Parle nous de toi !"
-        secureTextEntry={true}
-        value={description}
-        onChangeText={(description) => setDescription(description)}
-      />
-      <Text> Partage des photos de ce qui te représente </Text>
-      <View style={styles.image}>
-        {selectedImage1 && (
-          <Image
-            source={{ uri: selectedImage1 }}
-            style={{ width: 200, height: 200 }}
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={(email) => setEmail(email)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Numéro de téléphone"
+          value={numPhone}
+          onChangeText={(numPhone) => setNumPhone(numPhone)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="A propos de toi ?!"
+          value={apropos}
+          onChangeText={(apropos) => setApropos(apropos)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Parle nous de toi !"
+          value={description}
+          onChangeText={(description) => setDescription(description)}
+        />
+        <Text> Partage des photos de ce qui te représente </Text>
+        <View style={styles.imageContainer}>
+          {selectedImage && (
+            <Image source={{ uri: selectedImage }} style={styles.image} />
+          )}
+          <Button
+            title="Ajouter une image"
+            onPress={showImagePicker}
+            color="white"
           />
-        )}
-        <Button title="Ajouter une image" onPress={handleSelectImage1} />
-        {selectedImage2 && (
-          <Image
-            source={{ uri: selectedImage2 }}
-            style={{ width: 200, height: 200 }}
+          {selectedImage && (
+            <Image source={{ uri: selectedImage }} style={styles.image} />
+          )}
+          <Button
+            title="Ajouter une image"
+            onPress={showImagePicker}
+            color="white"
           />
-        )}
-        <Button title="Ajouter une image" onPress={handleSelectImage2} />
-      </View>
-      <Button
-        style={styles.maj}
-        title="Mettre à jour"
-        onPress={handleSaveProfil}
-      />
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+          <Text style={styles.buttonText}>Mettre à jour</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  inputsContainer: {
     flex: 1,
-    resizeMode: "cover",
     justifyContent: "center",
     alignItems: "center",
   },
+  logo: {
+    height: 300,
+    width: 300,
+  },
   input: {
     height: 40,
-    borderColor: "gray",
+    borderColor: "black",
     borderWidth: 0.5,
     marginBottom: 10,
     paddingHorizontal: 10,
@@ -154,6 +159,31 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 15,
     paddingRight: 15,
+    fontSize: 15,
+    alignSelf: "center",
+  },
+  imageContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginBottom: 10,
+    backgroundColor: "gray",
+    marginRight: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 5,
+  },
+  button: {
+    backgroundColor: "#4FAAAF",
+    color: "white",
+    padding: 10,
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
     fontSize: 15,
   },
 });
