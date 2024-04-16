@@ -52,7 +52,7 @@ export default function LocataireProfilScreen() {
     });
 
     if (!result.cancelled) {
-      setSelectedImages([...selectedImages, ...result.assets]);
+      setSelectedImages(result.assets[0].uri);
     }
   };
 
