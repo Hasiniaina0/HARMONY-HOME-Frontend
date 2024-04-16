@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     height: 320,
   },
   slogan: {
-    fontSize: 20,
+    fontSize: 16,
     color: "white",
     alignItems: "center",
     justifyContent: "center",
