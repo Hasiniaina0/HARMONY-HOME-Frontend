@@ -17,20 +17,17 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 
 export default function ConnexionLocataireScreen({ navigation }) {
-  const [nom, setNom] = React.useState("");
-  const [prenom, setPrenom] = React.useState("");
-  const [email, setEmail] = useState("");
-  const [numPhone, setNumPhone] = useState("");
-  const [mdp, setMdp] = useState("");
-  const [mdpConfirm, setMdpConfirm] = useState("");
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+  // Expression régulière pour la validation de l'e-mail
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const validationSchema = Yup.object().shape({
     nom: Yup.string().required("Le nom est requis"),
     prenom: Yup.string().required("Le prénom est requis"),
     email: Yup.string()
-      .email("Format email invalide")
+      .matches(emailRegex, "Format email invalide")
       .required("L'email est requis"),
     numPhone: Yup.string()
       .matches(
