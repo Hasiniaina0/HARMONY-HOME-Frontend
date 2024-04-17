@@ -14,7 +14,6 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
-
 //import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {

@@ -66,6 +66,7 @@ export default function App() {
             name="ThreadAnnouncements"
             component={ThreadAnnouncementsScreen}
           />
+
           <Stack.Screen name="ThreadProfils" component={ThreadProfilsScreen} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
