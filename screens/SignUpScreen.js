@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../reducers/user";
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -22,6 +22,7 @@ export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const [modalVisible, setModalVisible] = useState(false);
+  const user = useSelector((state) => state.user);
 
   // Expression régulière pour la validation de l'e-mail
   const emailRegex =
@@ -62,7 +63,9 @@ export default function SignUpScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          dispatch(login({ email: data.email, token: data.token }));
+          dispatch(
+            login({ email: data.email, token: data.token, statut: data.statut })
+          );
           setModalVisible(true);
         }
       })
@@ -222,7 +225,7 @@ export default function SignUpScreen({ navigation }) {
               <View style={styles.modalContainer}>
                 {/* Contenu de la modal */}
                 <View style={styles.modalInnerContainer}>
-                  <Text style={styles.modalText}>
+                  <Text style={styles.modalTitle}>
                     Votre inscription a été réussie !
                   </Text>
                   <Text style={styles.modalText}>
@@ -232,7 +235,7 @@ export default function SignUpScreen({ navigation }) {
                     style={styles.modalButton}
                     // Rediriger vers l'écran de complétion de profil
                     onPress={() => {
-                      if (data.statut === "hebergeur") {
+                      if (user.statut === "hebergeur") {
                         navigation.navigate("HebergeurProfil");
                       } else {
                         navigation.navigate("LocataireProfil");
@@ -248,12 +251,8 @@ export default function SignUpScreen({ navigation }) {
                   <TouchableOpacity
                     style={styles.modalButton}
                     onPress={() => {
-                      if (data.statut === "hebergeur") {
-                        navigation.navigate("ThreadAnnouncements");
-                      } else {
-                        navigation.navigate("ThreadProfils");
-                      }
-                      // Rediriger vers une autre page ou effectuer d'autres actions
+                      navigation.navigate("TabNavigator", { screen: "Thread" });
+
                       // Fermer la modal
                       setModalVisible(false);
                     }}
@@ -353,5 +352,51 @@ const styles = StyleSheet.create({
   connectButtonText: {
     color: "white",
     fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalInnerContainer: {
+    backgroundColor: "#fff",
+    margin: 20,
+    borderRadius: 10,
+    padding: 20,
+    position: "relative",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#4FAAAF",
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    width: "100%",
+  },
+  modalButton: {
+    backgroundColor: "#007BFF",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: "100%",
+    alignItems: "center",
+    backgroundColor: "#4FAAAF",
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });

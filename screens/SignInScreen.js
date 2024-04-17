@@ -36,17 +36,18 @@ export default function SignInScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.result) {
-          console.log(data.token);
-          dispatch(login({ email: data.email, token: data.token }));
+          dispatch(
+            login({ email: data.email, token: data.token, statut: data.statut })
+          );
           setEmail("");
           setPassword("");
-          if (data.statut === "hebergeur") {
-            navigation.navigate("HebergeurProfil");
-          } else {
-            navigation.navigate("ThreadProfils");
-          }
+          navigation.navigate("TabNavigator", { screen: "Thread" });
+          // if (data.statut === "hebergeur") {
+          //   navigation.navigate("TabNavigator", { screen: "ThreadProfils" });
+          // } else {
+          //   navigation.navigate("TabNavigator", { screen: "ThreadAnnouncements" });
+          // }
         } else {
           // Erreur de connexion
           setErrorMessage(data.error);
