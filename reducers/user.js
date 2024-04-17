@@ -12,13 +12,13 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.value.token = action.payload.token;
-      state.value.email = action.payload.email;
+      state.token = action.payload.token;
+      state.email = action.payload.email;
     },
 
     logout: (state) => {
-      state.value.token = null;
-      state.value.email = null;
+      state.token = null;
+      state.email = null;
     },
     addPhoto: (state, action) => {
       state.photos.push(action.payload);

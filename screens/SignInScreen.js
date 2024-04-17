@@ -36,7 +36,9 @@ export default function SignInScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data.result) {
+          console.log(data.token);
           dispatch(login({ email: data.email, token: data.token }));
           setEmail("");
           setPassword("");
@@ -52,7 +54,7 @@ export default function SignInScreen({ navigation }) {
       })
       .catch((error) => {
         // Erreur lors de la connexion au serveur
-        console.error("Error:", error);
+        console.error("SignInError:", error);
         setErrorMessage("Une erreur s'est produite lors de la connexion.");
       });
   };
