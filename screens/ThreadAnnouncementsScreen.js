@@ -3,8 +3,6 @@ import {
   View,
   Image,
   TouchableOpacity,
-  TextInput,
-  CheckBox,
   Text,
   StyleSheet,
   SafeAreaView,
@@ -14,36 +12,18 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function ThreadAnnouncementsScreen() {
   const navigation = useNavigation();
-  const [users, setUsers] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
-  // const data = [
-  //   {
-  //     id: 1,
-  //     title: "Magnifique appartement en plein centre-ville",
-  //     city: "Paris",
-  //     description: "Appartement lumineux et moderne avec vue imprenable",
-  //     image: require("../assets/background.png"),
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Charmante maison à la campagne",
-  //     city: "Provence",
-  //     description:
-  //       "Maison rustique entourée de vignobles et de champs de lavande",
-  //     image: require("../assets/background.png"),
-  //   },
-  // ];
-
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users`)
+    fetch(`${BACKEND_URL}/users/hebergeur`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setUsers(data);
+        setAnnouncements(data);
       })
       .catch((error) =>
-        console.error("Erreur lors de la récupération des utilisateurs:", error)
+        console.error("Erreur lors de la récupération des hebergeurs:", error)
       );
   }, []);
 
@@ -55,25 +35,10 @@ export default function ThreadAnnouncementsScreen() {
     // Logique pour contacter l'annonceur
   };
 
-  const handleMessages = () => {
-    // Naviguer vers la page des messages
-    navigation.navigate("Messages");
-  };
-
-  const handleProfile = () => {
-    // Naviguer vers la page du profil
-    navigation.navigate("Profile");
-  };
-
-  const handleFavorites = () => {
-    // Naviguer vers la page des favoris
-    navigation.navigate("Favorites");
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      {users.map((user) => (
-        <View style={styles.announcementContainer} key={user._id}>
+      {announcements.map((announcement) => (
+        <View style={styles.announcementContainer} key={announcement._id}>
           <TouchableOpacity
             onPress={() => handleFavorite()}
             style={styles.favoriteButton}
@@ -81,12 +46,12 @@ export default function ThreadAnnouncementsScreen() {
             <Ionicons name="heart-outline" size={15} color="#007BFF" />
           </TouchableOpacity>
           <View style={styles.imageContainer}>
-            <Image source={{ uri: user.photo }} style={styles.image} />
+            <Image source={{ uri: announcement.photo }} style={styles.image} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{user.prenom}</Text>
-            <Text style={styles.location}>{user.city}</Text>
-            <Text style={styles.description}>{user.description}</Text>
+            <Text style={styles.title}>{announcement.prenom}</Text>
+            <Text style={styles.location}>{announcement.city}</Text>
+            <Text style={styles.description}>{announcement.description}</Text>
             <TouchableOpacity
               onPress={() => handleContact()}
               style={styles.contactButton}
@@ -96,30 +61,6 @@ export default function ThreadAnnouncementsScreen() {
           </View>
         </View>
       ))}
-      <View style={styles.bottomBar}>
-        <TouchableOpacity
-          onPress={() => handleMessages()}
-          style={styles.bottomButton}
-        >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={24}
-            color="#007BFF"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleProfile()}
-          style={styles.bottomButton}
-        >
-          <Ionicons name="person-outline" size={24} color="#007BFF" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleFavorites()}
-          style={styles.bottomButton}
-        >
-          <Ionicons name="heart-outline" size={24} color="#007BFF" />
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }

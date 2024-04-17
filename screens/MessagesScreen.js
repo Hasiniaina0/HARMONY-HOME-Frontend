@@ -20,209 +20,188 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 const BACKEND_ADDRESS = "http://BACKEND_IP:3000";
 
 export default function MessagesScreen({ navigation, route: { params } }) {
-  const [messages, setMessages] = useState([]);
-  const [messageText, setMessageText] = useState("");
-  const [recording, setRecording] = useState(null);
-  const [recordingUri, setRecordingUri] = useState(null);
-  const [sound, setSound] = useState(null);
-
-  useEffect(() => {
-    fetch(`${BACKEND_ADDRESS}/users/${params.nom}`, { method: "PUT" });
-
-    const subscription = pusher.subscribe("chat");
-    subscription.bind("pusher:subscription_succeeded", () => {
-      subscription.bind("message", handleReceiveMessage);
-    });
-
-    return () =>
-      fetch(`${BACKEND_ADDRESS}/users/${params.nom}`, {
-        method: "DELETE",
-      });
-  }, [params.nom]);
-
-  useEffect(() => {
-    (async () => {
-      await Audio.requestPermissionsAsync();
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (sound) {
-      return () => sound.unloadAsync();
-    }
-  }, [sound]);
-
-  const handleReceiveMessage = (data) => {
-    setMessages((messages) => [...messages, data]);
-  };
-
-  const handleSendMessage = () => {
-    if (!messageText && !recordingUri) {
-      return;
-    }
-
-    let payload = {};
-    let headers = {};
-
-    if (messageText) {
-      payload = JSON.stringify({
-        text: messageText,
-        nom: params.nom,
-        createdAt: new Date(),
-        id: Math.floor(Math.random() * 100000),
-        type: "text",
-      });
-
-      headers = { "Content-Type": "application/json" };
-    } else if (recordingUri) {
-      payload = new FormData();
-
-      payload.append("audio", {
-        uri: recordingUri,
-        name: "audio.m4a",
-        type: "audio/m4a",
-      });
-
-      payload.append("nom", params.nom);
-      payload.append("createdAt", new Date().toString());
-      payload.append("id", Math.floor(Math.random() * 100000));
-      payload.append("type", "audio");
-    }
-
-    fetch(`${BACKEND_ADDRESS}/message`, {
-      method: "POST",
-      headers,
-      body: payload,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setMessageText("");
-          setRecordingUri(null);
-        }
-      });
-  };
-
-  const startRecording = async () => {
-    const { recording } = await Audio.Recording.createAsync(
-      Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-    );
-    setRecording(recording);
-  };
-
-  const stopRecording = async () => {
-    if (recording) {
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
-
-      setRecordingUri(uri);
-      setRecording(null);
-    }
-  };
-
-  const playRecording = async (uri) => {
-    const { sound } = await Audio.Sound.createAsync({
-      uri,
-      overrideFileExtensionAndroid: "m4a",
-    });
-    setSound(sound);
-
-    await sound.playAsync();
-  };
-
-  return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <View style={styles.banner}>
-        <MaterialIcons
-          name="keyboard-backspace"
-          color="#ffffff"
-          size={24}
-          onPress={() => navigation.goBack()}
-        />
-        <Text style={styles.greetingText}>Welcome {params.nom} 👋</Text>
-      </View>
-
-      <View style={styles.inset}>
-        <ScrollView style={styles.scroller}>
-          {messages.map((message, i) => (
-            <View
-              key={i}
-              style={[
-                styles.messageWrapper,
-                {
-                  ...(message.nom === params.nom
-                    ? styles.messageSent
-                    : styles.messageRecieved),
-                },
-              ]}
-            >
-              <View
-                style={[
-                  styles.message,
-                  {
-                    ...(message.nom === params.nom
-                      ? styles.messageSentBg
-                      : styles.messageRecievedBg),
-                  },
-                ]}
-              >
-                {message.type === "audio" ? (
-                  <TouchableOpacity onPress={() => playRecording(message.url)}>
-                    <MaterialIcons
-                      name="multitrack-audio"
-                      size={24}
-                      style={styles.messageText}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <Text style={styles.messageText}>{message.text}</Text>
-                )}
-              </View>
-              <Text style={styles.timeText}>
-                {new Date(message.createdAt).getHours()}:
-                {String(new Date(message.createdAt).getMinutes()).padStart(
-                  2,
-                  "0"
-                )}
-              </Text>
-            </View>
-          ))}
-        </ScrollView>
-
-        <View style={styles.inputContainer}>
-          {recording ? (
-            <TextInput value="Recording..." style={styles.input} />
-          ) : (
-            <TextInput
-              onChangeText={(value) => setMessageText(value)}
-              value={recordingUri ? "Audio message" : messageText}
-              style={styles.input}
-            />
-          )}
-          <TouchableOpacity
-            onPressIn={() => startRecording()}
-            onPressOut={() => stopRecording()}
-            style={styles.recordButton}
-          >
-            <MaterialIcons name="mic" color="#ffffff" size={24} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleSendMessage()}
-            style={styles.sendButton}
-          >
-            <MaterialIcons name="send" color="#ffffff" size={24} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </KeyboardAvoidingView>
-  );
+  // const [messages, setMessages] = useState([]);
+  // const [messageText, setMessageText] = useState("");
+  // const [recording, setRecording] = useState(null);
+  // const [recordingUri, setRecordingUri] = useState(null);
+  // const [sound, setSound] = useState(null);
+  // useEffect(() => {
+  //   fetch(`${BACKEND_ADDRESS}/users/${params.nom}`, { method: "PUT" });
+  //   const subscription = pusher.subscribe("chat");
+  //   subscription.bind("pusher:subscription_succeeded", () => {
+  //     subscription.bind("message", handleReceiveMessage);
+  //   });
+  //   return () =>
+  //     fetch(`${BACKEND_ADDRESS}/users/${params.nom}`, {
+  //       method: "DELETE",
+  //     });
+  // }, [params.nom]);
+  // useEffect(() => {
+  //   (async () => {
+  //     await Audio.requestPermissionsAsync();
+  //     await Audio.setAudioModeAsync({
+  //       allowsRecordingIOS: true,
+  //       playsInSilentModeIOS: true,
+  //     });
+  //   })();
+  // }, []);
+  // useEffect(() => {
+  //   if (sound) {
+  //     return () => sound.unloadAsync();
+  //   }
+  // }, [sound]);
+  // const handleReceiveMessage = (data) => {
+  //   setMessages((messages) => [...messages, data]);
+  // };
+  // const handleSendMessage = () => {
+  //   if (!messageText && !recordingUri) {
+  //     return;
+  //   }
+  //   let payload = {};
+  //   let headers = {};
+  //   if (messageText) {
+  //     payload = JSON.stringify({
+  //       text: messageText,
+  //       nom: params.nom,
+  //       createdAt: new Date(),
+  //       id: Math.floor(Math.random() * 100000),
+  //       type: "text",
+  //     });
+  //     headers = { "Content-Type": "application/json" };
+  //   } else if (recordingUri) {
+  //     payload = new FormData();
+  //     payload.append("audio", {
+  //       uri: recordingUri,
+  //       name: "audio.m4a",
+  //       type: "audio/m4a",
+  //     });
+  //     payload.append("nom", params.nom);
+  //     payload.append("createdAt", new Date().toString());
+  //     payload.append("id", Math.floor(Math.random() * 100000));
+  //     payload.append("type", "audio");
+  //   }
+  //   fetch(`${BACKEND_ADDRESS}/message`, {
+  //     method: "POST",
+  //     headers,
+  //     body: payload,
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (data.result) {
+  //         setMessageText("");
+  //         setRecordingUri(null);
+  //       }
+  //     });
+  // };
+  // const startRecording = async () => {
+  //   const { recording } = await Audio.Recording.createAsync(
+  //     Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+  //   );
+  //   setRecording(recording);
+  // };
+  // const stopRecording = async () => {
+  //   if (recording) {
+  //     await recording.stopAndUnloadAsync();
+  //     const uri = recording.getURI();
+  //     setRecordingUri(uri);
+  //     setRecording(null);
+  //   }
+  // };
+  // const playRecording = async (uri) => {
+  //   const { sound } = await Audio.Sound.createAsync({
+  //     uri,
+  //     overrideFileExtensionAndroid: "m4a",
+  //   });
+  //   setSound(sound);
+  //   await sound.playAsync();
+  // };
+  // return (
+  //   <KeyboardAvoidingView
+  //     style={styles.container}
+  //     behavior={Platform.OS === "ios" ? "padding" : "height"}
+  //   >
+  //     <View style={styles.banner}>
+  //       <MaterialIcons
+  //         name="keyboard-backspace"
+  //         color="#ffffff"
+  //         size={24}
+  //         onPress={() => navigation.goBack()}
+  //       />
+  //       <Text style={styles.greetingText}>Welcome {params.nom} 👋</Text>
+  //     </View>
+  //     <View style={styles.inset}>
+  //       <ScrollView style={styles.scroller}>
+  //         {messages.map((message, i) => (
+  //           <View
+  //             key={i}
+  //             style={[
+  //               styles.messageWrapper,
+  //               {
+  //                 ...(message.nom === params.nom
+  //                   ? styles.messageSent
+  //                   : styles.messageRecieved),
+  //               },
+  //             ]}
+  //           >
+  //             <View
+  //               style={[
+  //                 styles.message,
+  //                 {
+  //                   ...(message.nom === params.nom
+  //                     ? styles.messageSentBg
+  //                     : styles.messageRecievedBg),
+  //                 },
+  //               ]}
+  //             >
+  //               {message.type === "audio" ? (
+  //                 <TouchableOpacity onPress={() => playRecording(message.url)}>
+  //                   <MaterialIcons
+  //                     name="multitrack-audio"
+  //                     size={24}
+  //                     style={styles.messageText}
+  //                   />
+  //                 </TouchableOpacity>
+  //               ) : (
+  //                 <Text style={styles.messageText}>{message.text}</Text>
+  //               )}
+  //             </View>
+  //             <Text style={styles.timeText}>
+  //               {new Date(message.createdAt).getHours()}:
+  //               {String(new Date(message.createdAt).getMinutes()).padStart(
+  //                 2,
+  //                 "0"
+  //               )}
+  //             </Text>
+  //           </View>
+  //         ))}
+  //       </ScrollView>
+  //       <View style={styles.inputContainer}>
+  //         {recording ? (
+  //           <TextInput value="Recording..." style={styles.input} />
+  //         ) : (
+  //           <TextInput
+  //             onChangeText={(value) => setMessageText(value)}
+  //             value={recordingUri ? "Audio message" : messageText}
+  //             style={styles.input}
+  //           />
+  //         )}
+  //         <TouchableOpacity
+  //           onPressIn={() => startRecording()}
+  //           onPressOut={() => stopRecording()}
+  //           style={styles.recordButton}
+  //         >
+  //           <MaterialIcons name="mic" color="#ffffff" size={24} />
+  //         </TouchableOpacity>
+  //         <TouchableOpacity
+  //           onPress={() => handleSendMessage()}
+  //           style={styles.sendButton}
+  //         >
+  //           <MaterialIcons name="send" color="#ffffff" size={24} />
+  //         </TouchableOpacity>
+  //       </View>
+  //     </View>
+  //   </KeyboardAvoidingView>
+  // );
 }
 
 const styles = StyleSheet.create({
