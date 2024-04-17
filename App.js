@@ -13,6 +13,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import ThreadAnnouncementsScreen from "./screens/ThreadAnnouncementsScreen"; // Page fil d'annonces
 import ThreadProfilsScreen from "./screens/ThreadProfilsScreen"; // Page fil de profils
+// import { AppLoading, Font } from "expo";
 
 const store = configureStore({
   reducer: { user },

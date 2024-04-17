@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import {
   View,
   Image,
@@ -12,15 +12,17 @@ import {
   SafeAreaView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { DatePickerInput } from "react-native-paper-dates";
+//import { Avatar } from "native-base";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from "@react-navigation/native";
+
 //import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {
+  const navigation = useNavigation();
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
-  const [inputDate, setInputDate] = useState(undefined);
   const [email, setEmail] = useState("");
   const [numPhone, setNumPhone] = useState("");
   const [apropos, setApropos] = useState("");
@@ -69,7 +71,7 @@ export default function HebergeurProfilScreen() {
       multiple: true,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setSelectedImages([
         ...selectedImages,
         ...result.assets.map((asset) => asset.uri),
@@ -90,6 +92,13 @@ export default function HebergeurProfilScreen() {
           style={styles.back}
         />
 
+        {/* <Avatar
+          bg="green.500"
+          source={{
+            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+          }}
+        ></Avatar> */}
+
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Text style={styles.title}> Je mets à jours mes informations </Text>
         <TextInput
@@ -104,14 +113,7 @@ export default function HebergeurProfilScreen() {
           value={prenom}
           onChangeText={(prenom) => setPrenom(prenom)}
         />
-        <DatePickerInput
-          style={[styles.date, Platform.OS === "ios" && styles.dateIOS]}
-          locale="fr"
-          label="Date de naissance"
-          value={inputDate}
-          onChange={(d) => setInputDate(d)}
-          inputMode="start"
-        />
+
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -182,14 +184,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  date: {
-    height: 40,
-    borderColor: "black",
-    borderWidth: 0.5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    backgroundColor: "white",
-  },
+  // date: {
+  //   height: 40,
+  //   borderColor: "black",
+  //   borderWidth: 0.5,
+  //   marginBottom: 10,
+  //   paddingHorizontal: 10,
+  //   backgroundColor: "white",
+  // },
   maj: {
     color: "white",
     backgroundColor: "#4FAAAF",

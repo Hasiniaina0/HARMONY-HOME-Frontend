@@ -13,6 +13,7 @@ import {
 } from "react-native";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 
 export default function LocataireProfilScreen() {
@@ -80,6 +81,13 @@ export default function LocataireProfilScreen() {
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <MaterialIcons
+          name="keyboard-backspace"
+          size={60}
+          onPress={() => navigation.goBack()}
+          style={styles.back}
+        />
+
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Text style={styles.title}> Je mets à jours mes informations </Text>
         <TextInput
