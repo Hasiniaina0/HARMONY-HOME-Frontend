@@ -28,6 +28,7 @@ export default function HebergeurProfilScreen() {
   const [apropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   const handleSaveProfil = () => {
     fetch(`${BACKEND_URL}/users/profil`, {

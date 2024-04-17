@@ -25,6 +25,7 @@ export default function LocataireProfilScreen() {
   const [apropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   // save la mise à jour
   const handleSaveProfil = () => {
