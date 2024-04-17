@@ -14,6 +14,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 //import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {
@@ -82,6 +83,13 @@ export default function HebergeurProfilScreen() {
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <MaterialIcons
+          name="keyboard-backspace"
+          size={60}
+          onPress={() => navigation.goBack()}
+          style={styles.back}
+        />
+
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Text style={styles.title}> Je mets à jours mes informations </Text>
         <TextInput
@@ -156,8 +164,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    height: 300,
-    width: 300,
+    height: 200,
+    width: 200,
     alignItems: "center",
   },
   title: {
@@ -214,5 +222,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 5,
+  },
+  back: {
+    color: "#4FAAAF",
   },
 });

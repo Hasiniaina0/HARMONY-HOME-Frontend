@@ -43,7 +43,7 @@ export default function SignInScreen({ navigation }) {
           setEmail("");
           setPassword("");
           if (data.statut === "hebergeur") {
-            navigation.navigate("ThreadAnnouncements");
+            navigation.navigate("HebergeurProfil");
           } else {
             navigation.navigate("ThreadProfils");
           }
