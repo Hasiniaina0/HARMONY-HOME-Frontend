@@ -7,6 +7,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  Modal,
 } from "react-native";
 import React from "react";
 import { useState } from "react";
@@ -14,13 +15,13 @@ import { useDispatch } from "react-redux";
 import { login, logout } from "../reducers/user";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { Picker } from "@react-native-picker/picker";
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect from "react-native-picker-select";
 // import { DatePickerInput } from 'react-native-paper-dates';
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Expression régulière pour la validation de l'e-mail
   const emailRegex =
@@ -62,8 +63,12 @@ export default function SignUpScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           dispatch(login({ email: data.email, token: data.token }));
-          navigation.navigate("Home");
+          setModalVisible(true);
         }
+      })
+      .catch((error) => {
+        console.error("Erreur lors de l'inscription:", error);
+        // Gérer les erreurs en cas de problème avec la requête vers le backend
       });
   };
 
@@ -116,12 +121,10 @@ export default function SignUpScreen({ navigation }) {
               <Text>Choisissez votre statut : </Text>
               <RNPickerSelect
                 value={values.statut}
-                onValueChange={(itemValue) =>
-                  handleChange("statut")(itemValue)
-                }
+                onValueChange={(itemValue) => handleChange("statut")(itemValue)}
                 items={[
-                  { label: 'Hébergeur', value: 'hebergeur' },
-                  { label: 'Locataire', value: 'locataire' },
+                  { label: "Hébergeur", value: "hebergeur" },
+                  { label: "Locataire", value: "locataire" },
                 ]}
                 style={{ ...pickerSelectStyles }}
               />
@@ -206,10 +209,60 @@ export default function SignUpScreen({ navigation }) {
             </View>
             <TouchableOpacity
               style={styles.connectButton}
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
             >
               <Text style={styles.connectButtonText}>S'inscrire</Text>
             </TouchableOpacity>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View style={styles.modalContainer}>
+                {/* Contenu de la modal */}
+                <View style={styles.modalInnerContainer}>
+                  <Text style={styles.modalText}>
+                    Votre inscription a été réussie !
+                  </Text>
+                  <Text style={styles.modalText}>
+                    Voulez-vous compléter votre profil maintenant ou plus tard ?
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.modalButton}
+                    // Rediriger vers l'écran de complétion de profil
+                    onPress={() => {
+                      if (data.statut === "hebergeur") {
+                        navigation.navigate("HebergeurProfil");
+                      } else {
+                        navigation.navigate("LocataireProfil");
+                      }
+                      // Fermer la modal
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Text style={styles.modalButtonText}>
+                      Compléter maintenant
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.modalButton}
+                    onPress={() => {
+                      if (data.statut === "hebergeur") {
+                        navigation.navigate("ThreadAnnouncements");
+                      } else {
+                        navigation.navigate("ThreadProfils");
+                      }
+                      // Rediriger vers une autre page ou effectuer d'autres actions
+                      // Fermer la modal
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Text style={styles.modalButtonText}>Plus tard</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           </View>
         )}
       </Formik>
@@ -222,9 +275,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 4,
-    color: 'black',
+    color: "black",
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
@@ -232,9 +285,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderWidth: 0.5,
-    borderColor: 'purple',
+    borderColor: "purple",
     borderRadius: 8,
-    color: 'black',
+    color: "black",
     paddingRight: 30, // to ensure the text is never behind the icon
   },
 });

@@ -39,6 +39,7 @@ export default function ThreadAnnouncementsScreen() {
     fetch(`${BACKEND_URL}/users`)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setUsers(data);
       })
       .catch((error) =>
