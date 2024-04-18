@@ -17,7 +17,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 //   cluster: "eu",
 // });
 
-const BACKEND_ADDRESS = "http://BACKEND_IP:3000";
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
 export default function MessagesScreen({ navigation, route: { params } }) {
   // const [messages, setMessages] = useState([]);
