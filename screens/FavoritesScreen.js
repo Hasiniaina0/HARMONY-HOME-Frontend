@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import FavoritesProfilsScreen from "./FavoritesProfilsScreen";
+import FavoritesAnnouncementsScreen from "./FavoritesAnnouncementsScreen";
 
-export default function FavoritesScreen() {
-  return <View></View>;
+function FavoritesScreen() {
+  const user = useSelector((state) => state.user);
+  console.log("user reducer in threadscreen", user);
+
+  if (user.statut === "hebergeur") {
+    return <FavoritesProfilsScreen />;
+  } else {
+    return <FavoritesAnnouncementsScreen />;
+  }
 }
+
+export default FavoritesScreen;

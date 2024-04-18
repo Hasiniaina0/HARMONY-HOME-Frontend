@@ -14,6 +14,7 @@ export default function ThreadAnnouncementsScreen() {
   const navigation = useNavigation();
   const [announcements, setAnnouncements] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/hebergeur`)
@@ -27,8 +28,16 @@ export default function ThreadAnnouncementsScreen() {
       );
   }, []);
 
-  const handleFavorite = () => {
-    // Logique pour ajouter l'annonce aux favoris
+  const handleFavorite = (announcement) => {
+    // Vérifie si l'annonce est déjà dans les favoris
+    const isFavorite = favorites.some((fav) => fav._id === announcement._id);
+    if (isFavorite) {
+      // Si l'annonce est déjà dans les favoris, la supprimer
+      setFavorites(favorites.filter((fav) => fav._id !== announcement._id));
+    } else {
+      // Sinon, ajoutez l'annonce aux favoris
+      setFavorites([...favorites, announcement]);
+    }
   };
 
   const handleContact = () => {
@@ -43,7 +52,19 @@ export default function ThreadAnnouncementsScreen() {
             onPress={() => handleFavorite()}
             style={styles.favoriteButton}
           >
-            <Ionicons name="heart-outline" size={15} color="#007BFF" />
+            <Ionicons
+              name={
+                favorites.some((fav) => fav._id === announcement._id)
+                  ? "heart"
+                  : "heart-outline"
+              }
+              size={15}
+              color={
+                favorites.some((fav) => fav._id === announcement._id)
+                  ? "red"
+                  : "#4FAAAF"
+              }
+            />
           </TouchableOpacity>
           <View style={styles.imageContainer}>
             <Image source={{ uri: announcement.photo }} style={styles.image} />
@@ -108,7 +129,7 @@ const styles = StyleSheet.create({
   },
   contactButton: {
     alignSelf: "flex-end",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#4FAAAF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
