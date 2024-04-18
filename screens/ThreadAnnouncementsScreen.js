@@ -6,14 +6,13 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../reducers/user";
 
 export default function ThreadAnnouncementsScreen() {
-  const navigation = useNavigation();
   const [announcements, setAnnouncements] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const userFavorites = useSelector((state) => state.user.favorites);
@@ -53,42 +52,47 @@ export default function ThreadAnnouncementsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {announcements.map((announcement) => (
-        <View style={styles.announcementContainer} key={announcement._id}>
-          <TouchableOpacity
-            onPress={() => handleFavorite(announcement)}
-            style={styles.favoriteButton}
-          >
-            <Ionicons
-              name={
-                userFavorites.some((fav) => fav._id === announcement._id)
-                  ? "heart"
-                  : "heart-outline"
-              }
-              size={15}
-              color={
-                userFavorites.some((fav) => fav._id === announcement._id)
-                  ? "red"
-                  : "#4FAAAF"
-              }
-            />
-          </TouchableOpacity>
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: announcement.photo }} style={styles.image} />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>{announcement.prenom}</Text>
-            <Text style={styles.location}>{announcement.city}</Text>
-            <Text style={styles.description}>{announcement.description}</Text>
+      <ScrollView style={styles.scrollView}>
+        {announcements.map((announcement) => (
+          <View style={styles.announcementContainer} key={announcement._id}>
             <TouchableOpacity
-              onPress={() => handleContact()}
-              style={styles.contactButton}
+              onPress={() => handleFavorite(announcement)}
+              style={styles.favoriteButton}
             >
-              <Text style={styles.contactButtonText}>Contacter</Text>
+              <Ionicons
+                name={
+                  userFavorites.some((fav) => fav._id === announcement._id)
+                    ? "heart"
+                    : "heart-outline"
+                }
+                size={15}
+                color={
+                  userFavorites.some((fav) => fav._id === announcement._id)
+                    ? "red"
+                    : "#4FAAAF"
+                }
+              />
             </TouchableOpacity>
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: announcement.photo }}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{announcement.prenom}</Text>
+              <Text style={styles.location}>{announcement.city}</Text>
+              <Text style={styles.description}>{announcement.description}</Text>
+              <TouchableOpacity
+                onPress={() => handleContact()}
+                style={styles.contactButton}
+              >
+                <Text style={styles.contactButtonText}>Contacter</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      ))}
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -117,6 +121,9 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  favoriteButton: {
+    alignItems: "flex-end",
   },
   textContainer: {
     flex: 1,

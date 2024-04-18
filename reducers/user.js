@@ -37,7 +37,7 @@ export const userSlice = createSlice({
     },
     removeFavorite: (state, action) => {
       state.favorites = state.favorites.filter(
-        (favorite) => favorite !== action.payload
+        (favorite) => favorite._id !== action.payload._id
       );
     },
   },

@@ -8,8 +8,7 @@ import SignInScreen from "./screens/SignInScreen"; // Page de connexion
 import MessagesScreen from "./screens/MessagesScreen"; // page message
 import FavoritesScreen from "./screens/FavoritesScreen";
 import ThreadScreen from "./screens/ThreadScreen";
-import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
-import LocataireProfilScreen from "./screens/LocataireProfilScreen";
+import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
@@ -84,14 +83,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen
-            name="HebergeurProfil"
-            component={HebergeurProfilScreen}
-          />
-          <Stack.Screen
-            name="LocataireProfil"
-            component={LocataireProfilScreen}
-          />
+          <Stack.Screen name="UpdateProfil" component={UpdateProfilScreen} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
       </NavigationContainer>

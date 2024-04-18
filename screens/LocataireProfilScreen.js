@@ -143,13 +143,13 @@ export default function LocataireProfilScreen() {
         />
         <TextInput
           style={styles.input}
-          placeholder="A propos de toi ?!"
+          placeholder="Parles nous de toi !"
           value={aPropos}
           onChangeText={(aPropos) => setApropos(aPropos)}
         />
         <TextInput
           style={styles.input}
-          placeholder="Parle nous de toi !"
+          placeholder="Quelles sont tes motivations ?"
           value={description}
           onChangeText={(description) => setDescription(description)}
         />
