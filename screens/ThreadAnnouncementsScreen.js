@@ -6,14 +6,17 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../reducers/user";
 
 export default function ThreadAnnouncementsScreen() {
-  const navigation = useNavigation();
   const [announcements, setAnnouncements] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const userFavorites = useSelector((state) => state.user.favorites);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/hebergeur`)
@@ -23,44 +26,73 @@ export default function ThreadAnnouncementsScreen() {
         setAnnouncements(data);
       })
       .catch((error) =>
-        console.error("Erreur lors de la récupération des hebergeurs:", error)
+        console.error(
+          "Erreur lors de la récupération des annonces des hebergeurs:",
+          error
+        )
       );
   }, []);
 
-  const handleFavorite = () => {
-    // Logique pour ajouter l'annonce aux favoris
+  const handleFavorite = (announcement) => {
+    // Vérifie si l'annonce est déjà dans les favoris
+    const isFavorite = userFavorites.some(
+      (fav) => fav._id === announcement._id
+    );
+    if (isFavorite) {
+      dispatch(removeFavorite(announcement));
+    } else {
+      // Sinon, ajoutez l'annonce aux favoris
+      dispatch(addFavorite(announcement));
+    }
   };
 
-  const handleContact = () => {
-    // Logique pour contacter l'annonceur
-  };
+  // const handleContact = () => {
+  //   // Logique pour contacter l'annonceur
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
-      {announcements.map((announcement) => (
-        <View style={styles.announcementContainer} key={announcement._id}>
-          <TouchableOpacity
-            onPress={() => handleFavorite()}
-            style={styles.favoriteButton}
-          >
-            <Ionicons name="heart-outline" size={15} color="#007BFF" />
-          </TouchableOpacity>
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: announcement.photo }} style={styles.image} />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>{announcement.prenom}</Text>
-            <Text style={styles.location}>{announcement.city}</Text>
-            <Text style={styles.description}>{announcement.description}</Text>
+      <ScrollView style={styles.scrollView}>
+        {announcements.map((announcement) => (
+          <View style={styles.announcementContainer} key={announcement._id}>
             <TouchableOpacity
-              onPress={() => handleContact()}
-              style={styles.contactButton}
+              onPress={() => handleFavorite(announcement)}
+              style={styles.favoriteButton}
             >
-              <Text style={styles.contactButtonText}>Contacter</Text>
+              <Ionicons
+                name={
+                  userFavorites.some((fav) => fav._id === announcement._id)
+                    ? "heart"
+                    : "heart-outline"
+                }
+                size={15}
+                color={
+                  userFavorites.some((fav) => fav._id === announcement._id)
+                    ? "red"
+                    : "#4FAAAF"
+                }
+              />
             </TouchableOpacity>
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: announcement.photo }}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{announcement.prenom}</Text>
+              <Text style={styles.location}>{announcement.city}</Text>
+              <Text style={styles.description}>{announcement.description}</Text>
+              <TouchableOpacity
+                onPress={() => handleContact()}
+                style={styles.contactButton}
+              >
+                <Text style={styles.contactButtonText}>Contacter</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      ))}
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -74,7 +106,7 @@ const styles = StyleSheet.create({
   },
   announcementContainer: {
     flexDirection: "row",
-    marginBottom: 16,
+    margin: 20,
   },
   favoriteButton: {
     marginRight: 10,
@@ -89,6 +121,9 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  favoriteButton: {
+    alignItems: "flex-end",
   },
   textContainer: {
     flex: 1,
@@ -108,7 +143,7 @@ const styles = StyleSheet.create({
   },
   contactButton: {
     alignSelf: "flex-end",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#4FAAAF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,

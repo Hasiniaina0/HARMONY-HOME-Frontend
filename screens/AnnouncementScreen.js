@@ -5,28 +5,40 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  SafeAreaView,
+  SafeAreaView,ScrollView,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function DescriptionAnnouncementScreen() {
+export default function AnnouncementScreen() {
   const navigation = useNavigation();
-  const [users, setUsers] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
-
+  const userId = '6620f5681c747c239e2f737c'
+  const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users`)
+    fetch(`${BACKEND_URL}/users/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        setUsers(data);
+        console.log(data);
+        setUserDetails(data);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des annonces des utilisateurs:", error)
       );
-  }, []);
+  }, [userId]);
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/users/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUserDetails(data);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des annonces des utilisateurs:", error)
+      );
+  }, [userId]);
 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
@@ -53,20 +65,23 @@ export default function DescriptionAnnouncementScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {users.map((user) => (
-        <View style={styles.announcementContainer} key={user._id}>
-          <Text>{user.prenom}</Text>
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: user.photo }} style={styles.image} alt="avis de l'hébergeur" />
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+     {userDetails && (
+        <View >
+    
+          <View style={styles.titre}>
+            <Text style={styles.titreAnnonce}>Annonce de profil recherché </Text>
           </View>
           <View >
-            <Text >A propos du futures colocataires</Text>
-            <Text style={styles.title}>{user.aPropos}</Text>
-            <Text >Ses motivations</Text>
-            <Text style={styles.location}>{user.description}</Text>
-            <Image source={{ uri: user.photo }} style={styles.image} />
-            <Text >Les avis</Text>
-            <Image source={require("../assets/avis1.png")}  alt="avis de l'utilisateur" />
+            <Image source={require("../assets/avis.png")} />
+            <Text style = {styles.desc}>A propos du futur colocataires: </Text>
+            <Text style={styles.apropos}>{userDetails.aPropos}</Text>
+            <Text style = {styles.desc}>Ses motivations : </Text>
+            <Text style={styles.location}>{userDetails.description}</Text>
+            <Image source={require("../assets/avatar1.jpg")} />
+            
+            <Text style = {styles.desc} >Les avis</Text>
+            <Image source={require("../assets/avis1.png")} />
             <View>
               <TouchableOpacity
                 onPress={() => handleComment()}
@@ -82,9 +97,11 @@ export default function DescriptionAnnouncementScreen() {
                 <Text style={styles.contactButtonText}>Contacter</Text>
               </TouchableOpacity>
             </View>
+            
           </View>
         </View>
-      ))}
+      )}
+        </ScrollView>
       <View style={styles.bottomBar}>
         <TouchableOpacity
           onPress={() => handleMessages()}
@@ -109,6 +126,7 @@ export default function DescriptionAnnouncementScreen() {
           <Ionicons name="heart-outline" size={24} color="#007BFF" />
         </TouchableOpacity>
       </View>
+    
     </SafeAreaView>
   );
 }
@@ -119,6 +137,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: "#fff",
+    justifyContent: "space-between",
+    width:"100%",
+  },
+  titre:{
+   marginTop:50, 
+  },
+  desc:{
+    fontWeight:"bold",
+    marginTop:10,
+    justifyContent:""
+    
+  },
+  titreAnnonce:{
+    textAlign:"center",
+    fontSize:20,
+    fontWeight:"bold",
+    marginBottom:25
+
+
   },
   announcementContainer: {
     flexDirection: "row",
@@ -155,15 +192,23 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   contactButton: {
-    alignSelf: "flex-end",
+    alignSelf: "center",
     backgroundColor: "#007BFF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
+
   },
   contactButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    backgroundColor: "#4FAAAF",
+    padding: 10,
+    borderRadius: 20,
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginTop: 30,
+    alignSelf: "center",
+    color:"white"
   },
   bottomBar: {
     flexDirection: "row",

@@ -5,28 +5,32 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  SafeAreaView,
+  SafeAreaView,ScrollView,KeyboardAvoidingView,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function DescriptionAnnouncementScreen() {
+export default function DescriptionAnnouncementScreen({route}) {
   const navigation = useNavigation();
-  const [users, setUsers] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const userId = '6620f5681c747c239e2f737c'
+  const [userDetails, setUserDetails] = useState(null);
 
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users`)
+    fetch(`${BACKEND_URL}/users/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        setUsers(data);
+        console.log(data);
+        setUserDetails(data);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des annonces des utilisateurs:", error)
       );
-  }, []);
+  }, [userId]);
+
+
 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
@@ -52,26 +56,32 @@ export default function DescriptionAnnouncementScreen() {
   };
 
   return (
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
     <SafeAreaView style={styles.container}>
-      {users.map((user) => (
-        <View style={styles.announcementContainer} key={user._id}>
-          <Text>Titre de l'annonce</Text>
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: user.photo }} style={styles.image} />
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+     {userDetails && (
+        <View >
+    
+          <View style={styles.titre}>
+            <Text style={styles.titreAnnonce}>A propos de l'annonce de {userDetails.prenom} </Text>
           </View>
           <View >
-            <Text >A propos du logement</Text>
-            <Text style={styles.title}>{user.description}</Text>
-            <Text >A propos du propriétaire</Text>
-            <Text style={styles.location}>{user.aPropos}</Text>
-            <Text >Les avis</Text>
+            <Image source={require("../assets/avis.png")} />
+            <Text style = {styles.desc}>A propos du logement : </Text>
+            <Text style={styles.apropos}>{userDetails.description}</Text>
+            <Text style = {styles.desc}>A propos du propriétaire : </Text>
+            <Text style={styles.location}>{userDetails.aPropos}</Text>
+            <Text style = {styles.desc} >Les avis</Text>
             <Image source={require("../assets/avis.png")} />
             <View>
               <TouchableOpacity
                 onPress={() => handleComment()}
                 style={styles.contactButton}
               >
-                <Text style={styles.contactButtonText}>Laisser un commentaire</Text>
+                <Text style={styles.contactButtonText1}>Laisser un commentaire</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -81,9 +91,11 @@ export default function DescriptionAnnouncementScreen() {
                 <Text style={styles.contactButtonText}>Contacter</Text>
               </TouchableOpacity>
             </View>
+            
           </View>
         </View>
-      ))}
+      )}
+      </ScrollView>
       <View style={styles.bottomBar}>
         <TouchableOpacity
           onPress={() => handleMessages()}
@@ -108,7 +120,9 @@ export default function DescriptionAnnouncementScreen() {
           <Ionicons name="heart-outline" size={24} color="#007BFF" />
         </TouchableOpacity>
       </View>
+    
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -118,6 +132,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: "#fff",
+    justifyContent: "space-between",
+    width:"100%",
+  },
+  titre:{
+   marginTop:50, 
+  },
+  desc:{
+    fontWeight:"bold",
+    marginTop:10,
+    justifyContent:""
+    
+  },
+  titreAnnonce:{
+    textAlign:"center",
+    fontSize:20,
+    fontWeight:"bold",
+    marginBottom:25
+
+
   },
   announcementContainer: {
     flexDirection: "row",
@@ -154,11 +187,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   contactButton: {
-    alignSelf: "flex-end",
+    alignSelf: "center",
     backgroundColor: "#007BFF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
+
   },
   contactButtonText: {
     color: "#fff",
