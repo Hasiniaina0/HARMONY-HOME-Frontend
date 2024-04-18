@@ -24,6 +24,7 @@ export const userSlice = createSlice({
       state.email = null;
       state.statut = null;
       state.photos = [];
+      state.userInfo = null; // Remettre userInfo à null lors de la déconnexion
     },
     addPhoto: (state, action) => {
       state.photos.push(action.payload);
