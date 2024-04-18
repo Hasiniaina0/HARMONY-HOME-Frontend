@@ -5,6 +5,7 @@ const initialState = {
   email: null,
   statut: null,
   photos: [],
+  userInfo: null, // Ajoutez userInfo pour stocker les informations de l'utilisateur
 };
 
 export const userSlice = createSlice({
@@ -23,12 +24,16 @@ export const userSlice = createSlice({
       state.email = null;
       state.statut = null;
       state.photos = [];
+      state.userInfo = null; // Remettre userInfo à null lors de la déconnexion
     },
     addPhoto: (state, action) => {
       state.photos.push(action.payload);
     },
     removePhoto: (state, action) => {
       state.photos = state.photos.filter((photo) => photo !== action.payload);
+    },
+    setUserInfo: (state, action) => {
+      state.userInfo = action.payload; // Stocker les informations de l'utilisateur
     },
   },
 });

@@ -10,23 +10,29 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import {setUserInfo} from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function DescriptionAnnouncementScreen() {
+export default function DescriptionAnnouncementScreen({route}) {
   const navigation = useNavigation();
-  const [users, setUsers] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const userId = '6620eee197b5c23e2c2947c3'
+  const [userDetails, setUserDetails] = useState(null);
 
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users`)
+    fetch(`${BACKEND_URL}/users/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        setUsers(data);
+        console.log(data);
+        setUserDetails(data);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des annonces des utilisateurs:", error)
       );
-  }, []);
+  }, [userId]);
+
+
 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
@@ -53,17 +59,17 @@ export default function DescriptionAnnouncementScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {users.map((user) => (
-        <View style={styles.announcementContainer} key={user._id}>
-          <Text>Titre de l'annonce</Text>
+     {userDetails && (
+        <View >
+          <Text>{userDetails.prenom} </Text>
           <View style={styles.imageContainer}>
-            <Image source={{ uri: user.photo }} style={styles.image} />
+            {/* <Image source={{ uri: user.photo }} style={styles.image} /> */}
           </View>
           <View >
             <Text >A propos du logement</Text>
-            <Text style={styles.title}>{user.description}</Text>
+            <Text style={styles.title}>{userDetails.description}</Text>
             <Text >A propos du propriétaire</Text>
-            <Text style={styles.location}>{user.aPropos}</Text>
+            <Text style={styles.location}>{userDetails.aPropos}</Text>
             <Text >Les avis</Text>
             <Image source={require("../assets/avis.png")} />
             <View>
@@ -81,9 +87,10 @@ export default function DescriptionAnnouncementScreen() {
                 <Text style={styles.contactButtonText}>Contacter</Text>
               </TouchableOpacity>
             </View>
+            
           </View>
         </View>
-      ))}
+      )}
       <View style={styles.bottomBar}>
         <TouchableOpacity
           onPress={() => handleMessages()}
@@ -108,6 +115,7 @@ export default function DescriptionAnnouncementScreen() {
           <Ionicons name="heart-outline" size={24} color="#007BFF" />
         </TouchableOpacity>
       </View>
+     
     </SafeAreaView>
   );
 }
