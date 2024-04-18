@@ -13,47 +13,69 @@ import {
 } from "react-native";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
+import { addPhoto, removePhoto } from "../reducers/user";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function LocataireProfilScreen() {
-  const [nom, setNom] = useState("");
-  const [prenom, setPrenom] = useState("");
+  const dispatch = useDispatch();
   const [inputDate, setInputDate] = useState(undefined);
   const [email, setEmail] = useState("");
   const [numPhone, setNumPhone] = useState("");
-  const [apropos, setApropos] = useState("");
+  const [aPropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
+  const [password, setPassword] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
+  const [hasPermission, setHasPermission] = useState(false);
+  const isFocused = useIsFocused();
+
+  console.log("selected images", selectedImages);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   // save la mise à jour
-  const handleSaveProfil = () => {
-    fetch(`${BACKEND_URL}/users/profil`, {
+  const handleSaveProfil = async () => {
+    fetch(`${BACKEND_URL}/updates/profil`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        nom,
-        prenom,
         email,
         numPhone,
         password,
         description,
-        apropos,
+        aPropos,
       }),
-    });
-
-    const data = response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data.message ||
-          "Une erreur est survenue lors de la mise à jour du profil"
-      );
-    }
-
-    console.log("Profil mis à jour:", data);
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Profil mis à jour:", data);
+      });
   };
+
+  // save photo dans cloudinary
+
+  const formData = new FormData();
+  selectedImages.forEach((photo, index) => {
+    formData.append("photoFromFront[]", photo);
+  });
+  fetch(`${BACKEND_URL}/updates/photos`, {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+
+    .then((data) => {
+      console.log("photo maj", data);
+      const cloudinaryURL = data.uri;
+      console.log("cloudinaryURL", cloudinaryURL);
+      // dispatch(addPhoto(cloudinaryURL));
+    })
+    .catch((error) => console.log(error));
+
+  // if (!hasPermission || !isFocused) {
+  //   return <View />;
+  // }
 
   const showImagePicker = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -72,10 +94,7 @@ export default function LocataireProfilScreen() {
     });
 
     if (!result.canceled) {
-      setSelectedImages([
-        ...selectedImages,
-        ...result.assets.map((asset) => asset.uri),
-      ]);
+      setSelectedImages([...selectedImages, ...result.assets]);
     }
   };
 
@@ -94,18 +113,7 @@ export default function LocataireProfilScreen() {
 
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Text style={styles.title}> Je mets à jours mes informations </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Nom"
-          value={nom}
-          onChangeText={(nom) => setNom(nom)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Prénom"
-          value={prenom}
-          onChangeText={(prenom) => setPrenom(prenom)}
-        />
+
         {/* <DatePickerInput
         style={styles.date}
         locale="fr"
@@ -128,9 +136,16 @@ export default function LocataireProfilScreen() {
         />
         <TextInput
           style={styles.input}
+          placeholder="nouveau mot de passe"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(password) => setPassword(password)}
+        />
+        <TextInput
+          style={styles.input}
           placeholder="A propos de toi ?!"
-          value={apropos}
-          onChangeText={(apropos) => setApropos(apropos)}
+          value={aPropos}
+          onChangeText={(aPropos) => setApropos(aPropos)}
         />
         <TextInput
           style={styles.input}
@@ -168,8 +183,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    height: 300,
-    width: 300,
+    height: 200,
+    width: 200,
   },
   title: {
     fontSize: 20,

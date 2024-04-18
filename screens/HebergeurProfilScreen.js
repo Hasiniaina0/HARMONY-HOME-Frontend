@@ -103,19 +103,6 @@ export default function HebergeurProfilScreen() {
         {/* <Text> Bienvenue {users.name} </Text> */}
         <Text style={styles.title}> Je mets à jours mes informations </Text>
 
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Nom"
-          value={nom}
-          onChangeText={(nom) => setNom(nom)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Prénom"
-          value={prenom}
-          onChangeText={(prenom) => setPrenom(prenom)}
-        /> */}
-
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -145,7 +132,7 @@ export default function HebergeurProfilScreen() {
           placeholder="nouveau mot de passe"
           secureTextEntry={true}
           value={password}
-          onChangeText={(password) => setDescription(password)}
+          onChangeText={(password) => setPassword(password)}
         />
         <Text> Insérez des photos de votre logement </Text>
         <View style={styles.imageContainer}>
