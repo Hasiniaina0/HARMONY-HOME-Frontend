@@ -31,27 +31,59 @@ export default function HebergeurProfilScreen() {
   const [selectedImages, setSelectedImages] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
+  // save la mise à jour
   const handleSaveProfil = async () => {
     fetch(`${BACKEND_URL}/updates/profil`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        token,
         email,
         numPhone,
         password,
         description,
-        apropos,
+        aPropos,
       }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Profil mis à jour:", data);
+      });
+
+    // save photo dans cloudinary
+
+    const formData = new FormData();
+    // formData.append("photoFromFront", {
+    //   uri: selectedImages[0].uri,
+    //   name: "photo.jpg",
+    //   type: selectedImages[0].mimeType,
+    // });
+
+    selectedImages.forEach((photo, index) => {
+      formData.append(`photoFromFront-${index}`, {
+        uri: photo?.uri,
+        name: `photo-${index}.jpg`,
+        type: photo?.mimeType,
+      });
     });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(
-        data.message ||
-          "Une erreur est survenue lors de la mise à jour du profil"
-      );
-    }
-    console.log("Profil mis à jour:", data);
+
+    fetch(`${BACKEND_URL}/updates/photos/${token}`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+
+      .then((data) => {
+        console.log("photo maj", data);
+        // const cloudinaryURL = data.uri;
+        // console.log("cloudinaryURL", cloudinaryURL);
+        // dispatch(addPhoto(cloudinaryURL));
+      })
+      .catch((error) => console.log(error));
   };
+  // if (!hasPermission || !isFocused) {
+  //   return <View />;
+  // }
 
   // ajouter une image à partir de la galerie du téléphone
 
