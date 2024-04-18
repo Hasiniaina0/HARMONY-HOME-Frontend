@@ -5,18 +5,16 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  SafeAreaView,
+  SafeAreaView,ScrollView,KeyboardAvoidingView,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import {setUserInfo} from '../reducers/user';
-import { useDispatch, useSelector } from 'react-redux';
 
 export default function DescriptionAnnouncementScreen({route}) {
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
-  const userId = '6620eee197b5c23e2c2947c3'
+  const userId = '6620f5681c747c239e2f737c'
   const [userDetails, setUserDetails] = useState(null);
 
 
@@ -58,26 +56,32 @@ export default function DescriptionAnnouncementScreen({route}) {
   };
 
   return (
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
     <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
      {userDetails && (
         <View >
-          <Text>{userDetails.prenom} </Text>
-          <View style={styles.imageContainer}>
-            {/* <Image source={{ uri: user.photo }} style={styles.image} /> */}
+    
+          <View style={styles.titre}>
+            <Text style={styles.titreAnnonce}>A propos de l'annonce de {userDetails.prenom} </Text>
           </View>
           <View >
-            <Text >A propos du logement</Text>
-            <Text style={styles.title}>{userDetails.description}</Text>
-            <Text >A propos du propriétaire</Text>
+            <Image source={require("../assets/avis.png")} />
+            <Text style = {styles.desc}>A propos du logement : </Text>
+            <Text style={styles.apropos}>{userDetails.description}</Text>
+            <Text style = {styles.desc}>A propos du propriétaire : </Text>
             <Text style={styles.location}>{userDetails.aPropos}</Text>
-            <Text >Les avis</Text>
+            <Text style = {styles.desc} >Les avis</Text>
             <Image source={require("../assets/avis.png")} />
             <View>
               <TouchableOpacity
                 onPress={() => handleComment()}
                 style={styles.contactButton}
               >
-                <Text style={styles.contactButtonText}>Laisser un commentaire</Text>
+                <Text style={styles.contactButtonText1}>Laisser un commentaire</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -91,6 +95,7 @@ export default function DescriptionAnnouncementScreen({route}) {
           </View>
         </View>
       )}
+      </ScrollView>
       <View style={styles.bottomBar}>
         <TouchableOpacity
           onPress={() => handleMessages()}
@@ -115,8 +120,9 @@ export default function DescriptionAnnouncementScreen({route}) {
           <Ionicons name="heart-outline" size={24} color="#007BFF" />
         </TouchableOpacity>
       </View>
-     
+    
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -126,6 +132,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: "#fff",
+    justifyContent: "space-between",
+    width:"100%",
+  },
+  titre:{
+   marginTop:50, 
+  },
+  desc:{
+    fontWeight:"bold",
+    marginTop:10,
+    justifyContent:""
+    
+  },
+  titreAnnonce:{
+    textAlign:"center",
+    fontSize:20,
+    fontWeight:"bold",
+    marginBottom:25
+
+
   },
   announcementContainer: {
     flexDirection: "row",
@@ -162,11 +187,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   contactButton: {
-    alignSelf: "flex-end",
+    alignSelf: "center",
     backgroundColor: "#007BFF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
+
   },
   contactButtonText: {
     color: "#fff",
