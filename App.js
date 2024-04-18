@@ -46,6 +46,15 @@ const TabNavigator = () => {
         }}
       ></Tab.Screen>
       <Tab.Screen
+        name="Thread"
+        component={ThreadScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search-outline" size={30} color={"white"} />
+          ),
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
         name="Account"
         component={AccountScreen}
         options={{
@@ -60,15 +69,6 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="heart-outline" size={30} color={"white"} />
-          ),
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name="Thread"
-        component={ThreadScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search-outline" size={30} color={"white"} />
           ),
         }}
       ></Tab.Screen>
