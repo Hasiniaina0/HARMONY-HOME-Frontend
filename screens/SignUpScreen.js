@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Image,
@@ -8,23 +9,23 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
+  ScrollView,
+  SafeAreaView,
+  Switch,
 } from "react-native";
-import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../reducers/user";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import RNPickerSelect from "react-native-picker-select";
-// import { DatePickerInput } from 'react-native-paper-dates';
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const [modalVisible, setModalVisible] = useState(false);
   const user = useSelector((state) => state.user);
+  const [isHost, setIsHost] = useState(false);
 
-  // Expression régulière pour la validation de l'e-mail
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -50,6 +51,8 @@ export default function SignUpScreen({ navigation }) {
   });
 
   const handleConnection = (values) => {
+    values.statut = isHost ? "hebergeur" : "locataire";
+
     if (values.password !== values.confirmPassword) {
       alert("Les mots de passe ne correspondent pas");
       return;
@@ -67,11 +70,13 @@ export default function SignUpScreen({ navigation }) {
             login({ email: data.email, token: data.token, statut: data.statut })
           );
           setModalVisible(true);
+        } else {
+          // Échec : Afficher un message d'erreur
+          alert("Une erreur s'est produite lors de l'inscription.");
         }
       })
       .catch((error) => {
         console.error("Erreur lors de l'inscription:", error);
-        // Gérer les erreurs en cas de problème avec la requête vers le backend
       });
   };
 
@@ -80,228 +85,197 @@ export default function SignUpScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Formik
-        initialValues={{
-          nom: "",
-          prenom: "",
-          email: "",
-          numPhone: "",
-          password: "",
-          confirmPassword: "",
-          statut: "hebergeur",
-        }} //définit les valeurs initiales des champs du formulaire.
-        validationSchema={validationSchema} //un schéma de validation Yup qui définit les règles de validation pour chaque champ du formulaire.
-        onSubmit={(values) => handleConnection(values)} //une fonction appelée lorsque le formulaire sera soumis avec des valeurs valides
-      >
-        {(
-          { handleChange, handleBlur, handleSubmit, values, errors, touched } // une fonction de rendu qui reçoit des propriétés et des fonctions utiles de <Formik>
-        ) => (
-          <View style={styles.bottomContainer}>
-            <View>
+      <SafeAreaView style={{ flex: 1, }}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Formik
+          initialValues={{
+            nom: "",
+            prenom: "",
+            email: "",
+            numPhone: "",
+            password: "",
+            confirmPassword: "",
+            
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => handleConnection(values)}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            <View style={styles.formContainer}>
               <Text style={styles.text1}>Se connecter avec :</Text>
-            </View>
-            <View style={styles.connectWithContainer}>
-              <TouchableOpacity style={styles.socialButton}>
-                <Image
-                  source={require("../assets/facebook-icon.png")}
-                  style={styles.socialIcon}
-                  alt="icon-facebook"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
-                <Image
-                  source={require("../assets/google-icon.png")}
-                  style={styles.socialIcon}
-                  alt="icon-google"
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text style={styles.text1}>Ou créer:</Text>
-            </View>
-
-            <View style={styles.inputsContainer}>
-              <Text>Choisissez votre statut : </Text>
-              <RNPickerSelect
-                value={values.statut}
-                onValueChange={(itemValue) => handleChange("statut")(itemValue)}
-                items={[
-                  { label: "Hébergeur", value: "hebergeur" },
-                  { label: "Locataire", value: "locataire" },
-                ]}
-                style={{ ...pickerSelectStyles }}
-              />
-
-              <TextInput
-                style={styles.input}
-                placeholder="Nom"
-                value={values.nom}
-                onChangeText={handleChange("nom")}
-                onBlur={handleBlur("nom")}
-              />
-              {touched.nom && errors.nom && (
-                <Text style={styles.error}>{errors.nom}</Text>
-              )}
-
-              <TextInput
-                style={styles.input}
-                placeholder="Prénom"
-                value={values.prenom}
-                onChangeText={handleChange("prenom")}
-                onBlur={handleBlur("prenom")}
-              />
-              {touched.prenom && errors.prenom && (
-                <Text style={styles.error}>{errors.prenom}</Text>
-              )}
-              {/* <DatePickerInput style={styles.date}
-                locale="en"
-                label="date de naissance"
-                value={inputDate}
-                onChange={(d) => setInputDate(d)}
-                inputMode="start"
-            />  */}
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={values.email}
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-              />
-              {touched.email && errors.email && (
-                <Text style={styles.error}>{errors.email}</Text>
-              )}
-
-              <TextInput
-                style={styles.input}
-                placeholder="Numéro de téléphone"
-                value={values.numPhone}
-                onChangeText={handleChange("numPhone")}
-                onBlur={handleBlur("numPhone")}
-              />
-              {touched.numPhone && errors.numPhone && (
-                <Text style={styles.error}>{errors.numPhone}</Text>
-              )}
-
-              <TextInput
-                style={styles.input}
-                placeholder="Mot de passe"
-                secureTextEntry={true}
-                value={values.password}
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-              />
-              {touched.password && errors.password && (
-                <Text style={styles.error}>{errors.password}</Text>
-              )}
-              {/* Confirmation mot de passe */}
-              <TextInput
-                style={styles.input}
-                placeholder="Confirmation mot de passe"
-                secureTextEntry={true}
-                value={values.confirmPassword}
-                onChangeText={handleChange("confirmPassword")}
-                onBlur={handleBlur("confirmPassword")}
-              />
-              {touched.confirmPassword && errors.confirmPassword && (
-                <Text style={styles.error}>{errors.confirmPassword}</Text>
-              )}
-              {/* <View style={styles.checkBoxContainer}>
-            <CheckBox />
-            <Text style={styles.checkBoxText}>J'accepte les termes et les conditions générales</Text>
-          </View> */}
-            </View>
-            <TouchableOpacity
-              style={styles.connectButton}
-              onPress={() => handleSubmit()}
-            >
-              <Text style={styles.connectButtonText}>S'inscrire</Text>
-            </TouchableOpacity>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => setModalVisible(false)}
-            >
-              <View style={styles.modalContainer}>
-                {/* Contenu de la modal */}
-                <View style={styles.modalInnerContainer}>
-                  <Text style={styles.modalTitle}>
-                    Votre inscription a été réussie !
-                  </Text>
-                  <Text style={styles.modalText}>
-                    Voulez-vous compléter votre profil maintenant ou plus tard ?
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.modalButton}
-                    // Rediriger vers l'écran de complétion de profil
-                    onPress={() => {
-                      if (user.statut === "hebergeur") {
-                        navigation.navigate("HebergeurProfil");
-                      } else {
-                        navigation.navigate("LocataireProfil");
-                      }
-                      // Fermer la modal
-                      setModalVisible(false);
-                    }}
-                  >
-                    <Text style={styles.modalButtonText}>
-                      Compléter maintenant
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.modalButton}
-                    onPress={() => {
-                      navigation.navigate("TabNavigator", { screen: "Thread" });
-
-                      // Fermer la modal
-                      setModalVisible(false);
-                    }}
-                  >
-                    <Text style={styles.modalButtonText}>Plus tard</Text>
-                  </TouchableOpacity>
-                </View>
+              <View style={styles.connectWithContainer}>
+                <TouchableOpacity style={styles.socialButton}>
+                  <Image
+                    source={require("../assets/facebook-icon.png")}
+                    style={styles.socialIcon}
+                    alt="icon-facebook"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.socialButton}>
+                  <Image
+                    source={require("../assets/google-icon.png")}
+                    style={styles.socialIcon}
+                    alt="icon-google"
+                  />
+                </TouchableOpacity>
               </View>
-            </Modal>
+              <Text style={styles.text1}>Ou créer:</Text>
+              <View style={styles.inputsContainer}>
+                <Text>Choisissez votre statut : </Text>
+               
+                   {/* Toggle Switch pour choisir entre hébergeur ou locataire */}
+                  <View style={styles.toggleContainer}>
+                    <Text style={styles.toggleText}>
+                       {isHost ? "Hébergeur" : "Locataire"}
+                    </Text>
+                    <Switch
+                      value={isHost}
+                      onValueChange={setIsHost}
+                    />
+                  </View>
+                    
+              
+                <TextInput
+                  style={styles.input}
+                  placeholder="Nom"
+                  value={values.nom}
+                  onChangeText={handleChange("nom")}
+                  onBlur={handleBlur("nom")}
+                />
+                {touched.nom && errors.nom && (
+                  <Text style={styles.error}>{errors.nom}</Text>
+                )}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Prénom"
+                  value={values.prenom}
+                  onChangeText={handleChange("prenom")}
+                  onBlur={handleBlur("prenom")}
+                />
+                {touched.prenom && errors.prenom && (
+                  <Text style={styles.error}>{errors.prenom}</Text>
+                )}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  value={values.email}
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.error}>{errors.email}</Text>
+                )}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Numéro de téléphone"
+                  value={values.numPhone}
+                  onChangeText={handleChange("numPhone")}
+                  onBlur={handleBlur("numPhone")}
+                />
+                {touched.numPhone && errors.numPhone && (
+                  <Text style={styles.error}>{errors.numPhone}</Text>
+                )}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Mot de passe"
+                  secureTextEntry={true}
+                  value={values.password}
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                />
+                {touched.password && errors.password && (
+                  <Text style={styles.error}>{errors.password}</Text>
+                )}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Confirmation mot de passe"
+                  secureTextEntry={true}
+                  value={values.confirmPassword}
+                  onChangeText={handleChange("confirmPassword")}
+                  onBlur={handleBlur("confirmPassword")}
+                />
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <Text style={styles.error}>{errors.confirmPassword}</Text>
+                )}
+              </View>
+              <TouchableOpacity
+                style={styles.connectButton}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.connectButtonText}>S'inscrire</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </Formik>
+      </ScrollView>
+      </SafeAreaView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalInnerContainer}>
+            <Text style={styles.modalTitle}>Votre inscription a été réussie !</Text>
+            <Text style={styles.modalText}>
+              Voulez-vous compléter votre profil maintenant ou plus tard ?
+            </Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                navigation.navigate(
+                  user.statut === "hebergeur" ? "HebergeurProfil" : "LocataireProfil"
+                );
+                setModalVisible(false);
+              }}
+            >
+              <Text style={styles.modalButtonText}>Compléter maintenant</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                navigation.navigate("TabNavigator", { screen: "Thread" });
+                setModalVisible(false);
+              }}
+            >
+              <Text style={styles.modalButtonText}>Plus tard</Text>
+            </TouchableOpacity>
           </View>
-        )}
-      </Formik>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 4,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    borderRadius: 8,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-});
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
+    
+  },
+  toggleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  toggleText: {
+    marginRight: 10,
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+  },
+  formContainer: {
+    width: "90%",
   },
   text1: {
-    fontSize: 15,
+    fontSize: 19,
     marginBottom: 10,
     textAlign: "left",
+    fontWeight:'bold',
   },
   input: {
     height: 40,
@@ -310,25 +284,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  picker: {
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 5,
-  },
   error: {
     color: "red",
     marginBottom: 7,
   },
-  bottomContainer: {
-    flex: 1,
-    marginTop: 50,
-    alignItems: "center",
-    marginBottom: 0,
-    width: "90%",
-  },
   connectWithContainer: {
     flexDirection: "row",
     marginBottom: 20,
+    alignItems:'center',
+    justifyContent:'center',
   },
   socialButton: {
     marginHorizontal: 10,
@@ -338,7 +302,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   inputsContainer: {
-    width: "90%",
+    width: "100%",
   },
   connectButton: {
     backgroundColor: "#4FAAAF",
@@ -348,10 +312,12 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     marginTop: 30,
+    alignSelf: "center",
   },
   connectButtonText: {
     color: "white",
     fontSize: 16,
+    textAlign: "center",
   },
   modalContainer: {
     flex: 1,
@@ -364,39 +330,29 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 10,
     padding: 20,
-    position: "relative",
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
   },
   modalTitle: {
     fontSize: 25,
     fontWeight: "bold",
     marginBottom: 10,
     color: "#4FAAAF",
+    textAlign: "center",
   },
-  modalInput: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    width: "100%",
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: "center",
   },
   modalButton: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#4FAAAF",
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
     width: "100%",
-    alignItems: "center",
-    backgroundColor: "#4FAAAF",
   },
   modalButtonText: {
     color: "#fff",
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
