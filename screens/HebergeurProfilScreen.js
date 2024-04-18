@@ -25,18 +25,17 @@ export default function HebergeurProfilScreen() {
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [numPhone, setNumPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [apropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
-  const handleSaveProfil = () => {
-    fetch(`${BACKEND_URL}/users/profil`, {
+  const handleSaveProfil = async () => {
+    fetch(`${BACKEND_URL}/updates/profil`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        nom,
-        prenom,
         email,
         numPhone,
         password,
@@ -44,7 +43,7 @@ export default function HebergeurProfilScreen() {
         apropos,
       }),
     });
-    const data = response.json();
+    const data = await response.json();
     if (!response.ok) {
       throw new Error(
         data.message ||
@@ -101,8 +100,10 @@ export default function HebergeurProfilScreen() {
         ></Avatar> */}
 
         <Image source={require("../assets/logo.png")} style={styles.logo} />
+        {/* <Text> Bienvenue {users.name} </Text> */}
         <Text style={styles.title}> Je mets à jours mes informations </Text>
-        <TextInput
+
+        {/* <TextInput
           style={styles.input}
           placeholder="Nom"
           value={nom}
@@ -113,7 +114,7 @@ export default function HebergeurProfilScreen() {
           placeholder="Prénom"
           value={prenom}
           onChangeText={(prenom) => setPrenom(prenom)}
-        />
+        /> */}
 
         <TextInput
           style={styles.input}
@@ -130,16 +131,21 @@ export default function HebergeurProfilScreen() {
         <TextInput
           style={styles.input}
           placeholder="Qui serait votre colocataire idéal ?"
-          secureTextEntry={true}
           value={apropos}
           onChangeText={(apropos) => setApropos(apropos)}
         />
         <TextInput
           style={styles.input}
           placeholder="Décrivez votre logement"
-          secureTextEntry={true}
           value={description}
           onChangeText={(description) => setDescription(description)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="nouveau mot de passe"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(password) => setDescription(password)}
         />
         <Text> Insérez des photos de votre logement </Text>
         <View style={styles.imageContainer}>

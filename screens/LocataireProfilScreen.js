@@ -71,8 +71,11 @@ export default function LocataireProfilScreen() {
       multiple: true,
     });
 
-    if (!result.cancelled) {
-      setSelectedImages(result.assets[0].uri);
+    if (!result.canceled) {
+      setSelectedImages([
+        ...selectedImages,
+        ...result.assets.map((asset) => asset.uri),
+      ]);
     }
   };
 
