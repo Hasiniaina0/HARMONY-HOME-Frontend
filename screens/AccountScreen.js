@@ -38,7 +38,7 @@ export default function AccountScreen() {
                 Mes informations personnelles
               </Text>
               <Text style={styles.text} onPress={() => navigation.navigate("")}>
-                Mes profil
+                Mon profil
               </Text>
               <Text style={styles.text} onPress={() => navigation.navigate("")}>
                 Mes préférences
