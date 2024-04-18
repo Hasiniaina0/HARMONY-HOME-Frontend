@@ -13,7 +13,7 @@ import {
 } from "react-native";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { addPhoto, removePhoto } from "../reducers/user";
@@ -30,6 +30,7 @@ export default function LocataireProfilScreen() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [hasPermission, setHasPermission] = useState(false);
   const isFocused = useIsFocused();
+  const token = useSelector((state) => state.user.token);
 
   console.log("selected images", selectedImages);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -40,6 +41,7 @@ export default function LocataireProfilScreen() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        token,
         email,
         numPhone,
         password,
@@ -51,28 +53,38 @@ export default function LocataireProfilScreen() {
       .then((data) => {
         console.log("Profil mis à jour:", data);
       });
-  };
 
-  // save photo dans cloudinary
+    // save photo dans cloudinary
 
-  const formData = new FormData();
-  selectedImages.forEach((photo, index) => {
-    formData.append("photoFromFront[]", photo);
-  });
-  fetch(`${BACKEND_URL}/updates/photos`, {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
+    const formData = new FormData();
+    // formData.append("photoFromFront", {
+    //   uri: selectedImages[0].uri,
+    //   name: "photo.jpg",
+    //   type: selectedImages[0].mimeType,
+    // });
 
-    .then((data) => {
-      console.log("photo maj", data);
-      const cloudinaryURL = data.uri;
-      console.log("cloudinaryURL", cloudinaryURL);
-      // dispatch(addPhoto(cloudinaryURL));
+    selectedImages.forEach((photo, index) => {
+      formData.append(`photoFromFront-${index}`, {
+        uri: photo?.uri,
+        name: `photo-${index}.jpg`,
+        type: photo?.mimeType,
+      });
+    });
+
+    fetch(`${BACKEND_URL}/updates/photos/${token}`, {
+      method: "POST",
+      body: formData,
     })
-    .catch((error) => console.log(error));
+      .then((response) => response.json())
 
+      .then((data) => {
+        console.log("photo maj", data);
+        // const cloudinaryURL = data.uri;
+        // console.log("cloudinaryURL", cloudinaryURL);
+        // dispatch(addPhoto(cloudinaryURL));
+      })
+      .catch((error) => console.log(error));
+  };
   // if (!hasPermission || !isFocused) {
   //   return <View />;
   // }
