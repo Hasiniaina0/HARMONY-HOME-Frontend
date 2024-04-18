@@ -9,12 +9,15 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../reducers/user";
 
 export default function ThreadAnnouncementsScreen() {
   const navigation = useNavigation();
   const [announcements, setAnnouncements] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
-  const [favorites, setFavorites] = useState([]);
+  const userFavorites = useSelector((state) => state.user.favorites);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/hebergeur`)
@@ -24,43 +27,47 @@ export default function ThreadAnnouncementsScreen() {
         setAnnouncements(data);
       })
       .catch((error) =>
-        console.error("Erreur lors de la récupération des hebergeurs:", error)
+        console.error(
+          "Erreur lors de la récupération des annonces des hebergeurs:",
+          error
+        )
       );
   }, []);
 
   const handleFavorite = (announcement) => {
     // Vérifie si l'annonce est déjà dans les favoris
-    const isFavorite = favorites.some((fav) => fav._id === announcement._id);
+    const isFavorite = userFavorites.some(
+      (fav) => fav._id === announcement._id
+    );
     if (isFavorite) {
-      // Si l'annonce est déjà dans les favoris, la supprimer
-      setFavorites(favorites.filter((fav) => fav._id !== announcement._id));
+      dispatch(removeFavorite(announcement));
     } else {
       // Sinon, ajoutez l'annonce aux favoris
-      setFavorites([...favorites, announcement]);
+      dispatch(addFavorite(announcement));
     }
   };
 
-  const handleContact = () => {
-    // Logique pour contacter l'annonceur
-  };
+  // const handleContact = () => {
+  //   // Logique pour contacter l'annonceur
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
       {announcements.map((announcement) => (
         <View style={styles.announcementContainer} key={announcement._id}>
           <TouchableOpacity
-            onPress={() => handleFavorite()}
+            onPress={() => handleFavorite(announcement)}
             style={styles.favoriteButton}
           >
             <Ionicons
               name={
-                favorites.some((fav) => fav._id === announcement._id)
+                userFavorites.some((fav) => fav._id === announcement._id)
                   ? "heart"
                   : "heart-outline"
               }
               size={15}
               color={
-                favorites.some((fav) => fav._id === announcement._id)
+                userFavorites.some((fav) => fav._id === announcement._id)
                   ? "red"
                   : "#4FAAAF"
               }
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
   },
   announcementContainer: {
     flexDirection: "row",
-    marginBottom: 16,
+    margin: 20,
   },
   favoriteButton: {
     marginRight: 10,
