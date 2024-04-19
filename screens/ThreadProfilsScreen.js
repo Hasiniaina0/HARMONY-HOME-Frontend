@@ -11,10 +11,13 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../reducers/user";
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function ThreadAnnouncementsScreen() {
   const [announcements, setAnnouncements] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const navigation = useNavigation();
   const userFavorites = useSelector((state) => state.user.favorites);
   const dispatch = useDispatch();
 
@@ -32,6 +35,11 @@ export default function ThreadAnnouncementsScreen() {
         )
       );
   }, []);
+
+  const handleDetailsAnnonce = (announceToken) => {
+    // Naviguer vers l'écran de détails de l'annonce et passer les détails de l'annonce
+    navigation.navigate('DescriptionAnnouncement', {token:announceToken});
+  };
 
   const handleFavorite = (announcement) => {
     // Vérifie si l'annonce est déjà dans les favoris
@@ -84,10 +92,11 @@ export default function ThreadAnnouncementsScreen() {
               <Text style={styles.location}>{announcement.city}</Text>
               <Text style={styles.description}>{announcement.description}</Text>
               <TouchableOpacity
-                onPress={() => handleContact()}
+                // onPress={() => handleContact()}
+                onPress={() => handleDetailsAnnonce(announcement.token)}
                 style={styles.contactButton}
               >
-                <Text style={styles.contactButtonText}>Contacter</Text>
+                <Text style={styles.contactButtonText}>Voir plus</Text>
               </TouchableOpacity>
             </View>
           </View>

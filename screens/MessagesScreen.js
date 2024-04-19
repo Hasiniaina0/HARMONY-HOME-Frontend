@@ -23,8 +23,9 @@ export default function MessagesScreen({ navigation }) {
   const user = useSelector((state) => state.user);
   const [sound, setSound] = useState(null);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const PUSHER_KEY = process.env.PUSHER_KEY;
 
-  const pusher = new Pusher("cccbfdad21a40becb4a1", {
+  const pusher = new Pusher("56a7676399aa8050ed36", {
     cluster: "eu",
   });
 
