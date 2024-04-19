@@ -51,12 +51,6 @@ export default function HebergeurProfilScreen() {
     // save photo dans cloudinary
 
     const formData = new FormData();
-    // formData.append("photoFromFront", {
-    //   uri: selectedImages[0].uri,
-    //   name: "photo.jpg",
-    //   type: selectedImages[0].mimeType,
-    // });
-
     selectedImages.forEach((photo, index) => {
       formData.append(`photoFromFront-${index}`, {
         uri: photo?.uri,
