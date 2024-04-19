@@ -16,6 +16,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 //import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -27,6 +28,7 @@ export default function HebergeurProfilScreen() {
   const [apropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
+  const token = useSelector((state) => state.user.token);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   // save la mise à jour
