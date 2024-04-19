@@ -132,14 +132,13 @@ export default function HebergeurProfilScreen() {
           <Text style={styles.title}> Je mets à jour mon profil </Text>
           <TextInput
             style={styles.input}
-            placeholder="ta ville"
-            secureTextEntry={true}
+            placeholder="Votre ville"
             value={city}
             onChangeText={(city) => setCity(city)}
           ></TextInput>
           <TextInput
-            style={styles.input}
-            placeholder="Parlez nous de vous"
+            style={styles.input1}
+            placeholder="Parlez-nous de vous"
             value={aPropos}
             onChangeText={(aPropos) => setApropos(aPropos)}
           ></TextInput>

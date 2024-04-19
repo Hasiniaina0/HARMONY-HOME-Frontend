@@ -25,6 +25,8 @@ export default function SignUpScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const user = useSelector((state) => state.user);
   const [isHost, setIsHost] = useState(false);
+    // État initial avec préfixe +33
+    const [numPhone, setNumPhone] = useState("+33");
 
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -36,11 +38,8 @@ export default function SignUpScreen({ navigation }) {
       .matches(emailRegex, "Format email invalide")
       .required("L'email est requis"),
     numPhone: Yup.string()
-      .matches(
-        /^[0-9]{10}$/,
-        "Le numéro de téléphone doit comporter 10 chiffres"
-      )
-      .required("Le numéro de téléphone est requis"),
+    .matches(/^\+33[0-9]{9}$/, "Le numéro de téléphone contenir 9 chiffres")
+    .required("Le numéro de téléphone est requis"),
     password: Yup.string().required("Le mot de passe est requis"),
     confirmPassword: Yup.string()
       .oneOf(
@@ -97,7 +96,7 @@ export default function SignUpScreen({ navigation }) {
               nom: "",
               prenom: "",
               email: "",
-              numPhone: "",
+              numPhone: numPhone, // Pré-rempli avec +33
               password: "",
               confirmPassword: "",
             }}
@@ -141,7 +140,8 @@ export default function SignUpScreen({ navigation }) {
                     </Text>
                     <Switch value={isHost} onValueChange={setIsHost} />
                   </View>
-
+                  <View style={styles.fieldset}>
+                  <Text style={styles.legend}>Informations de contact</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="Nom"
@@ -204,6 +204,7 @@ export default function SignUpScreen({ navigation }) {
                   {touched.confirmPassword && errors.confirmPassword && (
                     <Text style={styles.error}>{errors.confirmPassword}</Text>
                   )}
+                  </View>
                 </View>
                 <TouchableOpacity
                   style={styles.connectButton}
@@ -263,6 +264,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    marginTop: 50,
+    padding:16,
   },
   toggleContainer: {
     flexDirection: "row",
@@ -277,13 +280,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  fieldset: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
+  },
+  legend: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 4,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
   formContainer: {
     width: "90%",
   },
   text1: {
     fontSize: 19,
     marginBottom: 10,
-    textAlign: "left",
+    textAlign: "center",
     fontWeight: "bold",
   },
   input: {
@@ -357,7 +380,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
-    width: "100%",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modalButtonText: {
     color: "#fff",

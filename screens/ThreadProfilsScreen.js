@@ -58,6 +58,21 @@ export default function ThreadAnnouncementsScreen() {
   //   // Logique pour contacter l'annonceur
   // };
 
+  function truncateText(text, maxLength) {
+    // Vérifiez si le texte est défini et non nul
+    if (text === undefined || text === null) {
+      return '';
+    }
+  
+    // Tronquez le texte si nécessaire
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+  
+    // Retourne le texte tel quel s'il n'est pas trop long
+    return text;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -90,7 +105,7 @@ export default function ThreadAnnouncementsScreen() {
             <View style={styles.textContainer}>
               <Text style={styles.title}>{announcement.prenom}</Text>
               <Text style={styles.location}>{announcement.city}</Text>
-              <Text style={styles.description}>{announcement.description}</Text>
+              <Text style={styles.description}>{truncateText(announcement.description,80)}</Text>
               <TouchableOpacity
                 // onPress={() => handleContact()}
                 onPress={() => handleDetailsAnnonce(announcement.token)}

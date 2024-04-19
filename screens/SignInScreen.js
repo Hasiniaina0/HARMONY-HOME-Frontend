@@ -48,13 +48,14 @@ export default function SignInScreen({ navigation }) {
           setEmail("");
           setPassword("");
           navigation.navigate("TabNavigator", { screen: "Thread" });
-          // if (data.statut === "hebergeur") {
+          // if (data.statut === "hebergeur") {cd Backen
           //   navigation.navigate("TabNavigator", { screen: "ThreadProfils" });
           // } else {
           //   navigation.navigate("TabNavigator", { screen: "ThreadAnnouncements" });
           // }
         } else {
           // Erreur de connexion
+          alert("La connexion n'est pas réussie. Veuillez entrer le bon email et mot de passe !")
           setErrorMessage(data.error);
         }
       })
@@ -70,22 +71,21 @@ export default function SignInScreen({ navigation }) {
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/background.png")}
-      style={styles.backgroundImage}
-    >
+    
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <View style={styles.sloganTitle}>
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
         <Text style={styles.slogan}>de vie et de partage</Text>
+        </View>
 
         <View style={styles.inputsContainer}>
           <View>
-            <Text>Email :</Text>
+            <Text style={styles.inputTitle}>Email :</Text>
           </View>
           <TextInput
             style={styles.input}
@@ -94,7 +94,7 @@ export default function SignInScreen({ navigation }) {
             onChangeText={(email) => setEmail(email)}
           />
           <View>
-            <Text>Mot de passe :</Text>
+            <Text style={styles.inputTitle}>Mot de passe :</Text>
           </View>
           <TextInput
             style={styles.input}
@@ -116,8 +116,7 @@ export default function SignInScreen({ navigation }) {
         {errorMessage && (
           <Text style={styles.errorMessage}>{errorMessage}</Text>
         )}
-      </KeyboardAvoidingView>
-      <Modal
+        <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -158,7 +157,9 @@ export default function SignInScreen({ navigation }) {
           </View>
         </View>
       </Modal>
-    </ImageBackground>
+      </KeyboardAvoidingView>
+      
+    
   );
 }
 
@@ -174,14 +175,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 360,
-    height: 320,
+    marginTop:50,
+    width: 340,
+    height: 300,
+  },
+  sloganTitle:{
+    marginBottom:50,
   },
   slogan: {
-    fontSize: 20,
-    color: "white",
+    fontSize: 15,
+    color: "black",
     alignItems: "center",
     justifyContent: "center",
+    textAlign:"center",
+    
+  },
+  inputTitle:{
+    marginBottom:15,
   },
   inputsContainer: {
     width: "90%",
@@ -199,9 +209,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   forgotPassword: {
-    justifyContent: "flex-end",
     margin: 20,
-    color: "white",
+    color: "#1877F2",
+    textDecorationLine:"underline",
+    textAlign:"right"
   },
   signInButton: {
     backgroundColor: "#4FAAAF",
@@ -262,4 +273,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
+  inputsContainer:{
+    marginLeft:10,
+  }
 });

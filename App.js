@@ -7,7 +7,7 @@ import SignUpScreen from "./screens/SignUpScreen"; // Page d'inscription
 import SignInScreen from "./screens/SignInScreen"; // Page de connexion
 import LocataireProfilScreen from "./screens/LocataireProfilScreen"; // Page de profil locataire
 import MessagesScreen from "./screens/MessagesScreen"; // page discussion avec 1 utilisateur
-import ChatScreen from "./screens/chatScreen";
+// import ChatScreen from "./screens/chatScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
@@ -40,7 +40,7 @@ const TabNavigator = () => {
         tabBarActiveTintColor: "#eb4034",
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Chat"
         component={ChatScreen}
         options={{
@@ -52,7 +52,7 @@ const TabNavigator = () => {
             />
           ),
         }}
-      ></Tab.Screen>
+      ></Tab.Screen> */}
       <Tab.Screen
         name="Thread"
         component={ThreadScreen}
