@@ -18,6 +18,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { addPhoto, removePhoto } from "../reducers/user";
 import { useIsFocused } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function LocataireProfilScreen() {
   const dispatch = useDispatch();
@@ -31,12 +32,13 @@ export default function LocataireProfilScreen() {
   const [hasPermission, setHasPermission] = useState(false);
   const isFocused = useIsFocused();
   const token = useSelector((state) => state.user.token);
+  const navigation = useNavigation();
 
   console.log("selected images", selectedImages);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   // save la mise à jour
-  const handleSaveProfil = async () => {
+  const handleSaveProfil = () => {
     fetch(`${BACKEND_URL}/updates/profil`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -52,32 +54,32 @@ export default function LocataireProfilScreen() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Profil mis à jour:", data);
-      });
+        // save photo dans cloudinary
 
-    // save photo dans cloudinary
+        const formData = new FormData();
+        selectedImages.forEach((photo, index) => {
+          formData.append(`photoFromFront-${index}`, {
+            uri: photo?.uri,
+            name: `photo-${index}.jpg`,
+            type: photo?.mimeType,
+          });
+        });
 
-    const formData = new FormData();
-    selectedImages.forEach((photo, index) => {
-      formData.append(`photoFromFront-${index}`, {
-        uri: photo?.uri,
-        name: `photo-${index}.jpg`,
-        type: photo?.mimeType,
-      });
-    });
+        fetch(`${BACKEND_URL}/updates/photos/${token}`, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
 
-    fetch(`${BACKEND_URL}/updates/photos/${token}`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-
-      .then((data) => {
-        console.log("photo maj", data);
-        // const cloudinaryURL = data.uri;
-        // console.log("cloudinaryURL", cloudinaryURL);
-        // dispatch(addPhoto(cloudinaryURL));
+          .then((data) => {
+            console.log("photo maj", data);
+            // const cloudinaryURL = data.uri;
+            // console.log("cloudinaryURL", cloudinaryURL);
+            // dispatch(addPhoto(cloudinaryURL));
+          })
+          .catch((error) => console.log(error));
       })
-      .catch((error) => console.log(error));
+      .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
   };
   // if (!hasPermission || !isFocused) {
   //   return <View />;

@@ -48,6 +48,7 @@ export default function HebergeurProfilScreen() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Profil mis à jour:", data);
+        navigation.navigate("TabNavigator", { screen: "Thread" });
       });
 
     // save photo dans cloudinary
