@@ -14,12 +14,14 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 export default function AccountScreen() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [email, setEmail] = useState(""); // État pour l'adresse e-mail
   const [message, setMessage] = useState("");
+  const user = useSelector((state) => state.user);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -50,11 +52,20 @@ export default function AccountScreen() {
               </Text>
               <Text
                 style={styles.text}
-                onPress={() => navigation.navigate("UpdateProfilScreen")}
+                onPress={() => {
+                  navigation.navigate(
+                    user.statut === "hebergeur"
+                      ? "HebergeurProfil"
+                      : "LocataireProfil"
+                  );
+                }}
               >
                 Mon profil
               </Text>
-              <Text style={styles.text} onPress={() => navigation.navigate("")}>
+              <Text
+                style={styles.text}
+                onPress={() => navigation.navigate("Preferences")}
+              >
                 Mes préférences
               </Text>
               <Text style={styles.text} onPress={() => navigation.navigate("")}>
@@ -95,7 +106,7 @@ export default function AccountScreen() {
                     placeholder="Rédigez votre message"
                     placeholderTextColor="#badbd7"
                     multiline={true} // Permettre plusieurs lignes de texte
-                    numberOfLines={5} // Définir le nombre de lignes affichées par défaut
+                    // numberOfLines={5} // Définir le nombre de lignes affichées par défaut
                     value={message}
                     onChangeText={(text) => setMessage(text)}
                   />
@@ -103,6 +114,8 @@ export default function AccountScreen() {
                     style={styles.sendButton}
                     onPress={() => {
                       setModalVisible(false);
+                      setEmail(""); // Réinitialiser l'état email à une chaîne vide
+                      setMessage(""); // Réinitialiser l'état message à une chaîne vide
                     }}
                   >
                     <Text style={styles.sendButtonText}>Envoyer</Text>
