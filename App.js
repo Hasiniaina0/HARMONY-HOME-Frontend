@@ -11,6 +11,8 @@ import ChatScreen from "./screens/chatScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
+import DescriptionAnnouncementScreen from "./screens/DescriptionAnnouncementScreen";
+import AnnouncementScreen from "./screens/AnnouncementScreen";
 // import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
 import { Provider } from "react-redux";
@@ -87,6 +89,11 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen
+            name="DescriptionAnnouncement"
+            component={DescriptionAnnouncementScreen}
+          />
+          <Stack.Screen name="AnnonceProfile" component={AnnouncementScreen} />
           <Stack.Screen name="MessageScreen" component={MessagesScreen} />
           <Stack.Screen
             name="HebergeurProfil"

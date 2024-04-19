@@ -1,4 +1,4 @@
-// import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Image,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 //import { Avatar } from "native-base";
@@ -22,63 +23,73 @@ import { useSelector } from "react-redux";
 
 export default function HebergeurProfilScreen() {
   const navigation = useNavigation();
-  const [email, setEmail] = useState("");
-  const [numPhone, setNumPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [apropos, setApropos] = useState("");
+  const [aPropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
+  const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
-  const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/users/${token}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCity(data.city);
+        setApropos(data.aPropos);
+        setDescription(data.description);
+      })
+      .catch((error) =>
+        console.error(
+          "Erreur lors de la récupération des informations de l'utilisateur:",
+          error
+        )
+      );
+  }, []);
 
   // save la mise à jour
-  const handleSaveProfil = async () => {
+  const handleSaveProfil = () => {
     fetch(`${BACKEND_URL}/updates/profil`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         token,
-        email,
-        numPhone,
-        password,
+        city,
         description,
-        apropos,
+        aPropos,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("Profil mis à jour:", data);
-        navigation.navigate("TabNavigator", { screen: "Thread" });
-      });
+        // save photo dans cloudinary
 
-    // save photo dans cloudinary
+        const formData = new FormData();
+        selectedImages.forEach((photo, index) => {
+          formData.append(`photoFromFront-${index}`, {
+            uri: photo?.uri,
+            name: `photo-${index}.jpg`,
+            type: photo?.mimeType,
+          });
+        });
 
-    const formData = new FormData();
-    selectedImages.forEach((photo, index) => {
-      formData.append(`photoFromFront-${index}`, {
-        uri: photo?.uri,
-        name: `photo-${index}.jpg`,
-        type: photo?.mimeType,
-      });
-    });
+        fetch(`${BACKEND_URL}/updates/photos/${token}`, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
 
-    fetch(`${BACKEND_URL}/updates/photos/${token}`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-
-      .then((data) => {
-        console.log("photo maj", data);
-        // const cloudinaryURL = data.uri;
-        // console.log("cloudinaryURL", cloudinaryURL);
-        // dispatch(addPhoto(cloudinaryURL));
+          .then((data) => {
+            console.log("photo maj", data);
+            // const cloudinaryURL = data.uri;
+            // console.log("cloudinaryURL", cloudinaryURL);
+            // dispatch(addPhoto(cloudinaryURL));
+          })
+          .catch((error) => console.log(error));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
   };
-  // if (!hasPermission || !isFocused) {
-  //   return <View />;
-  // }
 
   // ajouter une image à partir de la galerie du téléphone
 
@@ -99,83 +110,65 @@ export default function HebergeurProfilScreen() {
     });
 
     if (!result.canceled) {
-      setSelectedImages([
-        ...selectedImages,
-        ...result.assets.map((asset) => asset.uri),
-      ]);
+      setSelectedImages([...selectedImages, ...result.assets]);
     }
   };
 
   return (
     <SafeAreaView style={styles.inputsContainer}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <MaterialIcons
-          name="keyboard-backspace"
-          size={60}
-          onPress={() => navigation.goBack()}
-          style={styles.back}
-        />
-
-        {/* <Avatar
-          bg="green.500"
-          source={{
-            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-          }}
-        ></Avatar> */}
-
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
-        {/* <Text> Bienvenue {users.name} </Text> */}
-        <Text style={styles.title}> Je mets à jours mes informations </Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={(email) => setEmail(email)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Numéro de téléphone"
-          value={numPhone}
-          onChangeText={(numPhone) => setNumPhone(numPhone)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Qui serait votre colocataire idéal ?"
-          value={apropos}
-          onChangeText={(apropos) => setApropos(apropos)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Décrivez votre logement"
-          value={description}
-          onChangeText={(description) => setDescription(description)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="nouveau mot de passe"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-        />
-        <Text> Insérez des photos de votre logement </Text>
-        <View style={styles.imageContainer}>
-          {selectedImages.map((image, index) => (
-            <Image key={index} source={{ uri: image }} style={styles.image} />
-          ))}
-          <Button
-            title="Ajouter une image"
-            onPress={showImagePicker}
-            color="white"
+      <ScrollView style={styles.scrollView}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <MaterialIcons
+            name="keyboard-backspace"
+            size={60}
+            onPress={() => navigation.goBack()}
+            style={styles.back}
           />
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-          <Text style={styles.buttonText}>Mettre à jour</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+
+          <Image source={require("../assets/logo.png")} style={styles.logo} />
+          <Text style={styles.title}> Je mets à jour mon profil </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="ta ville"
+            secureTextEntry={true}
+            value={city}
+            onChangeText={(city) => setCity(city)}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Parlez nous de vous"
+            value={aPropos}
+            onChangeText={(aPropos) => setApropos(aPropos)}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Décrivez votre logement"
+            value={description}
+            onChangeText={(description) => setDescription(description)}
+          ></TextInput>
+          <Text> Partagez des photos de ce qui vous représente </Text>
+          <View style={styles.imageContainer}>
+            {selectedImages.map((image, index) => (
+              <Image
+                key={index}
+                source={{ uri: image.uri }}
+                style={styles.image}
+              />
+            ))}
+            <Button
+              title="Ajouter une image"
+              onPress={showImagePicker}
+              color="white"
+            />
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+            <Text style={styles.buttonText}>Mettre à jour</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -5,30 +5,33 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  SafeAreaView,ScrollView,KeyboardAvoidingView,
+  SafeAreaView,ScrollView,KeyboardAvoidingView,Platform
 } from "react-native";
-
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
-export default function DescriptionAnnouncementScreen({route}) {
+export default function DescriptionAnnouncementScreen() {
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
-  const userId = '6620f5681c747c239e2f737c'
   const [userDetails, setUserDetails] = useState(null);
+  const route = useRoute();
+  const {token} = route.params;
 
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users/${userId}`)
+    
+    fetch(`${BACKEND_URL}/users/${token}`)
+    
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setUserDetails(data);
+         // Vérifiez si la réponse contient les données attendues
+         setUserDetails(data);
+     })
+      .catch((error) => {
+          console.error("Erreur lors de la récupération des détails de l'annonce :", error);
       })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des annonces des utilisateurs:", error)
-      );
-  }, [userId]);
+  }, []);
 
 
 
@@ -56,32 +59,34 @@ export default function DescriptionAnnouncementScreen({route}) {
   };
 
   return (
-    <KeyboardAvoidingView
-    style={styles.container}
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
     <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+    
      {userDetails && (
         <View >
     
           <View style={styles.titre}>
-            <Text style={styles.titreAnnonce}>A propos de l'annonce de {userDetails.prenom} </Text>
+            <Text style={styles.titreAnnonce}>Annonce de {userDetails.prenom} </Text>
           </View>
           <View >
-            <Image source={require("../assets/avis.png")} />
+            <Image source={require("../assets/logement.jpg")} alt="photo de logement" style={styles.image}/>
             <Text style = {styles.desc}>A propos du logement : </Text>
-            <Text style={styles.apropos}>{userDetails.description}</Text>
+            <Text style={styles.apropos}>Situé à {userDetails.city}</Text>
+            <Text style={styles.apropos}> {userDetails.description}</Text>
             <Text style = {styles.desc}>A propos du propriétaire : </Text>
-            <Text style={styles.location}>{userDetails.aPropos}</Text>
+            <Text style={styles.apropos}>{userDetails.aPropos}</Text>
             <Text style = {styles.desc} >Les avis</Text>
-            <Image source={require("../assets/avis.png")} />
-            <View>
+            <Image source={require("../assets/avis.png")} alt=" image des avis" />
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
                 onPress={() => handleComment()}
                 style={styles.contactButton}
               >
-                <Text style={styles.contactButtonText1}>Laisser un commentaire</Text>
+                <Text style={styles.contactButtonText}>Laisser un commentaire</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -95,34 +100,11 @@ export default function DescriptionAnnouncementScreen({route}) {
           </View>
         </View>
       )}
+         </KeyboardAvoidingView>
       </ScrollView>
-      <View style={styles.bottomBar}>
-        <TouchableOpacity
-          onPress={() => handleMessages()}
-          style={styles.bottomButton}
-        >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={24}
-            color="#007BFF"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleProfile()}
-          style={styles.bottomButton}
-        >
-          <Ionicons name="person-outline" size={24} color="#007BFF" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleFavorites()}
-          style={styles.bottomButton}
-        >
-          <Ionicons name="heart-outline" size={24} color="#007BFF" />
-        </TouchableOpacity>
-      </View>
-    
+      
     </SafeAreaView>
-    </KeyboardAvoidingView>
+ 
   );
 }
 
@@ -132,16 +114,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: "#fff",
-    justifyContent: "space-between",
+    justifyContent:"space-evenly",
     width:"100%",
   },
   titre:{
    marginTop:50, 
   },
+  apropos:{
+    textAlign: 'justify', // Aligne le texte justifié
+  },
+  buttonContainer: {
+    flexDirection: 'row', // Aligne les boutons côte à côte
+    justifyContent: 'space-between', // Espace entre les boutons
+    paddingVertical: 8, // Espacement vertical si nécessaire
+  },
   desc:{
     fontWeight:"bold",
     marginTop:10,
-    justifyContent:""
+    marginBottom:10,
     
   },
   titreAnnonce:{
@@ -166,10 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: "hidden",
   },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
+ 
   textContainer: {
     flex: 1,
     marginLeft: 10,
@@ -182,13 +169,14 @@ const styles = StyleSheet.create({
   location: {
     color: "#666",
     marginBottom: 5,
+    textAlign:"justify",
   },
   description: {
     marginBottom: 5,
   },
   contactButton: {
     alignSelf: "center",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#4FAAAF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,

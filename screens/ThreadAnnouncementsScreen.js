@@ -11,18 +11,21 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../reducers/user";
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function ThreadAnnouncementsScreen() {
   const [announcements, setAnnouncements] = useState([]);
+  const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const userFavorites = useSelector((state) => state.user.favorites);
   const dispatch = useDispatch();
+ 
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/hebergeur`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setAnnouncements(data);
       })
       .catch((error) =>
@@ -32,6 +35,11 @@ export default function ThreadAnnouncementsScreen() {
         )
       );
   }, []);
+
+  const handleDetailsAnnonce = (announceToken) => {
+    // Naviguer vers l'écran de détails de l'annonce et passer les détails de l'annonce
+    navigation.navigate('DescriptionAnnouncement', {token:announceToken});
+  };
 
   const handleFavorite = (announcement) => {
     // Vérifie si l'annonce est déjà dans les favoris
@@ -45,10 +53,21 @@ export default function ThreadAnnouncementsScreen() {
       dispatch(addFavorite(announcement));
     }
   };
-
-  // const handleContact = () => {
-  //   // Logique pour contacter l'annonceur
-  // };
+  
+  function truncateText(text, maxLength) {
+    // Vérifiez si le texte est défini et non nul
+    if (text === undefined || text === null) {
+      return '';
+    }
+  
+    // Tronquez le texte si nécessaire
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+  
+    // Retourne le texte tel quel s'il n'est pas trop long
+    return text;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,20 +93,22 @@ export default function ThreadAnnouncementsScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-              <Image
+              {/* <Image
                 source={{ uri: announcement.photo }}
                 style={styles.image}
-              />
+              /> */}
+            
+            <Image source={require("../assets/profil-annonce.jpg")} alt="photo de profil" style={styles.imageProfil}/>
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{announcement.prenom}</Text>
               <Text style={styles.location}>{announcement.city}</Text>
-              <Text style={styles.description}>{announcement.description}</Text>
+              <Text style={styles.description}> {truncateText(announcement.description, 80)}</Text>
               <TouchableOpacity
-                onPress={() => handleContact()}
+                onPress={() => handleDetailsAnnonce(announcement.token)}
                 style={styles.contactButton}
               >
-                <Text style={styles.contactButtonText}>Contacter</Text>
+                <Text style={styles.contactButtonText}>Voir plus</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -117,6 +138,12 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 8,
     overflow: "hidden",
+  },
+  imageProfil: {
+    width: '100%', // L'image occupe toute la largeur de l'écran
+    height: 200, // Hauteur de l'image, ajustez selon vos besoins
+    resizeMode: 'contain', // Conserve les proportions de l'image
+    borderRadius: 8, // Ajoute un effet arrondi si souhaité
   },
   image: {
     width: "100%",

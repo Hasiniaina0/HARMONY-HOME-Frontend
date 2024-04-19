@@ -28,6 +28,7 @@
     "expo-status-bar": "~1.11.1",
     "formik": "^2.4.5",
     "native-base": "^3.4.28",
+    "pusher": "^5.2.0",
     "pusher-js": "^8.4.0-rc2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

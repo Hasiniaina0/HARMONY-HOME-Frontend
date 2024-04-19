@@ -5,40 +5,47 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  SafeAreaView,ScrollView,
+  SafeAreaView,ScrollView,KeyboardAvoidingView,Platform
 } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 export default function AnnouncementScreen() {
   const navigation = useNavigation();
-  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
-  const userId = '6620f5681c747c239e2f737c'
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL; 
   const [userDetails, setUserDetails] = useState(null);
+  const route = useRoute();
+  const {token} = route.params;
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users/${userId}`)
+    fetch(`${BACKEND_URL}/users/${token}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setUserDetails(data);
+         // Vérifiez si la réponse contient les données attendues
+          setUserDetails(data);
+     })
+      .catch((error) => {
+          console.error("Erreur lors de la récupération des détails de l'annonce :", error);
       })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des annonces des utilisateurs:", error)
-      );
-  }, [userId]);
-  useEffect(() => {
-    fetch(`${BACKEND_URL}/users/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setUserDetails(data);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des annonces des utilisateurs:", error)
-      );
-  }, [userId]);
+  }, []);
+ 
+
+  function truncateText(text, maxLength) {
+    // Vérifiez si le texte est défini et non nul
+    if (text === undefined || text === null) {
+      return '';
+    }
+  
+    // Tronquez le texte si nécessaire
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+  
+    // Retourne le texte tel quel s'il n'est pas trop long
+    return text;
+  }
 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
@@ -65,7 +72,12 @@ export default function AnnouncementScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+    
      {userDetails && (
         <View >
     
@@ -73,16 +85,16 @@ export default function AnnouncementScreen() {
             <Text style={styles.titreAnnonce}>Annonce de profil recherché </Text>
           </View>
           <View >
-            <Image source={require("../assets/avis.png")} />
+            <Image source={require("../assets/profil-user.jpg")} alt="photo de profil"/>
             <Text style = {styles.desc}>A propos du futur colocataires: </Text>
             <Text style={styles.apropos}>{userDetails.aPropos}</Text>
             <Text style = {styles.desc}>Ses motivations : </Text>
-            <Text style={styles.location}>{userDetails.description}</Text>
-            <Image source={require("../assets/avatar1.jpg")} />
+            <Text style={styles.apropos}>{truncateText(userDetails.description,80)}</Text>
+            <Image source={require("../assets/avatar1.jpg")} alt = "photo des locataires" />
             
             <Text style = {styles.desc} >Les avis</Text>
             <Image source={require("../assets/avis1.png")} />
-            <View>
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
                 onPress={() => handleComment()}
                 style={styles.contactButton}
@@ -92,6 +104,7 @@ export default function AnnouncementScreen() {
 
               <TouchableOpacity
                 onPress={() => handleContact()}
+               
                 style={styles.contactButton}
               >
                 <Text style={styles.contactButtonText}>Contacter</Text>
@@ -100,34 +113,12 @@ export default function AnnouncementScreen() {
             
           </View>
         </View>
-      )}
+      )}  
+        </KeyboardAvoidingView>
         </ScrollView>
-      <View style={styles.bottomBar}>
-        <TouchableOpacity
-          onPress={() => handleMessages()}
-          style={styles.bottomButton}
-        >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={24}
-            color="#007BFF"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleProfile()}
-          style={styles.bottomButton}
-        >
-          <Ionicons name="person-outline" size={24} color="#007BFF" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleFavorites()}
-          style={styles.bottomButton}
-        >
-          <Ionicons name="heart-outline" size={24} color="#007BFF" />
-        </TouchableOpacity>
-      </View>
     
     </SafeAreaView>
+    
   );
 }
 
@@ -143,6 +134,7 @@ const styles = StyleSheet.create({
   titre:{
    marginTop:50, 
   },
+ 
   desc:{
     fontWeight:"bold",
     marginTop:10,
@@ -193,11 +185,16 @@ const styles = StyleSheet.create({
   },
   contactButton: {
     alignSelf: "center",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#4FAAAF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
 
+  },
+  buttonContainer: {
+    flexDirection: 'row', // Aligne les boutons côte à côte
+    justifyContent: 'space-between', // Espace entre les boutons
+    paddingVertical: 8, // Espacement vertical si nécessaire
   },
   contactButtonText: {
     backgroundColor: "#4FAAAF",
