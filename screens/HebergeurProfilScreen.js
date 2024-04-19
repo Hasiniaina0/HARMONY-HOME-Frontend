@@ -29,7 +29,7 @@ export default function HebergeurProfilScreen() {
   const [description, setDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
-  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   // save la mise à jour
   const handleSaveProfil = async () => {

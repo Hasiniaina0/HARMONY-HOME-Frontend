@@ -38,7 +38,12 @@ export default function SignInScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           dispatch(
-            login({ email: data.email, token: data.token, statut: data.statut })
+            login({
+              email: data.email,
+              token: data.token,
+              statut: data.statut,
+              name: data.name,
+            })
           );
           setEmail("");
           setPassword("");

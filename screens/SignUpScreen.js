@@ -67,7 +67,12 @@ export default function SignUpScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           dispatch(
-            login({ email: data.email, token: data.token, statut: data.statut })
+            login({
+              email: data.email,
+              token: data.token,
+              statut: data.statut,
+              name: data.name,
+            })
           );
           setModalVisible(true);
         } else {
@@ -85,129 +90,131 @@ export default function SignUpScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <SafeAreaView style={{ flex: 1, }}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Formik
-          initialValues={{
-            nom: "",
-            prenom: "",
-            email: "",
-            numPhone: "",
-            password: "",
-            confirmPassword: "",
-            
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values) => handleConnection(values)}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-            <View style={styles.formContainer}>
-              <Text style={styles.text1}>Se connecter avec :</Text>
-              <View style={styles.connectWithContainer}>
-                <TouchableOpacity style={styles.socialButton}>
-                  <Image
-                    source={require("../assets/facebook-icon.png")}
-                    style={styles.socialIcon}
-                    alt="icon-facebook"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.socialButton}>
-                  <Image
-                    source={require("../assets/google-icon.png")}
-                    style={styles.socialIcon}
-                    alt="icon-google"
-                  />
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.text1}>Ou créer:</Text>
-              <View style={styles.inputsContainer}>
-                <Text>Choisissez votre statut : </Text>
-               
-                   {/* Toggle Switch pour choisir entre hébergeur ou locataire */}
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <Formik
+            initialValues={{
+              nom: "",
+              prenom: "",
+              email: "",
+              numPhone: "",
+              password: "",
+              confirmPassword: "",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(values) => handleConnection(values)}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <View style={styles.formContainer}>
+                <Text style={styles.text1}>Se connecter avec :</Text>
+                <View style={styles.connectWithContainer}>
+                  <TouchableOpacity style={styles.socialButton}>
+                    <Image
+                      source={require("../assets/facebook-icon.png")}
+                      style={styles.socialIcon}
+                      alt="icon-facebook"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.socialButton}>
+                    <Image
+                      source={require("../assets/google-icon.png")}
+                      style={styles.socialIcon}
+                      alt="icon-google"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.text1}>Ou créer:</Text>
+                <View style={styles.inputsContainer}>
+                  <Text>Choisissez votre statut : </Text>
+
+                  {/* Toggle Switch pour choisir entre hébergeur ou locataire */}
                   <View style={styles.toggleContainer}>
                     <Text style={styles.toggleText}>
-                       {isHost ? "Hébergeur" : "Locataire"}
+                      {isHost ? "Hébergeur" : "Locataire"}
                     </Text>
-                    <Switch
-                      value={isHost}
-                      onValueChange={setIsHost}
-                    />
+                    <Switch value={isHost} onValueChange={setIsHost} />
                   </View>
-                    
-              
-                <TextInput
-                  style={styles.input}
-                  placeholder="Nom"
-                  value={values.nom}
-                  onChangeText={handleChange("nom")}
-                  onBlur={handleBlur("nom")}
-                />
-                {touched.nom && errors.nom && (
-                  <Text style={styles.error}>{errors.nom}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Prénom"
-                  value={values.prenom}
-                  onChangeText={handleChange("prenom")}
-                  onBlur={handleBlur("prenom")}
-                />
-                {touched.prenom && errors.prenom && (
-                  <Text style={styles.error}>{errors.prenom}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Email"
-                  value={values.email}
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                />
-                {touched.email && errors.email && (
-                  <Text style={styles.error}>{errors.email}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Numéro de téléphone"
-                  value={values.numPhone}
-                  onChangeText={handleChange("numPhone")}
-                  onBlur={handleBlur("numPhone")}
-                />
-                {touched.numPhone && errors.numPhone && (
-                  <Text style={styles.error}>{errors.numPhone}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Mot de passe"
-                  secureTextEntry={true}
-                  value={values.password}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                />
-                {touched.password && errors.password && (
-                  <Text style={styles.error}>{errors.password}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Confirmation mot de passe"
-                  secureTextEntry={true}
-                  value={values.confirmPassword}
-                  onChangeText={handleChange("confirmPassword")}
-                  onBlur={handleBlur("confirmPassword")}
-                />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <Text style={styles.error}>{errors.confirmPassword}</Text>
-                )}
+
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Nom"
+                    value={values.nom}
+                    onChangeText={handleChange("nom")}
+                    onBlur={handleBlur("nom")}
+                  />
+                  {touched.nom && errors.nom && (
+                    <Text style={styles.error}>{errors.nom}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Prénom"
+                    value={values.prenom}
+                    onChangeText={handleChange("prenom")}
+                    onBlur={handleBlur("prenom")}
+                  />
+                  {touched.prenom && errors.prenom && (
+                    <Text style={styles.error}>{errors.prenom}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={values.email}
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                  />
+                  {touched.email && errors.email && (
+                    <Text style={styles.error}>{errors.email}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Numéro de téléphone"
+                    value={values.numPhone}
+                    onChangeText={handleChange("numPhone")}
+                    onBlur={handleBlur("numPhone")}
+                  />
+                  {touched.numPhone && errors.numPhone && (
+                    <Text style={styles.error}>{errors.numPhone}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Mot de passe"
+                    secureTextEntry={true}
+                    value={values.password}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                  />
+                  {touched.password && errors.password && (
+                    <Text style={styles.error}>{errors.password}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Confirmation mot de passe"
+                    secureTextEntry={true}
+                    value={values.confirmPassword}
+                    onChangeText={handleChange("confirmPassword")}
+                    onBlur={handleBlur("confirmPassword")}
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <Text style={styles.error}>{errors.confirmPassword}</Text>
+                  )}
+                </View>
+                <TouchableOpacity
+                  style={styles.connectButton}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.connectButtonText}>S'inscrire</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={styles.connectButton}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.connectButtonText}>S'inscrire</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </Formik>
-      </ScrollView>
+            )}
+          </Formik>
+        </ScrollView>
       </SafeAreaView>
       <Modal
         animationType="slide"
@@ -217,7 +224,9 @@ export default function SignUpScreen({ navigation }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalInnerContainer}>
-            <Text style={styles.modalTitle}>Votre inscription a été réussie !</Text>
+            <Text style={styles.modalTitle}>
+              Votre inscription a été réussie !
+            </Text>
             <Text style={styles.modalText}>
               Voulez-vous compléter votre profil maintenant ou plus tard ?
             </Text>
@@ -225,7 +234,9 @@ export default function SignUpScreen({ navigation }) {
               style={styles.modalButton}
               onPress={() => {
                 navigation.navigate(
-                  user.statut === "hebergeur" ? "HebergeurProfil" : "LocataireProfil"
+                  user.statut === "hebergeur"
+                    ? "HebergeurProfil"
+                    : "LocataireProfil"
                 );
                 setModalVisible(false);
               }}
@@ -248,12 +259,10 @@ export default function SignUpScreen({ navigation }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    
   },
   toggleContainer: {
     flexDirection: "row",
@@ -275,7 +284,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
     marginBottom: 10,
     textAlign: "left",
-    fontWeight:'bold',
+    fontWeight: "bold",
   },
   input: {
     height: 40,
@@ -291,8 +300,8 @@ const styles = StyleSheet.create({
   connectWithContainer: {
     flexDirection: "row",
     marginBottom: 20,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   socialButton: {
     marginHorizontal: 10,

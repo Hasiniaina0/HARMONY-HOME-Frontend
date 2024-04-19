@@ -6,6 +6,7 @@ const initialState = {
   statut: null,
   photos: [],
   favorites: [],
+  name: null,
 };
 
 export const userSlice = createSlice({
@@ -17,6 +18,7 @@ export const userSlice = createSlice({
       state.token = action.payload.token;
       state.email = action.payload.email;
       state.statut = action.payload.statut;
+      state.name = action.payload.name;
     },
 
     logout: (state) => {
@@ -25,6 +27,7 @@ export const userSlice = createSlice({
       state.statut = null;
       state.photos = [];
       state.userInfo = null; // Remettre userInfo à null lors de la déconnexion
+      state.name = null;
     },
     addPhoto: (state, action) => {
       state.photos.push(action.payload);
