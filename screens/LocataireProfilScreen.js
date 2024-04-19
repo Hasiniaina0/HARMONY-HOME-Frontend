@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Image,
@@ -10,32 +10,40 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
-import { addPhoto, removePhoto } from "../reducers/user";
-import { useIsFocused } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function LocataireProfilScreen() {
-  const dispatch = useDispatch();
-  const [inputDate, setInputDate] = useState(undefined);
-  const [email, setEmail] = useState("");
-  const [numPhone, setNumPhone] = useState("");
   const [aPropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
-  const [password, setPassword] = useState("");
+  const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
-  const [hasPermission, setHasPermission] = useState(false);
-  const isFocused = useIsFocused();
   const token = useSelector((state) => state.user.token);
   const navigation = useNavigation();
-
-  console.log("selected images", selectedImages);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/users/${token}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCity(data.city);
+        setApropos(data.aPropos);
+        setDescription(data.description);
+      })
+      .catch((error) =>
+        console.error(
+          "Erreur lors de la récupération des informations de l'utilisateur:",
+          error
+        )
+      );
+  }, []);
 
   // save la mise à jour
   const handleSaveProfil = () => {
@@ -44,9 +52,7 @@ export default function LocataireProfilScreen() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         token,
-        email,
-        numPhone,
-        password,
+        city,
         description,
         aPropos,
       }),
@@ -79,12 +85,11 @@ export default function LocataireProfilScreen() {
           })
           .catch((error) => console.log(error));
       })
+      .catch((error) => console.log(error))
       .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
   };
-  // if (!hasPermission || !isFocused) {
-  //   return <View />;
-  // }
 
+  // ajouter une image à partir de la galerie du téléphone
   const showImagePicker = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -108,78 +113,59 @@ export default function LocataireProfilScreen() {
 
   return (
     <SafeAreaView style={styles.inputsContainer}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <MaterialIcons
-          name="keyboard-backspace"
-          size={60}
-          onPress={() => navigation.goBack()}
-          style={styles.back}
-        />
-
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
-        <Text style={styles.title}> Je mets à jours mes informations </Text>
-
-        {/* <DatePickerInput
-        style={styles.date}
-        locale="fr"
-        label="date de naissance"
-        value={inputDate}
-        onChange={(d) => setInputDate(d)}
-        inputMode="start"
-      /> */}
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={(email) => setEmail(email)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Numéro de téléphone"
-          value={numPhone}
-          onChangeText={(numPhone) => setNumPhone(numPhone)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="nouveau mot de passe"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Parles nous de toi !"
-          value={aPropos}
-          onChangeText={(aPropos) => setApropos(aPropos)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Quelles sont tes motivations ?"
-          value={description}
-          onChangeText={(description) => setDescription(description)}
-        />
-        <Text> Partage des photos de ce qui te représente </Text>
-        <View style={styles.imageContainer}>
-          {selectedImages.map((image, index) => (
-            <Image
-              key={index}
-              source={{ uri: image.uri }}
-              style={styles.image}
-            />
-          ))}
-          <Button
-            title="Ajouter une image"
-            onPress={showImagePicker}
-            color="white"
+      <ScrollView style={styles.scrollView}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <MaterialIcons
+            name="keyboard-backspace"
+            size={60}
+            onPress={() => navigation.goBack()}
+            style={styles.back}
           />
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-          <Text style={styles.buttonText}>Mettre à jour</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+
+          <Image source={require("../assets/logo.png")} style={styles.logo} />
+          <Text style={styles.title}> Je mets à jour mon profil </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="ta ville"
+            secureTextEntry={true}
+            value={city}
+            onChangeText={(city) => setCity(city)}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Parles nous de toi !"
+            value={aPropos}
+            onChangeText={(aPropos) => setApropos(aPropos)}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Quelles sont tes motivations ?"
+            value={description}
+            onChangeText={(description) => setDescription(description)}
+          ></TextInput>
+          <Text> Partage des photos de ce qui te représente </Text>
+          <View style={styles.imageContainer}>
+            {selectedImages.map((image, index) => (
+              <Image
+                key={index}
+                source={{ uri: image.uri }}
+                style={styles.image}
+              />
+            ))}
+            <Button
+              title="Ajouter une image"
+              onPress={showImagePicker}
+              color="white"
+            />
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+            <Text style={styles.buttonText}>Mettre à jour</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 }
