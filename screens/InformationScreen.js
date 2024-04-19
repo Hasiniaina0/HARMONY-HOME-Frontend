@@ -1,28 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
+  ImageBackground,
   Image,
   TouchableOpacity,
   Text,
   StyleSheet,
-  Button,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
+  TextInput,
 } from "react-native";
-//import { DatePickerInput } from "react-native-paper-dates";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 
-export default function LocataireProfilScreen() {
-  const [aPropos, setApropos] = useState("");
-  const [description, setDescription] = useState("");
-  const [city, setCity] = useState("");
+export default function SignInScreen() {
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [email, setEmail] = useState("");
+  const [numPhone, setNumPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
   const navigation = useNavigation();
@@ -33,9 +35,12 @@ export default function LocataireProfilScreen() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setCity(data.city);
-        setApropos(data.aPropos);
-        setDescription(data.description);
+        setNom(data.nom);
+        setPrenom(data.prenom);
+        setEmail(data.email);
+        setNumPhone(data.numPhone);
+        setPassword(data.password);
+        setConfirmPassword(data.confirmPassword);
       })
       .catch((error) =>
         console.error(
@@ -44,22 +49,21 @@ export default function LocataireProfilScreen() {
         )
       );
   }, []);
-
   // save la mise à jour
   const handleSaveProfil = () => {
-    fetch(`${BACKEND_URL}/updates/profil`, {
+    fetch(`${BACKEND_URL}/updates/information`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         token,
-        city,
-        description,
-        aPropos,
+        email,
+        numPhone,
+        password,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Profil mis à jour:", data);
+        console.log("Informations mis à jour:", data);
         // save photo dans cloudinary
 
         const formData = new FormData();
@@ -86,7 +90,7 @@ export default function LocataireProfilScreen() {
           .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error))
-      .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
+      .finally(() => navigation.navigate("Account"));
   };
 
   // ajouter une image à partir de la galerie du téléphone
@@ -126,27 +130,50 @@ export default function LocataireProfilScreen() {
           />
 
           <Image source={require("../assets/logo.png")} style={styles.logo} />
-          <Text style={styles.title}> Je mets à jour mon profil </Text>
+          <Text style={styles.title}>
+            {" "}
+            Je mets à jour mes informations personnelles{" "}
+          </Text>
           <TextInput
             style={styles.input}
-            placeholder="ta ville"
+            placeholder="Nom"
             secureTextEntry={true}
-            value={city}
-            onChangeText={(city) => setCity(city)}
+            value={nom}
+            onChangeText={(nom) => setNom(nom)}
           ></TextInput>
           <TextInput
             style={styles.input}
-            placeholder="Parles nous de toi !"
-            value={aPropos}
-            onChangeText={(aPropos) => setApropos(aPropos)}
+            placeholder="Prénom"
+            value={prenom}
+            onChangeText={(prenom) => setPrenom(prenom)}
           ></TextInput>
           <TextInput
             style={styles.input}
-            placeholder="Quelles sont tes motivations ?"
-            value={description}
-            onChangeText={(description) => setDescription(description)}
+            placeholder="Email"
+            value={email}
+            onChangeText={(email) => setEmail(email)}
           ></TextInput>
-          <Text> Partage des photos de ce qui te représente </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Numéro de téléphone"
+            value={numPhone}
+            onChangeText={(numPhone) => setNumPhone(numPhone)}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Mot de passe"
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirmer mot de passe"
+            value={confirmPassword}
+            onChangeText={(confirmPassword) =>
+              setConfirmPassword(confirmPassword)
+            }
+          ></TextInput>
+          {/* <Text> Partage des photos de ce qui te représente </Text>
           <View style={styles.imageContainer}>
             {selectedImages.map((image, index) => (
               <Image
@@ -160,7 +187,7 @@ export default function LocataireProfilScreen() {
               onPress={showImagePicker}
               color="white"
             />
-          </View>
+          </View> */}
           <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
             <Text style={styles.buttonText}>Mettre à jour</Text>
           </TouchableOpacity>
@@ -169,7 +196,6 @@ export default function LocataireProfilScreen() {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   inputsContainer: {
     flex: 1,

@@ -47,7 +47,10 @@ export default function AccountScreen() {
               <Text style={styles.textNom}>Prénom de l'utilisateur</Text>
             </View>
             <View style={styles.containerText}>
-              <Text style={styles.text} onPress={() => navigation.navigate("")}>
+              <Text
+                style={styles.text}
+                onPress={() => navigation.navigate("Information")}
+              >
                 Mes informations personnelles
               </Text>
               <Text

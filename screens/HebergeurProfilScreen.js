@@ -31,7 +31,7 @@ export default function HebergeurProfilScreen() {
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users/${token}`)
+    fetch(`${BACKEND_URL}/users/token/${token}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

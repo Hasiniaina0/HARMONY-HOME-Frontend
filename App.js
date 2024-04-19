@@ -14,6 +14,8 @@ import DescriptionAnnouncementScreen from "./screens/DescriptionAnnouncementScre
 import AnnouncementScreen from "./screens/AnnouncementScreen";
 // import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
+import InformationScreen from "./screens/InformationScreen";
+
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
@@ -88,7 +90,10 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="DescriptionAnnouncement" component={DescriptionAnnouncementScreen} />
+          <Stack.Screen
+            name="DescriptionAnnouncement"
+            component={DescriptionAnnouncementScreen}
+          />
           <Stack.Screen name="AnnonceProfile" component={AnnouncementScreen} />
           <Stack.Screen
             name="HebergeurProfil"
@@ -99,6 +104,7 @@ export default function App() {
             component={LocataireProfilScreen}
           />
           <Stack.Screen name="Preferences" component={PreferencesScreen} />
+          <Stack.Screen name="Information" component={InformationScreen} />
           {/* <Stack.Screen name="UpdateProfil" component={UpdateProfilScreen} /> */}
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
