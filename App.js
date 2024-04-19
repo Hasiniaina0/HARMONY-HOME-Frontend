@@ -5,6 +5,7 @@ import HomeScreen from "./screens/HomeScreen"; // Page d'acceuil
 import AccountScreen from "./screens/AccountScreen"; // Page mon compte
 import SignUpScreen from "./screens/SignUpScreen"; // Page d'inscription
 import SignInScreen from "./screens/SignInScreen"; // Page de connexion
+import LocataireProfilScreen from "./screens/LocataireProfilScreen"; // Page de profil locataire
 import MessagesScreen from "./screens/MessagesScreen"; // page message
 import FavoritesScreen from "./screens/FavoritesScreen";
 import ThreadScreen from "./screens/ThreadScreen";
@@ -84,6 +85,10 @@ export default function App() {
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="UpdateProfil" component={UpdateProfilScreen} />
+          <Stack.Screen
+            name="LocataireProfil"
+            component={LocataireProfilScreen}
+          />
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
       </NavigationContainer>

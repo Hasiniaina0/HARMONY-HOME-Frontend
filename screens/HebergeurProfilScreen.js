@@ -21,8 +21,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function HebergeurProfilScreen() {
   const navigation = useNavigation();
-  const [nom, setNom] = useState("");
-  const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [numPhone, setNumPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +40,7 @@ export default function HebergeurProfilScreen() {
         numPhone,
         password,
         description,
-        aPropos,
+        apropos,
       }),
     })
       .then((response) => response.json())
