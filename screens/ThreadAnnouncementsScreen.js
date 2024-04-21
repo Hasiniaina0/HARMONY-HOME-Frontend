@@ -60,6 +60,7 @@ export default function ThreadAnnouncementsScreen() {
 
     // Tronquez le texte si nécessaire
     if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
     }
 
     // Retourne le texte tel quel s'il n'est pas trop long

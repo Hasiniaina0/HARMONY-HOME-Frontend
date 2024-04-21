@@ -34,7 +34,7 @@ export default function SignInScreen({ navigation }) {
         password: password,
       }),
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
         if (data.result) {
           dispatch(
@@ -55,7 +55,9 @@ export default function SignInScreen({ navigation }) {
           // }
         } else {
           // Erreur de connexion
-          alert("La connexion n'est pas réussie. Veuillez entrer le bon email et mot de passe !")
+          alert(
+            "La connexion n'est pas réussie. Veuillez entrer le bon email et mot de passe !"
+          );
           setErrorMessage(data.error);
         }
       })
@@ -71,52 +73,49 @@ export default function SignInScreen({ navigation }) {
   };
 
   return (
-    
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
-        <View style={styles.sloganTitle}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <Image source={require("../assets/logo.png")} style={styles.logo} />
+      <View style={styles.sloganTitle}>
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
         <Text style={styles.slogan}>de vie et de partage</Text>
-        </View>
+      </View>
 
-        <View style={styles.inputsContainer}>
-          <View>
-            <Text style={styles.inputTitle}>Email :</Text>
-          </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={(email) => setEmail(email)}
-          />
-          <View>
-            <Text style={styles.inputTitle}>Mot de passe :</Text>
-          </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Mot de passe"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={(password) => setPassword(password)}
-          />
+      <View style={styles.inputsContainer}>
+        <View>
+          <Text style={styles.inputTitle}>Email :</Text>
         </View>
-        <TouchableOpacity onPress={() => toggleModal()}>
-          <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.signInButton}
-          onPress={() => handleConnection()}
-        >
-          <Text style={styles.signInButtonText}>Connexion</Text>
-        </TouchableOpacity>
-        {errorMessage && (
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
-        )}
-        <Modal
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={(email) => setEmail(email)}
+        />
+        <View>
+          <Text style={styles.inputTitle}>Mot de passe :</Text>
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Mot de passe"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(password) => setPassword(password)}
+        />
+      </View>
+      <TouchableOpacity onPress={() => toggleModal()}>
+        <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.signInButton}
+        onPress={() => handleConnection()}
+      >
+        <Text style={styles.signInButtonText}>Connexion</Text>
+      </TouchableOpacity>
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+      <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -157,9 +156,7 @@ export default function SignInScreen({ navigation }) {
           </View>
         </View>
       </Modal>
-      </KeyboardAvoidingView>
-      
-    
+    </KeyboardAvoidingView>
   );
 }
 
@@ -175,23 +172,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    marginTop:50,
+    marginTop: 50,
     width: 340,
     height: 300,
   },
-  sloganTitle:{
-    marginBottom:50,
+  sloganTitle: {
+    marginBottom: 50,
   },
   slogan: {
     fontSize: 15,
     color: "black",
     alignItems: "center",
     justifyContent: "center",
-    textAlign:"center",
-    
+    textAlign: "center",
   },
-  inputTitle:{
-    marginBottom:15,
+  inputTitle: {
+    marginBottom: 15,
   },
   inputsContainer: {
     width: "90%",
@@ -211,8 +207,8 @@ const styles = StyleSheet.create({
   forgotPassword: {
     margin: 20,
     color: "#1877F2",
-    textDecorationLine:"underline",
-    textAlign:"right"
+    textDecorationLine: "underline",
+    textAlign: "right",
   },
   signInButton: {
     backgroundColor: "#4FAAAF",
@@ -273,7 +269,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  inputsContainer:{
-    marginLeft:10,
-  }
+  inputsContainer: {
+    marginLeft: 10,
+  },
 });
