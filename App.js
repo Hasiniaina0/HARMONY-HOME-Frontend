@@ -40,9 +40,9 @@ const TabNavigator = () => {
         tabBarActiveTintColor: "#eb4034",
       }}
     >
-      {/* <Tab.Screen
-        name="Chat"
-        component={ChatScreen}
+      <Tab.Screen
+        name="Messages"
+        component={MessagesScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons
@@ -52,7 +52,7 @@ const TabNavigator = () => {
             />
           ),
         }}
-      ></Tab.Screen> */}
+      ></Tab.Screen>
       <Tab.Screen
         name="Thread"
         component={ThreadScreen}
