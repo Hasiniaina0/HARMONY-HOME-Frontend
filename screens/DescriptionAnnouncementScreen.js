@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default function DescriptionAnnouncementScreen() {
   const navigation = useNavigation();
@@ -69,7 +70,14 @@ export default function DescriptionAnnouncementScreen() {
      {userDetails && (
         <View >
     
+
           <View style={styles.titre}>
+            <MaterialIcons
+              name="keyboard-backspace"
+              size={60}
+              onPress={() => navigation.goBack()}
+              style={styles.back}
+            />
             <Text style={styles.titreAnnonce}>Annonce de {userDetails.prenom} </Text>
           </View>
           <View >
