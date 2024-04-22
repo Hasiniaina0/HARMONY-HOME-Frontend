@@ -12,7 +12,7 @@ import FavoritesScreen from "./screens/FavoritesScreen";
 import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
 import DescriptionAnnouncementScreen from "./screens/DescriptionAnnouncementScreen";
-import AnnouncementScreen from "./screens/AnnouncementScreen";
+import AnnouncementScreen from "./screens/DescriptionProfilScreen";
 // import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
 import InformationScreen from "./screens/InformationScreen";
@@ -103,7 +103,7 @@ export default function App() {
             }
             }}
           />
-          <Stack.Screen name="AnnonceProfile" component={AnnouncementScreen} />
+          <Stack.Screen name="DescriptionProfile" component={DescriptionProfilScreen} />
           <Stack.Screen name="MessageScreen" component={MessagesScreen} />
           <Stack.Screen
             name="HebergeurProfil"

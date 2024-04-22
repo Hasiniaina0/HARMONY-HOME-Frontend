@@ -38,7 +38,7 @@ export default function ThreadAnnouncementsScreen() {
 
   const handleDetailsAnnonce = (announceToken) => {
     // Naviguer vers l'écran de détails de l'annonce et passer les détails de l'annonce
-    navigation.navigate('AnnonceProfile', {token:announceToken});
+    navigation.navigate('DescriptionProfile', {token:announceToken});
   };
 
   const handleFavorite = (announcement) => {
