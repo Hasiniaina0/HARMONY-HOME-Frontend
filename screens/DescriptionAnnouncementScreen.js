@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useLayoutEffect} from "react";
 import {
   View,
   Image,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  FlatList
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -28,6 +29,7 @@ export default function DescriptionAnnouncementScreen() {
         console.log(data);
         // Vérifiez si la réponse contient les données attendues
         setUserDetails(data);
+        navigation.setOptions({ headerTitle: `Logement de ${data.prenom}` });
       })
       .catch((error) => {
         console.error(
@@ -35,7 +37,32 @@ export default function DescriptionAnnouncementScreen() {
           error
         );
       });
-  }, []);
+  }, [,]);
+
+  // Configurer les options de navigation pour le header
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: "#4FAAAF", // Couleur de fond du header
+      },
+      headerTitle: `Logement de ${userDetails ? userDetails.prenom : ''}`,
+      headerStyle: {
+        backgroundColor: "#4FAAAF",
+      },
+      headerTitleStyle: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+      },
+      headerTitleAlign: "center",
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+          <MaterialIcons name="keyboard-backspace" size={24} color="white" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, userDetails]);
 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
@@ -61,6 +88,11 @@ export default function DescriptionAnnouncementScreen() {
     navigation.navigate("Favorites");
   };
 
+  // Function to render each photo in the gallery
+  const renderPhoto = ({ item }) => (
+    <Image source={{ uri: item }} style={styles.photo} alt="Photo de logement" />
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -70,23 +102,24 @@ export default function DescriptionAnnouncementScreen() {
         >
           {userDetails && (
             <View>
-              <View style={styles.titre}>
-                <MaterialIcons
-                  name="keyboard-backspace"
-                  size={60}
-                  onPress={() => navigation.goBack()}
-                  style={styles.back}
-                />
-                <Text style={styles.titreAnnonce}>
-                  Logement de {userDetails.prenom}{" "}
-                </Text>
-              </View>
               <View>
-                <Image
-                  source={require("../assets/logement.jpg")}
-                  alt="photo de logement"
-                  style={styles.image}
+                 {/* Conditionally render the gallery or a default image */}
+                 {userDetails.photos && userDetails.photos.length > 0 ? (
+                 <FlatList
+                  data={userDetails.photos}
+                  horizontal={true}
+                  renderItem={renderPhoto}
+                  keyExtractor={(item, index) => index.toString()}
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.gallery}
                 />
+                ) : (
+                  <Image
+                    source={require("../assets/annonce.png")}
+                    style={styles.gallery}
+                    alt="Image par défaut"
+                  />
+                )}
                 <Text style={styles.desc}>A propos du logement : </Text>
                 <Text style={styles.apropos}>Situé à {userDetails.city}</Text>
                 <Text style={styles.apropos}> {userDetails.description}</Text>
@@ -132,11 +165,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "100%",
   },
-  titre: {
-    marginTop: 50,
+ 
+  gallery: {
+    marginBottom: 16,
+  },
+  photo: {
+    width: 200, // Ajustez la taille de l'image selon vos besoins
+    height: 200,
+    marginRight: 10, // Espace entre les images
+    borderRadius: 10,
   },
   apropos: {
     textAlign: "justify", // Aligne le texte justifié
+  },
+  headerTitle: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  headerLeft: {
+    paddingHorizontal: 10,
   },
   buttonContainer: {
     flexDirection: "row", // Aligne les boutons côte à côte
@@ -147,6 +195,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
+    fontSize:17,
+   
+    
   },
   titreAnnonce: {
     textAlign: "center",
