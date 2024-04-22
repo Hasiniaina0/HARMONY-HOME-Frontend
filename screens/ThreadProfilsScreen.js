@@ -110,7 +110,7 @@ export default function ThreadAnnouncementsScreen() {
                 color={
                   userFavorites.some((fav) => fav._id === announcement._id)
                     ? "red"
-                    : "#4FAAAF"
+                    : "red"
                 }
               />
             </TouchableOpacity>
