@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Image,
   TouchableOpacity,
   Text,
   StyleSheet,
@@ -10,53 +9,217 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  Switch,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import WheelPickerExpo from "react-native-wheel-picker-expo";
 
 export default function PreferencesScreen() {
-  const [selectedValue, setSelectedValue] = useState("");
+  const [citySearch, setCitySearch] = useState("");
+  const [accommodationType, setAccommodationType] = useState("");
+  const [duration, setDuration] = useState("");
+  const [smoke, setSmoke] = useState(false);
+  const [animals, setAnimals] = useState(false);
+  const [visit, setVisit] = useState(false);
+  const [car, setCar] = useState(false);
+  const [pool, setPool] = useState(false);
+  const [prmAccess, setPrmAccess] = useState(false);
+  const [garden, setGarden] = useState(false);
+  const [balcon, setBalcon] = useState(false);
+  const user = useSelector((state) => state.user);
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/users/token/${user.token}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCitySearch(data.options.citySearch);
+        setAccommodationType(data.options.accommodationType);
+        setDuration(data.options.duration);
+        setSmoke(data.options.smoke);
+        setAnimals(data.options.animals);
+        setVisit(data.options.visit);
+        setCar(data.options.car);
+        setPool(data.options.pool);
+        setPrmAccess(data.options.prmAccess);
+        setGarden(data.options.garden);
+        setBalcon(data.options.balcon);
+      })
+      .catch((error) =>
+        console.error(
+          "Erreur lors de la récupération des préférences de l'utilisateur:",
+          error
+        )
+      );
+  }, []);
+  // save la mise à jour
+  const handleSaveOptions = () => {
+    fetch(`${BACKEND_URL}/updates/options`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token,
+        citySearch,
+        accommodationType,
+        duration,
+        smoke,
+        animals,
+        visit,
+        car,
+        pool,
+        prmAccess,
+        garden,
+        balcon,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Options mis à jour:", data);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => navigation.navigate("AccountScreen"));
+  };
+
+  const typeChoices = [
+    "Maison",
+    "Appartement",
+    "Villa",
+    "Manoir",
+    "Château",
+    "Cabane",
+    "Hutte",
+    "Camping-car",
+    "Mobile-home",
+  ];
+  const COLORS = {
+    primary: "#f0f0f0",
+    secondary: "#f0f0f0", // Remplace "YourSecondaryColor" par la couleur que tu souhaites utiliser
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         <KeyboardAvoidingView
-          style={styles.container}
+          style={styles.keyboardAvoidingContainer}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <ScrollView style={styles.scrollView}>
-            <View>
+          <View style={styles.inputContainer}>
+            {user.statut === "locataire" && (
               <TextInput
                 style={styles.input}
                 placeholder="Ville"
                 placeholderTextColor="#4FAAAF"
+                value={citySearch}
+                onChangeText={(citySearch) => setCitySearch(citySearch)}
               />
-              <TextInput
-                style={styles.input}
-                placeholder="Durée de location souhaitée"
-                placeholderTextColor="#4FAAAF"
-              />
-            </View>
-            <Picker
-              selectedValue={selectedValue}
-              label="Sélectionner un type de logement"
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedValue(itemValue)
-              }
-              style={styles.picker}
-            >
-              <Picker.Item label="Maison" value="maison" />
-              <Picker.Item label="Appartement" value="appartement" />
-              <Picker.Item label="Villa" value="villa" />
-              <Picker.Item label="Manoir" value="manoir" />
-              <Picker.Item label="Château" value="chateau" />
-              <Picker.Item label="Cabane" value="cabane" />
-              <Picker.Item label="Hutte" value="hutte" />
-              <Picker.Item label="Camping-car" value="campingcar" />
-            </Picker>
-          </ScrollView>
+            )}
+            <TextInput
+              style={styles.input}
+              placeholder="Durée de location souhaitée"
+              placeholderTextColor="#4FAAAF"
+              value={duration}
+              onChangeText={(duration) => setDuration(duration)}
+            />
+          </View>
+
+          <WheelPickerExpo
+            height={200}
+            width={200}
+            selectedStyle={{ borderColor: COLORS.secondary, borderWidth: 1 }}
+            initialSelectedIndex={1}
+            backgroundColor={COLORS.primary}
+            items={typeChoices.map((typeChoice) => ({
+              label: typeChoice,
+              value: typeChoice.toLowerCase(),
+            }))}
+            onChange={({ item }) => setAccommodationType(item.value)}
+          />
+          <View style={styles.switchContainer}>
+            <Text>Fumeur autorisé</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={smoke ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setSmoke(value)}
+              value={smoke}
+            />
+          </View>
+          <View style={styles.switchContainer}>
+            <Text>Animaux autorisés</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={animals ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setAnimals(value)}
+              value={animals}
+            />
+          </View>
+          <View style={styles.switchContainer}>
+            <Text>Visite autorisée</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={visit ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setVisit(value)}
+              value={visit}
+            />
+          </View>
+          <View style={styles.switchContainer}>
+            <Text>Véhicule disponible</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={car ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setCar(value)}
+              value={car}
+            />
+          </View>
+          <View style={styles.switchContainer}>
+            <Text>Piscine</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={pool ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setPool(value)}
+              value={pool}
+            />
+          </View>
+          <View style={styles.switchContainer}>
+            <Text>Accès PMR</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={prmAccess ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setPrmAccess(value)}
+              value={prmAccess}
+            />
+          </View>
+          <View style={styles.switchContainer}>
+            <Text>Jardin</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={garden ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setGarden(value)}
+              value={garden}
+            />
+          </View>
+          <View style={styles.switchContainer}>
+            <Text>Terrasse</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={balcon ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => setBalcon(value)}
+              value={balcon}
+            />
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={handleSaveOptions}>
+            <Text style={styles.buttonText}>Mettre à jour</Text>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -66,25 +229,45 @@ export default function PreferencesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollView: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  keyboardAvoidingContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   inputContainer: {
     marginBottom: 20,
+    alignItems: "center",
   },
   input: {
-    width: "80%",
+    width: 300,
     height: 40,
     paddingHorizontal: 10,
     backgroundColor: "#f0f0f0",
     borderRadius: 10,
-  },
-  picker: {
-    width: "80%",
-    height: 50,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 10,
-    paddingHorizontal: 10,
     marginBottom: 20,
+  },
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: "#4FAAAF",
+    color: "white",
+    marginTop: 30,
+    padding: 10,
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 15,
   },
 });
