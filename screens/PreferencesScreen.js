@@ -100,33 +100,33 @@ export default function PreferencesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <KeyboardAvoidingView
-          style={styles.keyboardAvoidingContainer}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <View style={styles.inputContainer}>
-            {user.statut === "locataire" && (
-              <TextInput
-                style={styles.input}
-                placeholder="Ville"
-                placeholderTextColor="#4FAAAF"
-                value={citySearch}
-                onChangeText={(citySearch) => setCitySearch(citySearch)}
-              />
-            )}
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingContainer}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <View style={styles.inputContainer}>
+          {user.statut === "locataire" && (
             <TextInput
               style={styles.input}
-              placeholder="Durée de location souhaitée"
+              placeholder="Ville"
               placeholderTextColor="#4FAAAF"
-              value={duration}
-              onChangeText={(duration) => setDuration(duration)}
+              value={citySearch}
+              onChangeText={(citySearch) => setCitySearch(citySearch)}
             />
-          </View>
-
+          )}
+          <TextInput
+            style={styles.input}
+            placeholder="Durée de location souhaitée"
+            placeholderTextColor="#4FAAAF"
+            value={duration}
+            onChangeText={(duration) => setDuration(duration)}
+          />
+        </View>
+        <View style={styles.pickerContainer}>
+          <Text>Type de logement :</Text>
           <WheelPickerExpo
-            height={200}
-            width={200}
+            height={150}
+            width={150}
             selectedStyle={{ borderColor: COLORS.secondary, borderWidth: 1 }}
             initialSelectedIndex={1}
             backgroundColor={COLORS.primary}
@@ -136,8 +136,10 @@ export default function PreferencesScreen() {
             }))}
             onChange={({ item }) => setAccommodationType(item.value)}
           />
-          <View style={styles.switchContainer}>
-            <Text>Fumeur autorisé</Text>
+        </View>
+        <View style={styles.switchContainer}>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Fumeur autorisé</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={smoke ? "#f5dd4b" : "#f4f3f4"}
@@ -146,8 +148,8 @@ export default function PreferencesScreen() {
               value={smoke}
             />
           </View>
-          <View style={styles.switchContainer}>
-            <Text>Animaux autorisés</Text>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Animaux autorisés</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={animals ? "#f5dd4b" : "#f4f3f4"}
@@ -156,8 +158,8 @@ export default function PreferencesScreen() {
               value={animals}
             />
           </View>
-          <View style={styles.switchContainer}>
-            <Text>Visite autorisée</Text>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Visite autorisée</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={visit ? "#f5dd4b" : "#f4f3f4"}
@@ -166,8 +168,8 @@ export default function PreferencesScreen() {
               value={visit}
             />
           </View>
-          <View style={styles.switchContainer}>
-            <Text>Véhicule disponible</Text>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Véhicule disponible</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={car ? "#f5dd4b" : "#f4f3f4"}
@@ -176,8 +178,8 @@ export default function PreferencesScreen() {
               value={car}
             />
           </View>
-          <View style={styles.switchContainer}>
-            <Text>Piscine</Text>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Piscine</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={pool ? "#f5dd4b" : "#f4f3f4"}
@@ -186,8 +188,8 @@ export default function PreferencesScreen() {
               value={pool}
             />
           </View>
-          <View style={styles.switchContainer}>
-            <Text>Accès PMR</Text>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Accès PMR</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={prmAccess ? "#f5dd4b" : "#f4f3f4"}
@@ -196,8 +198,8 @@ export default function PreferencesScreen() {
               value={prmAccess}
             />
           </View>
-          <View style={styles.switchContainer}>
-            <Text>Jardin</Text>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Jardin</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={garden ? "#f5dd4b" : "#f4f3f4"}
@@ -206,8 +208,8 @@ export default function PreferencesScreen() {
               value={garden}
             />
           </View>
-          <View style={styles.switchContainer}>
-            <Text>Terrasse</Text>
+          <View style={styles.switchInput}>
+            <Text style={styles.switchText}>Terrasse</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={balcon ? "#f5dd4b" : "#f4f3f4"}
@@ -216,12 +218,12 @@ export default function PreferencesScreen() {
               value={balcon}
             />
           </View>
+        </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleSaveOptions}>
-            <Text style={styles.buttonText}>Mettre à jour</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </ScrollView>
+        <TouchableOpacity style={styles.button} onPress={handleSaveOptions}>
+          <Text style={styles.buttonText}>Mettre à jour</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -230,17 +232,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollView: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   keyboardAvoidingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding: 20,
   },
   inputContainer: {
+    width: "100%",
     marginBottom: 20,
     alignItems: "center",
   },
@@ -253,10 +252,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   switchContainer: {
+    marginTop: 50,
+  },
+  switchInput: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
+  },
+  switchText: {
+    marginRight: 50,
+    color: "#4FAAAF",
   },
   button: {
     backgroundColor: "#4FAAAF",
