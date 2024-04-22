@@ -19,6 +19,8 @@ export default function ThreadAnnouncementsScreen() {
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const userFavorites = useSelector((state) => state.user.favorites);
   const dispatch = useDispatch();
+  // Chemin de l'image d'avatar par défaut
+  const defaultAvatar = require("../assets/annonce.png");
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/hebergeur`)
@@ -92,7 +94,19 @@ export default function ThreadAnnouncementsScreen() {
             </TouchableOpacity>
             <View style={styles.imageContainer}>
               
-              {announcement.photos?.length>0 && (<Image source={{uri:announcement.photos[0] }} alt="photo de logement" style={styles.imageProfil}/>)}
+              {announcement.photos?.length>0 ? (
+                <Image source={{uri:announcement.photos[0] }} 
+                alt="photo de logement" 
+                style={styles.imageProfil}
+                />
+              ): (
+                // Utilisez l'avatar par défaut si aucune photo n'est disponible
+                <Image
+                  source={defaultAvatar}
+                  style={styles.imageProfil}
+                  alt="Avatar par défaut"
+                />
+              )}
   
             </View>
             <View style={styles.textContainer}>

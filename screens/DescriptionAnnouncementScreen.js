@@ -78,7 +78,7 @@ export default function DescriptionAnnouncementScreen() {
                   style={styles.back}
                 />
                 <Text style={styles.titreAnnonce}>
-                  Annonce de {userDetails.prenom}{" "}
+                  Logement de {userDetails.prenom}{" "}
                 </Text>
               </View>
               <View>
