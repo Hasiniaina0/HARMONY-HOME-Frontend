@@ -39,10 +39,10 @@ export default function PreferencesScreen() {
         </View>
         <Picker
           selectedValue={selectedValue}
+          label="Sélectionner un type de logement"
           onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
           style={styles.picker}
         >
-          <Picker.Item label="Sélectionner un type de logement" value="" />
           <Picker.Item label="Maison" value="maison" />
           <Picker.Item label="Appartement" value="appartement" />
           <Picker.Item label="Villa" value="villa" />
