@@ -95,15 +95,19 @@ export default function App() {
           <Stack.Screen
             name="DescriptionAnnouncement"
             component={DescriptionAnnouncementScreen}
-            options={{title: "Annonces" ,
-            headerStyle: { backgroundColor: '#4FAAAF' },
-            headerTintColor: '#black',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            }
+            options={{
+              title: "Annonces",
+              headerStyle: { backgroundColor: "#4FAAAF" },
+              headerTintColor: "#black",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
             }}
           />
-          <Stack.Screen name="DescriptionProfile" component={DescriptionProfilScreen} />
+          <Stack.Screen
+            name="DescriptionProfile"
+            component={DescriptionProfilScreen}
+          />
           <Stack.Screen name="MessageScreen" component={MessagesScreen} />
           <Stack.Screen
             name="HebergeurProfil"
