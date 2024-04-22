@@ -38,21 +38,7 @@ export default function AnnouncementScreen() {
       });
   }, []);
 
-  function truncateText(text, maxLength) {
-    // Vérifiez si le texte est défini et non nul
-    if (text === undefined || text === null) {
-      return "";
-    }
-
-    // Tronquez le texte si nécessaire
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + "...";
-    }
-
-    // Retourne le texte tel quel s'il n'est pas trop long
-    return text;
-  }
-
+ 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
   };
@@ -103,7 +89,7 @@ export default function AnnouncementScreen() {
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
                 <Text style={styles.desc}>Ses motivations : </Text>
                 <Text style={styles.apropos}>
-                  {truncateText(userDetails.description, 80)}
+                  {userDetails.description}
                 </Text>
                 <Image
                   source={require("../assets/avatar1.jpg")}
