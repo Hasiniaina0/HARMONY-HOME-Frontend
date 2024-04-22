@@ -8,7 +8,7 @@ import SignInScreen from "./screens/SignInScreen"; // Page de connexion
 import LocataireProfilScreen from "./screens/LocataireProfilScreen"; // Page de profil locataire
 import MessagesScreen from "./screens/MessagesScreen"; // page discussion avec 1 utilisateur
 import FavoritesScreen from "./screens/FavoritesScreen";
-import AllChatScreen from "./screens/AllChatScreen"; // tous les messages
+import ChatScreen from "./screens/ChatScreen"; // chat instantanée
 import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
 import DescriptionAnnouncementScreen from "./screens/DescriptionAnnouncementScreen";
@@ -42,8 +42,8 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="MessageScreen"
-        component={MessagesScreen}
+        name="Chat"
+        component={ChatScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons
@@ -101,7 +101,7 @@ export default function App() {
             component={DescriptionProfilScreen}
           />
           <Stack.Screen name="MessageScreen" component={MessagesScreen} />
-          <Stack.Screen name="AllChat" component={AllChatScreen} />
+          <Stack.Screen name="Chat" component={ChatScreen} />
 
           <Stack.Screen
             name="HebergeurProfil"
