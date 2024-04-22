@@ -16,39 +16,39 @@ export default function ChatScreen({ navigation }) {
   const user = useSelector((state) => state.user);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
-  // useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     fetch(`${BACKEND_URL}/chat/messages/${user.token}`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw new Error("Erreur lors de la récupération des messages");
-  //         }
-  //         return response.json();
-  //       })
-  //       .then((data) => {
-  //         setConversations(data); // Mettre à jour l'état avec les messages récupérés
-  //       })
-  //       .catch((error) => {
-  //         console.error("Erreur lors de la récupération des messages :", error);
-  //         // Gérer l'erreur ici, par exemple afficher un message à l'utilisateur
-  //       });
-  //   };
+  useEffect(() => {
+    const fetchMessages = async () => {
+      fetch(`${BACKEND_URL}/chat/messages/${user.token}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des messages");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setConversations(data); // Mettre à jour l'état avec les messages récupérés
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des messages :", error);
+          // Gérer l'erreur ici, par exemple afficher un message à l'utilisateur
+        });
+    };
 
-  //   fetchMessages();
-  // }, [user.token]);
+    fetchMessages();
+  }, [user.token]);
 
-  // const handleConversationPress = (conversation) => {
-  //   navigation.navigate("MessageScreen", { conversation });
-  // };
+  const handleConversationPress = (conversation) => {
+    navigation.navigate("MessageScreen", { conversation });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View>
+      <View>
         <Text> Mes conversations </Text>
 
         {conversations.map((conversation, index) => (
@@ -72,7 +72,7 @@ export default function ChatScreen({ navigation }) {
             </View>
           </TouchableOpacity>
         ))}
-      </View> */}
+      </View>
     </SafeAreaView>
   );
 }
