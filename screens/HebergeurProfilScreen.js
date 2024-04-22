@@ -137,7 +137,7 @@ export default function HebergeurProfilScreen() {
             onChangeText={(city) => setCity(city)}
           ></TextInput>
           <TextInput
-            style={styles.input1}
+            style={styles.input}
             placeholder="Parlez-nous de vous"
             value={aPropos}
             onChangeText={(aPropos) => setApropos(aPropos)}
