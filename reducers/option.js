@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { options } from "../../HARMONY-HOMY-Backend/routes/updates";
+// import { options } from "../../HARMONY-HOMY-Backend/routes/updates";
 
 const initialState = {
-  options: {},
+  value: {},
 };
 
 export const optionSlice = createSlice({
@@ -10,15 +10,28 @@ export const optionSlice = createSlice({
   initialState,
   reducers: {
     updateOptions: (state, action) => {
-      state.value.city = action.payload.city;
-      state.value.accommodationType = action.payload.accommodationType;
-      state.value.duration = action.payload.duration;
-      state.value.smoke = action.payload.smoke;
-      state.value.animals = action.payload.animals;
-      state.value.visit = action.payload.visit;
-      state.value.car = action.payload.car;
-      state.value.pool = action.payload.pool;
-      state.value.prmAccess = action.payload.prmAccess;
+      const {
+        city,
+        accommodationType,
+        duration,
+        smoke,
+        animals,
+        visit,
+        car,
+        pool,
+        prmAccess,
+      } = action.payload;
+      state.value = {
+        city,
+        accommodationType,
+        duration,
+        smoke,
+        animals,
+        visit,
+        car,
+        pool,
+        prmAccess,
+      };
     },
   },
 });

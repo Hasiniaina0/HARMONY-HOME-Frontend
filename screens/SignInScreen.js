@@ -48,11 +48,6 @@ export default function SignInScreen({ navigation }) {
           setEmail("");
           setPassword("");
           navigation.navigate("TabNavigator", { screen: "Thread" });
-          // if (data.statut === "hebergeur") {cd Backen
-          //   navigation.navigate("TabNavigator", { screen: "ThreadProfils" });
-          // } else {
-          //   navigation.navigate("TabNavigator", { screen: "ThreadAnnouncements" });
-          // }
         } else {
           // Erreur de connexion
           alert(
@@ -91,7 +86,7 @@ export default function SignInScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          value={email}
+          value={email.toString()}
           onChangeText={(email) => setEmail(email)}
         />
         <View>

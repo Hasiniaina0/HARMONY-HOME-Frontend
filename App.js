@@ -17,15 +17,31 @@ import DescriptionProfilScreen from "./screens/DescriptionProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
 import InformationScreen from "./screens/InformationScreen";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import user from "./reducers/user";
 import { Ionicons } from "@expo/vector-icons";
 import { Title } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import user from "./reducers/user";
+import option from "./reducers/option";
+
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const reducers = combineReducers({ user, option });
+const persistConfig = {
+  key: "harmonyhome",
+  storage: AsyncStorage,
+};
+
 const store = configureStore({
-  reducer: { user },
+  reducer: persistReducer(persistConfig, reducers),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
+
+const persistor = persistStore(store);
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,36 +103,38 @@ const TabNavigator = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen
-            name="DescriptionAnnouncement"
-            component={DescriptionAnnouncementScreen}
-          />
-          <Stack.Screen
-            name="DescriptionProfile"
-            component={DescriptionProfilScreen}
-          />
-          <Stack.Screen name="MessageScreen" component={MessagesScreen} />
-          <Stack.Screen name="Chat" component={ChatScreen} />
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen
+              name="DescriptionAnnouncement"
+              component={DescriptionAnnouncementScreen}
+            />
+            <Stack.Screen
+              name="DescriptionProfile"
+              component={DescriptionProfilScreen}
+            />
+            <Stack.Screen name="MessageScreen" component={MessagesScreen} />
+            <Stack.Screen name="Chat" component={ChatScreen} />
 
-          <Stack.Screen
-            name="HebergeurProfil"
-            component={HebergeurProfilScreen}
-          />
-          <Stack.Screen
-            name="LocataireProfil"
-            component={LocataireProfilScreen}
-          />
-          <Stack.Screen name="Preferences" component={PreferencesScreen} />
-          <Stack.Screen name="Information" component={InformationScreen} />
-          {/* <Stack.Screen name="UpdateProfil" component={UpdateProfilScreen} /> */}
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen
+              name="HebergeurProfil"
+              component={HebergeurProfilScreen}
+            />
+            <Stack.Screen
+              name="LocataireProfil"
+              component={LocataireProfilScreen}
+            />
+            <Stack.Screen name="Preferences" component={PreferencesScreen} />
+            <Stack.Screen name="Information" component={InformationScreen} />
+            {/* <Stack.Screen name="UpdateProfil" component={UpdateProfilScreen} /> */}
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }
