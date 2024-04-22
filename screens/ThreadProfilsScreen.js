@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useLayoutEffect } from "react";
 import {
   View,
   Image,
@@ -20,6 +20,7 @@ export default function ThreadAnnouncementsScreen() {
   const navigation = useNavigation();
   const userFavorites = useSelector((state) => state.user.favorites);
   const dispatch = useDispatch();
+  const defaultAvatar = require("../assets/annonceProfil.jpg");
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/locataire`)
@@ -35,6 +36,23 @@ export default function ThreadAnnouncementsScreen() {
         )
       );
   }, []);
+
+  // Définir les options de navigation pour le header
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: "#4FAAAF", // Couleur de fond du header
+      },
+      headerTitle: () => (
+        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+          Annonces
+        </Text>
+      ),
+      headerTitleAlign: "center", // Aligne le titre au centre
+    });
+  }, [navigation]);
+
 
   const handleDetailsAnnonce = (announceToken) => {
     // Naviguer vers l'écran de détails de l'annonce et passer les détails de l'annonce
@@ -97,7 +115,18 @@ export default function ThreadAnnouncementsScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-            {announcement.photos?.length>0 && (<Image source={{uri:announcement.photos[2] }} alt="photo de logement" style={styles.imageProfil}/>)}
+            {announcement.photos?.length>0 ? (
+            <Image 
+              source={{uri:announcement.photos[0] }} 
+              alt="photo de profil" 
+              style={styles.imageProfil}/>
+            ) : (
+                <Image
+                  source={defaultAvatar}
+                  style={styles.imageProfil}
+                  alt="Avatar par défaut"
+                />
+              )}
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{announcement.prenom}</Text>

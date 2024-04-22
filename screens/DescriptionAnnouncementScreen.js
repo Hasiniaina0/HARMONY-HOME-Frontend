@@ -121,8 +121,8 @@ export default function DescriptionAnnouncementScreen() {
                   />
                 )}
                 <Text style={styles.desc}>A propos du logement : </Text>
-                <Text style={styles.apropos}>Situé à {userDetails.city}</Text>
-                <Text style={styles.apropos}> {userDetails.description}</Text>
+                <Text style={styles.apropos}>Situé à {userDetails.city},</Text>
+                <Text style={styles.apropos}>{userDetails.description}</Text>
                 <Text style={styles.desc}>A propos du propriétaire : </Text>
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
                 <Text style={styles.desc}>Les avis</Text>
@@ -156,108 +156,75 @@ export default function DescriptionAnnouncementScreen() {
   );
 }
 
+// Définition des styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: "#fff",
-    justifyContent: "space-evenly",
-    width: "100%",
   },
- 
+  content: {
+    padding: 16,
+  },
+  desc: {
+    fontWeight: "bold",
+    fontSize: 17,
+    marginVertical: 10,
+  },
+  apropos: {
+    textAlign: "justify",
+  },
   gallery: {
     marginBottom: 16,
   },
   photo: {
-    width: 200, // Ajustez la taille de l'image selon vos besoins
+    width: 200,
     height: 200,
-    marginRight: 10, // Espace entre les images
+    marginRight: 10,
     borderRadius: 10,
   },
-  apropos: {
-    textAlign: "justify", // Aligne le texte justifié
+  imageProfil: {
+    width: "20%",
+    height: "20%",
+    resizeMode: "cover",
+    borderRadius: 50, // Ajustez ce style selon vos besoins
   },
-  headerTitle: {
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  headerLeft: {
-    paddingHorizontal: 10,
+  reviewImage: {
+    width: 100,
+    height: 100,
+    resizeMode: "cover",
+    borderRadius: 10,
   },
   buttonContainer: {
-    flexDirection: "row", // Aligne les boutons côte à côte
-    justifyContent: "space-between", // Espace entre les boutons
-    paddingVertical: 8, // Espacement vertical si nécessaire
-  },
-  desc: {
-    fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 10,
-    fontSize:17,
-   
-    
-  },
-  titreAnnonce: {
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 25,
-  },
-  announcementContainer: {
     flexDirection: "row",
-    marginBottom: 16,
+    justifyContent: "space-between",
+    paddingVertical: 8,
   },
-  favoriteButton: {
-    marginRight: 10,
-    padding: 5,
-  },
-  imageContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-
-  textContainer: {
+  button: {
     flex: 1,
-    marginLeft: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  location: {
-    color: "#666",
-    marginBottom: 5,
-    textAlign: "justify",
-  },
-  description: {
-    marginBottom: 5,
-  },
-  contactButton: {
-    alignSelf: "center",
     backgroundColor: "#4FAAAF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  contactButton: {
+    backgroundColor: "#4FAAAF", // Couleur de fond définie ici
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    alignItems: "center",
   },
   contactButtonText: {
     color: "#fff",
     fontWeight: "bold",
   },
-  bottomBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#4FAAAF",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  bottomButton: {
-    flex: 1,
-    alignItems: "center",
-  },
+  
 });
