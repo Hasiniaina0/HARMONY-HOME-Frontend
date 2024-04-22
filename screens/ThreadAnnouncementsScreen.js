@@ -96,11 +96,11 @@ export default function ThreadAnnouncementsScreen() {
                 style={styles.image}
               /> */}
 
-              <Image
+              {/* <Image
                 source={require("../assets/profil-annonce.jpg")}
                 alt="photo de profil"
                 style={styles.imageProfil}
-              />
+              /> */}
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{announcement.prenom}</Text>

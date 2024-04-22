@@ -12,7 +12,7 @@ import FavoritesScreen from "./screens/FavoritesScreen";
 import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
 import DescriptionAnnouncementScreen from "./screens/DescriptionAnnouncementScreen";
-import AnnouncementScreen from "./screens/DescriptionProfilScreen";
+import DescriptionProfilScreen from "./screens/DescriptionProfilScreen";
 // import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
 import InformationScreen from "./screens/InformationScreen";
