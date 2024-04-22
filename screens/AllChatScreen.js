@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 
-export default function ChatScreen({ navigation }) {
+export default function AllChatScreen({ navigation }) {
   const [conversations, setConversations] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
   const user = useSelector((state) => state.user);
