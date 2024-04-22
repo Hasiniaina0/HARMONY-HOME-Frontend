@@ -8,7 +8,7 @@ import SignInScreen from "./screens/SignInScreen"; // Page de connexion
 import LocataireProfilScreen from "./screens/LocataireProfilScreen"; // Page de profil locataire
 import MessagesScreen from "./screens/MessagesScreen"; // page discussion avec 1 utilisateur
 import FavoritesScreen from "./screens/FavoritesScreen";
-import AllChatScreen from "./screens/AllChatScreen"; // tous les messages
+import ChatScreen from "./screens/ChatScreen"; // chat instantanée
 import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
 import DescriptionAnnouncementScreen from "./screens/DescriptionAnnouncementScreen";
@@ -16,12 +16,12 @@ import DescriptionProfilScreen from "./screens/DescriptionProfilScreen";
 // import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
 import InformationScreen from "./screens/InformationScreen";
-
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import { Ionicons } from "@expo/vector-icons";
 import { Title } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 const store = configureStore({
   reducer: { user },
@@ -42,8 +42,8 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="MessageScreen"
-        component={MessagesScreen}
+        name="Chat"
+        component={ChatScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons
@@ -95,21 +95,13 @@ export default function App() {
           <Stack.Screen
             name="DescriptionAnnouncement"
             component={DescriptionAnnouncementScreen}
-            options={{
-              title: "Annonces",
-              headerStyle: { backgroundColor: "#4FAAAF" },
-              headerTintColor: "#black",
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
-            }}
           />
           <Stack.Screen
             name="DescriptionProfile"
             component={DescriptionProfilScreen}
           />
           <Stack.Screen name="MessageScreen" component={MessagesScreen} />
-          <Stack.Screen name="AllChat" component={AllChatScreen} />
+          <Stack.Screen name="Chat" component={ChatScreen} />
 
           <Stack.Screen
             name="HebergeurProfil"

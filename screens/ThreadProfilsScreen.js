@@ -125,32 +125,46 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     backgroundColor: "#fff",
   },
+  scrollView: {
+    paddingBottom: 16,
+  },
   announcementContainer: {
     flexDirection: "row",
-    margin: 20,
-  },
-  favoriteButton: {
-    marginRight: 10,
-    padding: 5,
+    marginVertical: 10, // Add vertical margins between announcements
+    backgroundColor: "#f0f0f0", // Set light gray background color
+    padding: 10, // Add padding around the announcement
+    borderRadius: 8, // Add rounded corners to the announcement container
   },
   imageContainer: {
     width: 120,
-    height: 160,
-    borderRadius: 8,
-    overflow: "hidden",
+    height: 120,
+    borderRadius: 8, // Add rounded corners to the image container
+    overflow: "hidden", // Hide overflow content
   },
-  image: {
+  imageProfil: {
     width: "100%",
     height: "100%",
+    resizeMode: "cover", // Use 'cover' mode to fill the container while preserving aspect ratio
+    borderRadius: 8, // Add rounded corners to the image
   },
   textContainer: {
     flex: 1,
     marginLeft: 10,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
+  },
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 5,
+  },
+  favoriteButton: {
+    position: "absolute", // Position absolutely within the header container
+    top: 0, // Position at the top
+    right: 0, // Position at the right
   },
   location: {
     color: "#666",
@@ -169,17 +183,5 @@ const styles = StyleSheet.create({
   contactButtonText: {
     color: "#fff",
     fontWeight: "bold",
-  },
-  bottomBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#4FAAAF",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  bottomButton: {
-    flex: 1,
-    alignItems: "center",
   },
 });

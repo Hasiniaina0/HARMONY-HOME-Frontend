@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useLayoutEffect } from "react";
 import {
   View,
   Image,
@@ -14,8 +14,8 @@ import { addFavorite, removeFavorite } from "../reducers/user";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ThreadAnnouncementsScreen() {
-  const [announcements, setAnnouncements] = useState([]);
   const navigation = useNavigation();
+  const [announcements, setAnnouncements] = useState([]);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const userFavorites = useSelector((state) => state.user.favorites);
   const dispatch = useDispatch();
@@ -36,6 +36,24 @@ export default function ThreadAnnouncementsScreen() {
       );
   }, []);
 
+  
+  // Définir les options de navigation pour le header
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: "#4FAAAF", // Couleur de fond du header
+      },
+      headerTitle: () => (
+        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+          Annonces
+        </Text>
+      ),
+      headerTitleAlign: "center", // Aligne le titre au centre
+    });
+  }, [navigation]);
+
+ 
   const handleDetailsAnnonce = (announceToken) => {
     // Naviguer vers l'écran de détails de l'annonce et passer les détails de l'annonce
     navigation.navigate("DescriptionAnnouncement", { token: announceToken });
@@ -74,46 +92,47 @@ export default function ThreadAnnouncementsScreen() {
       <ScrollView style={styles.scrollView}>
         {announcements.map((announcement) => (
           <View style={styles.announcementContainer} key={announcement._id}>
-            <TouchableOpacity
-              onPress={() => handleFavorite(announcement)}
-              style={styles.favoriteButton}
-            >
-              <Ionicons
-                name={
-                  userFavorites.some((fav) => fav._id === announcement._id)
-                    ? "heart"
-                    : "heart-outline"
-                }
-                size={15}
-                color={
-                  userFavorites.some((fav) => fav._id === announcement._id)
-                    ? "red"
-                    : "#4FAAAF"
-                }
-              />
-            </TouchableOpacity>
             <View style={styles.imageContainer}>
-              
-              {announcement.photos?.length>0 ? (
-                <Image source={{uri:announcement.photos[0] }} 
-                alt="photo de logement" 
-                style={styles.imageProfil}
+              {announcement.photos?.length > 0 ? (
+                <Image
+                  source={{ uri: announcement.photos[0] }}
+                  alt="photo de logement"
+                  style={styles.imageProfil}
                 />
-              ): (
-                // Utilisez l'avatar par défaut si aucune photo n'est disponible
+              ) : (
                 <Image
                   source={defaultAvatar}
                   style={styles.imageProfil}
                   alt="Avatar par défaut"
                 />
               )}
-  
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{announcement.prenom}</Text>
+              <View style={styles.headerContainer}>
+                {/* Button of favorite */}
+                <TouchableOpacity
+                  onPress={() => handleFavorite(announcement)}
+                  style={styles.favoriteButton}
+                >
+                  <Ionicons
+                    name={
+                      userFavorites.some((fav) => fav._id === announcement._id)
+                        ? "heart"
+                        : "heart-outline"
+                    }
+                    size={15}
+                    color={
+                      userFavorites.some((fav) => fav._id === announcement._id)
+                        ? "red"
+                        : "#4FAAAF"
+                    }
+                  />
+                </TouchableOpacity>
+                {/* Text of first name */}
+                <Text style={styles.title}>{announcement.prenom}</Text>
+              </View>
               <Text style={styles.location}>{announcement.city}</Text>
               <Text style={styles.description}>
-                {" "}
                 {truncateText(announcement.description, 80)}
               </Text>
               <TouchableOpacity
@@ -137,42 +156,46 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     backgroundColor: "#fff",
   },
+  scrollView: {
+    paddingBottom: 16,
+  },
   announcementContainer: {
     flexDirection: "row",
-    margin: 20,
-  },
-  favoriteButton: {
-    marginRight: 10,
-    padding: 5,
+    marginVertical: 10, // Add vertical margins between announcements
+    backgroundColor: "#f0f0f0", // Set light gray background color
+    padding: 10, // Add padding around the announcement
+    borderRadius: 8, // Add rounded corners to the announcement container
   },
   imageContainer: {
     width: 120,
     height: 120,
-    borderRadius: 8,
-  
+    borderRadius: 8, // Add rounded corners to the image container
+    overflow: "hidden", // Hide overflow content
   },
-  
   imageProfil: {
-    width: "100%", // L'image occupe toute la largeur de l'écran
-    height: 200, // Hauteur de l'image, ajustez selon vos besoins
-    resizeMode: "contain", // Conserve les proportions de l'image
-    borderRadius: 8, // Ajoute un effet arrondi si souhaité
-  },
-  image: {
     width: "100%",
     height: "100%",
-  },
-  favoriteButton: {
-    alignItems: "flex-end",
+    resizeMode: "cover", // Use 'cover' mode to fill the container while preserving aspect ratio
+    borderRadius: 8, // Add rounded corners to the image
   },
   textContainer: {
     flex: 1,
     marginLeft: 10,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
+  },
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 5,
+  },
+  favoriteButton: {
+    position: "absolute", // Position absolutely within the header container
+    top: 0, // Position at the top
+    right: 0, // Position at the right
   },
   location: {
     color: "#666",
@@ -191,17 +214,5 @@ const styles = StyleSheet.create({
   contactButtonText: {
     color: "#fff",
     fontWeight: "bold",
-  },
-  bottomBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#4FAAAF",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  bottomButton: {
-    flex: 1,
-    alignItems: "center",
   },
 });
