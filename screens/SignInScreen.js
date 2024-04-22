@@ -100,9 +100,11 @@ export default function SignInScreen({ navigation }) {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
+      <View style={styles.forgotPasswordContainer}>
       <TouchableOpacity onPress={() => toggleModal()}>
         <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
       </TouchableOpacity>
+      </View>
       <TouchableOpacity
         style={styles.signInButton}
         onPress={() => handleConnection()}
@@ -167,12 +169,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    marginTop: 50,
-    width: 340,
+    marginTop: 20,
+    width: 310,
     height: 300,
   },
   sloganTitle: {
-    marginBottom: 50,
+    marginBottom: 20,
   },
   slogan: {
     fontSize: 15,
@@ -200,11 +202,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   forgotPassword: {
-    margin: 20,
+    margin: 10,
     color: "#1877F2",
     textDecorationLine: "underline",
     textAlign: "right",
   },
+  forgotPasswordContainer: {
+    width: '100%', // Prend toute la largeur disponible
+    alignItems: 'flex-end', // Aligne le contenu à droite
+    marginRight: 80,
+  },
+  
+
   signInButton: {
     backgroundColor: "#4FAAAF",
     padding: 10,
