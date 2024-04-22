@@ -16,12 +16,12 @@ import DescriptionProfilScreen from "./screens/DescriptionProfilScreen";
 // import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
 import InformationScreen from "./screens/InformationScreen";
-
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import { Ionicons } from "@expo/vector-icons";
 import { Title } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 const store = configureStore({
   reducer: { user },
@@ -95,14 +95,6 @@ export default function App() {
           <Stack.Screen
             name="DescriptionAnnouncement"
             component={DescriptionAnnouncementScreen}
-            options={{
-              title: "Annonces",
-              headerStyle: { backgroundColor: "#4FAAAF" },
-              headerTintColor: "#black",
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
-            }}
           />
           <Stack.Screen
             name="DescriptionProfile"

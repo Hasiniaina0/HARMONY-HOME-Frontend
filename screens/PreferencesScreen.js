@@ -20,40 +20,46 @@ export default function PreferencesScreen() {
   const [selectedValue, setSelectedValue] = useState("");
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholder="Ville"
-            placeholderTextColor="#4FAAAF"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Durée de location souhaitée"
-            placeholderTextColor="#4FAAAF"
-          />
-        </View>
-        <Picker
-          selectedValue={selectedValue}
-          label="Sélectionner un type de logement"
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-          style={styles.picker}
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <Picker.Item label="Maison" value="maison" />
-          <Picker.Item label="Appartement" value="appartement" />
-          <Picker.Item label="Villa" value="villa" />
-          <Picker.Item label="Manoir" value="manoir" />
-          <Picker.Item label="Château" value="chateau" />
-          <Picker.Item label="Cabane" value="cabane" />
-          <Picker.Item label="Hutte" value="hutte" />
-          <Picker.Item label="Camping-car" value="campingcar" />
-        </Picker>
+          <ScrollView style={styles.scrollView}>
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder="Ville"
+                placeholderTextColor="#4FAAAF"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Durée de location souhaitée"
+                placeholderTextColor="#4FAAAF"
+              />
+            </View>
+            <Picker
+              selectedValue={selectedValue}
+              label="Sélectionner un type de logement"
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValue(itemValue)
+              }
+              style={styles.picker}
+            >
+              <Picker.Item label="Maison" value="maison" />
+              <Picker.Item label="Appartement" value="appartement" />
+              <Picker.Item label="Villa" value="villa" />
+              <Picker.Item label="Manoir" value="manoir" />
+              <Picker.Item label="Château" value="chateau" />
+              <Picker.Item label="Cabane" value="cabane" />
+              <Picker.Item label="Hutte" value="hutte" />
+              <Picker.Item label="Camping-car" value="campingcar" />
+            </Picker>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
