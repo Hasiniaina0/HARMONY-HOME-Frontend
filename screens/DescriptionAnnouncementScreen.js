@@ -5,7 +5,10 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  SafeAreaView,ScrollView,KeyboardAvoidingView,Platform
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -16,25 +19,23 @@ export default function DescriptionAnnouncementScreen() {
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const [userDetails, setUserDetails] = useState(null);
   const route = useRoute();
-  const {token} = route.params;
-
+  const { token } = route.params;
 
   useEffect(() => {
-    
     fetch(`${BACKEND_URL}/users/${token}`)
-    
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-         // Vérifiez si la réponse contient les données attendues
-         setUserDetails(data);
-     })
-      .catch((error) => {
-          console.error("Erreur lors de la récupération des détails de l'annonce :", error);
+        // Vérifiez si la réponse contient les données attendues
+        setUserDetails(data);
       })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la récupération des détails de l'annonce :",
+          error
+        );
+      });
   }, []);
-
-
 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
@@ -42,6 +43,7 @@ export default function DescriptionAnnouncementScreen() {
 
   const handleContact = () => {
     // Logique pour contacter l'annonceur
+    navigation.navigate("MessageScreen");
   };
 
   const handleMessages = () => {
@@ -62,57 +64,62 @@ export default function DescriptionAnnouncementScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-    
-     {userDetails && (
-        <View >
-    
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          {userDetails && (
+            <View>
+              <View style={styles.titre}>
+                <MaterialIcons
+                  name="keyboard-backspace"
+                  size={60}
+                  onPress={() => navigation.goBack()}
+                  style={styles.back}
+                />
+                <Text style={styles.titreAnnonce}>
+                  Annonce de {userDetails.prenom}{" "}
+                </Text>
+              </View>
+              <View>
+                <Image
+                  source={require("../assets/logement.jpg")}
+                  alt="photo de logement"
+                  style={styles.image}
+                />
+                <Text style={styles.desc}>A propos du logement : </Text>
+                <Text style={styles.apropos}>Situé à {userDetails.city}</Text>
+                <Text style={styles.apropos}> {userDetails.description}</Text>
+                <Text style={styles.desc}>A propos du propriétaire : </Text>
+                <Text style={styles.apropos}>{userDetails.aPropos}</Text>
+                <Text style={styles.desc}>Les avis</Text>
+                <Image
+                  source={require("../assets/avis.png")}
+                  alt=" image des avis"
+                />
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    onPress={() => handleComment()}
+                    style={styles.contactButton}
+                  >
+                    <Text style={styles.contactButtonText}>
+                      Laisser un commentaire
+                    </Text>
+                  </TouchableOpacity>
 
-          <View style={styles.titre}>
-            <MaterialIcons
-              name="keyboard-backspace"
-              size={60}
-              onPress={() => navigation.goBack()}
-              style={styles.back}
-            />
-            <Text style={styles.titreAnnonce}>Annonce de {userDetails.prenom} </Text>
-          </View>
-          <View >
-            <Image source={require("../assets/logement.jpg")} alt="photo de logement" style={styles.image}/>
-            <Text style = {styles.desc}>A propos du logement : </Text>
-            <Text style={styles.apropos}>Situé à {userDetails.city}</Text>
-            <Text style={styles.apropos}> {userDetails.description}</Text>
-            <Text style = {styles.desc}>A propos du propriétaire : </Text>
-            <Text style={styles.apropos}>{userDetails.aPropos}</Text>
-            <Text style = {styles.desc} >Les avis</Text>
-            <Image source={require("../assets/avis.png")} alt=" image des avis" />
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={() => handleComment()}
-                style={styles.contactButton}
-              >
-                <Text style={styles.contactButtonText}>Laisser un commentaire</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => handleContact()}
-                style={styles.contactButton}
-              >
-                <Text style={styles.contactButtonText}>Contacter</Text>
-              </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleContact()}
+                    style={styles.contactButton}
+                  >
+                    <Text style={styles.contactButtonText}>Contacter</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-            
-          </View>
-        </View>
-      )}
-         </KeyboardAvoidingView>
+          )}
+        </KeyboardAvoidingView>
       </ScrollView>
-      
     </SafeAreaView>
- 
   );
 }
 
@@ -122,33 +129,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: "#fff",
-    justifyContent:"space-evenly",
-    width:"100%",
+    justifyContent: "space-evenly",
+    width: "100%",
   },
-  titre:{
-   marginTop:50, 
+  titre: {
+    marginTop: 50,
   },
-  apropos:{
-    textAlign: 'justify', // Aligne le texte justifié
+  apropos: {
+    textAlign: "justify", // Aligne le texte justifié
   },
   buttonContainer: {
-    flexDirection: 'row', // Aligne les boutons côte à côte
-    justifyContent: 'space-between', // Espace entre les boutons
+    flexDirection: "row", // Aligne les boutons côte à côte
+    justifyContent: "space-between", // Espace entre les boutons
     paddingVertical: 8, // Espacement vertical si nécessaire
   },
-  desc:{
-    fontWeight:"bold",
-    marginTop:10,
-    marginBottom:10,
-    
+  desc: {
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 10,
   },
-  titreAnnonce:{
-    textAlign:"center",
-    fontSize:20,
-    fontWeight:"bold",
-    marginBottom:25
-
-
+  titreAnnonce: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 25,
   },
   announcementContainer: {
     flexDirection: "row",
@@ -164,7 +168,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: "hidden",
   },
- 
+
   textContainer: {
     flex: 1,
     marginLeft: 10,
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
   location: {
     color: "#666",
     marginBottom: 5,
-    textAlign:"justify",
+    textAlign: "justify",
   },
   description: {
     marginBottom: 5,
@@ -188,7 +192,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
-
   },
   contactButtonText: {
     color: "#fff",

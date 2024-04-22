@@ -38,13 +38,13 @@ export default function AnnouncementScreen() {
       });
   }, []);
 
- 
   const handleFavorite = () => {
     // Logique pour ajouter l'annonce aux favoris
   };
 
   const handleContact = () => {
     // Logique pour contacter l'annonceur
+    navigation.navigate("chat");
   };
 
   const handleMessages = () => {
@@ -88,9 +88,7 @@ export default function AnnouncementScreen() {
                 <Text style={styles.desc}>A propos du futur colocataire: </Text>
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
                 <Text style={styles.desc}>Ses motivations : </Text>
-                <Text style={styles.apropos}>
-                  {userDetails.description}
-                </Text>
+                <Text style={styles.apropos}>{userDetails.description}</Text>
                 <Image
                   source={require("../assets/avatar1.jpg")}
                   alt="photo des locataires"
