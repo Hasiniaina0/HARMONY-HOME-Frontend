@@ -25,7 +25,7 @@ export default function MessagesScreen({ navigation }) {
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const PUSHER_KEY = process.env.PUSHER_KEY;
 
-  const pusher = new Pusher("56a7676399aa8050ed36", {
+  const pusher = new Pusher(`${PUSHER_KEY}`, {
     cluster: "eu",
   });
 

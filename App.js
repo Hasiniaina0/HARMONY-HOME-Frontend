@@ -7,7 +7,7 @@ import SignUpScreen from "./screens/SignUpScreen"; // Page d'inscription
 import SignInScreen from "./screens/SignInScreen"; // Page de connexion
 import LocataireProfilScreen from "./screens/LocataireProfilScreen"; // Page de profil locataire
 import MessagesScreen from "./screens/MessagesScreen"; // page discussion avec 1 utilisateur
-// import ChatScreen from "./screens/chatScreen";
+import ChatScreen from "./screens/ChatScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
@@ -42,8 +42,8 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Messages"
-        component={MessagesScreen}
+        name="chat"
+        component={ChatScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons
