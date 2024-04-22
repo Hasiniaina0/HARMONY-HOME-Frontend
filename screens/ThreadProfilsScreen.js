@@ -97,10 +97,7 @@ export default function ThreadAnnouncementsScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-              <Image
-                source={{ uri: announcement.photo }}
-                style={styles.image}
-              />
+            {announcement.photos?.length>0 && (<Image source={{uri:announcement.photos[2] }} alt="photo de logement" style={styles.imageProfil}/>)}
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{announcement.prenom}</Text>
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 120,
-    height: 120,
+    height: 160,
     borderRadius: 8,
     overflow: "hidden",
   },

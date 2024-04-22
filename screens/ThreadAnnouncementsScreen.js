@@ -91,16 +91,9 @@ export default function ThreadAnnouncementsScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-              {/* <Image
-                source={{ uri: announcement.photo }}
-                style={styles.image}
-              /> */}
-
-              {/* <Image
-                source={require("../assets/profil-annonce.jpg")}
-                alt="photo de profil"
-                style={styles.imageProfil}
-              /> */}
+              
+              {announcement.photos?.length>0 && (<Image source={{uri:announcement.photos[0] }} alt="photo de logement" style={styles.imageProfil}/>)}
+  
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{announcement.prenom}</Text>
@@ -142,8 +135,9 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 8,
-    overflow: "hidden",
+  
   },
+  
   imageProfil: {
     width: "100%", // L'image occupe toute la largeur de l'écran
     height: 200, // Hauteur de l'image, ajustez selon vos besoins
