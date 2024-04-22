@@ -21,6 +21,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import { Ionicons } from "@expo/vector-icons";
+import { Title } from "react-native-paper";
 
 const store = configureStore({
   reducer: { user },
@@ -94,6 +95,13 @@ export default function App() {
           <Stack.Screen
             name="DescriptionAnnouncement"
             component={DescriptionAnnouncementScreen}
+            options={{title: "Annonces" ,
+            headerStyle: { backgroundColor: '#4FAAAF' },
+            headerTintColor: '#black',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            }
+            }}
           />
           <Stack.Screen name="AnnonceProfile" component={AnnouncementScreen} />
           <Stack.Screen name="MessageScreen" component={MessagesScreen} />
