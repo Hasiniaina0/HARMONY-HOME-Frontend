@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 8,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   legend: {
     fontSize: 16,

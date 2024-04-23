@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useLayoutEffect } from "react";
 import {
   View,
   Image,
@@ -9,10 +9,9 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  FlatList,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
-
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -22,6 +21,7 @@ export default function AnnouncementScreen() {
   const [userDetails, setUserDetails] = useState(null);
   const route = useRoute();
   const { token } = route.params;
+  const defaultAvatar = require("../assets/annonceProfil.jpg");
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/${token}`)
@@ -38,9 +38,30 @@ export default function AnnouncementScreen() {
       });
   }, []);
 
-  const handleFavorite = () => {
-    // Logique pour ajouter l'annonce aux favoris
-  };
+  // Configurer les options de navigation pour le header
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: "#4FAAAF", // Couleur de fond du header
+      },
+      headerTitle: `${userDetails ? userDetails.prenom : ''}`,
+      headerStyle: {
+        backgroundColor: "#4FAAAF",
+      },
+      headerTitleStyle: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+      },
+      headerTitleAlign: "center",
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+          <MaterialIcons name="keyboard-backspace" size={24} color="white" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, userDetails]);
 
   const handleContact = () => {
     // Logique pour contacter l'annonceur
@@ -62,6 +83,11 @@ export default function AnnouncementScreen() {
     navigation.navigate("Favorites");
   };
 
+  // Function to render each photo in the gallery
+  const renderPhoto = ({ item }) => (
+    <Image source={{ uri: item }} style={styles.photo} alt="Photo de logement" />
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -71,31 +97,37 @@ export default function AnnouncementScreen() {
         >
           {userDetails && (
             <View>
-              <View style={styles.titre}>
-                <MaterialIcons
-                  name="keyboard-backspace"
-                  size={60}
-                  onPress={() => navigation.goBack()}
-                  style={styles.back}
-                />
-                <Text style={styles.titreAnnonce}>{userDetails.prenom}</Text>
-              </View>
-              <View>
-                <Image
-                  source={require("../assets/profil-user.jpg")}
-                  alt="photo de profil"
-                />
+              <View style={styles.profileContainer} >
+              {userDetails.photos?.length>0 ? (
+                <Image 
+                  source={{uri:userDetails.photos[0] }} 
+                  alt="photo de profil" 
+                  style={styles.profileImage}
+                 />
+                ) : (
+                    <Image
+                      source={defaultAvatar}
+                      style={styles.profileImage}
+                      alt="Avatar par défaut"
+                    />
+                  )}
                 <Text style={styles.desc}>A propos du futur colocataire: </Text>
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
                 <Text style={styles.desc}>Ses motivations : </Text>
                 <Text style={styles.apropos}>{userDetails.description}</Text>
-                <Image
-                  source={require("../assets/avatar1.jpg")}
-                  alt="photo des locataires"
+                {/* Conditionally render the gallery or a default image */}
+                {userDetails.photos && userDetails.photos.length > 0 && (
+                 <FlatList
+                  data={userDetails.photos}
+                  horizontal={true}
+                  renderItem={renderPhoto}
+                  keyExtractor={(item, index) => index.toString()}
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.gallery}
                 />
-
+                )}
                 <Text style={styles.desc}>Les avis</Text>
-                <Image source={require("../assets/avis1.png")} />
+                <Image source={require("../assets/avis1.png")} style/>
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     onPress={() => handleComment()}
@@ -122,97 +154,72 @@ export default function AnnouncementScreen() {
   );
 }
 
+// Définition des styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: "#fff",
-    justifyContent: "space-between",
-    width: "100%",
   },
-  titre: {
-    marginTop: 50,
+  content: {
+    padding: 16,
   },
-
   desc: {
     fontWeight: "bold",
-    marginTop: 10,
-    justifyContent: "",
+    fontSize: 17,
+    marginVertical: 10,
   },
-  titreAnnonce: {
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 25,
+  apropos: {
+    textAlign: "justify",
   },
-  announcementContainer: {
-    flexDirection: "row",
-    marginBottom: 16,
-  },
-  favoriteButton: {
+ 
+  photo: {
+    width: 125,
+    height: 125,
     marginRight: 10,
-    padding: 5,
+    borderRadius: 10,
   },
-  imageContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 8,
-    overflow: "hidden",
+  
+  profileImage: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
   },
-  image: {
-    width: "100%",
-    height: "100%",
+  reviewImage: {
+    width: 100,
+    height: 100,
+    resizeMode: "cover",
+    borderRadius: 10,
   },
-  textContainer: {
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 8,
+  },
+  button: {
     flex: 1,
-    marginLeft: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  location: {
-    color: "#666",
-    marginBottom: 5,
-  },
-  description: {
-    marginBottom: 5,
-  },
-  contactButton: {
-    alignSelf: "center",
     backgroundColor: "#4FAAAF",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
+    marginHorizontal: 5,
+    alignItems: "center",
   },
-  buttonContainer: {
-    flexDirection: "row", // Aligne les boutons côte à côte
-    justifyContent: "space-between", // Espace entre les boutons
-    paddingVertical: 8, // Espacement vertical si nécessaire
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  contactButton: {
+    backgroundColor: "#4FAAAF", // Couleur de fond définie ici
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    alignItems: "center",
   },
   contactButtonText: {
-    backgroundColor: "#4FAAAF",
-    padding: 10,
-    borderRadius: 20,
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
-    marginTop: 30,
-    alignSelf: "center",
-    color: "white",
-  },
-  bottomBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#4FAAAF",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  bottomButton: {
-    flex: 1,
-    alignItems: "center",
+    color: "#fff",
+    fontWeight: "bold",
   },
 });

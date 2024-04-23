@@ -14,7 +14,8 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../reducers/user";
 
 export default function AccountScreen() {
   const navigation = useNavigation();
@@ -22,9 +23,15 @@ export default function AccountScreen() {
   const [email, setEmail] = useState(""); // État pour l'adresse e-mail
   const [message, setMessage] = useState("");
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigation.navigate("Home");
   };
 
   return (
@@ -80,6 +87,12 @@ export default function AccountScreen() {
               <Text style={styles.text} onPress={() => toggleModal()}>
                 Contactez-nous
               </Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleLogout()}
+              >
+                <Text style={styles.buttonText}>Se déconnecter</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <Modal
@@ -164,6 +177,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     justifyContent: "center",
+  },
+  button: {
+    backgroundColor: "#4FAAAF",
+    width: 200,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 20,
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginTop: 30,
+    marginLeft: 200,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 15,
   },
   modalContainer: {
     flex: 1,
