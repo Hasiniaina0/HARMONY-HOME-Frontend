@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Image,
@@ -45,7 +45,7 @@ export default function AnnouncementScreen() {
       headerStyle: {
         backgroundColor: "#4FAAAF", // Couleur de fond du header
       },
-      headerTitle: `${userDetails ? userDetails.prenom : ''}`,
+      headerTitle: `${userDetails ? userDetails.prenom : ""}`,
       headerStyle: {
         backgroundColor: "#4FAAAF",
       },
@@ -56,7 +56,10 @@ export default function AnnouncementScreen() {
       },
       headerTitleAlign: "center",
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{ marginLeft: 10 }}
+        >
           <MaterialIcons name="keyboard-backspace" size={24} color="white" />
         </TouchableOpacity>
       ),
@@ -65,7 +68,7 @@ export default function AnnouncementScreen() {
 
   const handleContact = () => {
     // Logique pour contacter l'annonceur
-    navigation.navigate("chat");
+    navigation.navigate("Chat");
   };
 
   const handleMessages = () => {
@@ -85,7 +88,11 @@ export default function AnnouncementScreen() {
 
   // Function to render each photo in the gallery
   const renderPhoto = ({ item }) => (
-    <Image source={{ uri: item }} style={styles.photo} alt="Photo de logement" />
+    <Image
+      source={{ uri: item }}
+      style={styles.photo}
+      alt="Photo de logement"
+    />
   );
 
   return (
@@ -97,37 +104,37 @@ export default function AnnouncementScreen() {
         >
           {userDetails && (
             <View>
-              <View style={styles.profileContainer} >
-              {userDetails.photos?.length>0 ? (
-                <Image 
-                  source={{uri:userDetails.photos[0] }} 
-                  alt="photo de profil" 
-                  style={styles.profileImage}
-                 />
+              <View style={styles.profileContainer}>
+                {userDetails.photos?.length > 0 ? (
+                  <Image
+                    source={{ uri: userDetails.photoProfil[0] }}
+                    alt="photo de profil"
+                    style={styles.profileImage}
+                  />
                 ) : (
-                    <Image
-                      source={defaultAvatar}
-                      style={styles.profileImage}
-                      alt="Avatar par défaut"
-                    />
-                  )}
+                  <Image
+                    source={defaultAvatar}
+                    style={styles.profileImage}
+                    alt="Avatar par défaut"
+                  />
+                )}
                 <Text style={styles.desc}>A propos du futur colocataire: </Text>
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
                 <Text style={styles.desc}>Ses motivations : </Text>
                 <Text style={styles.apropos}>{userDetails.description}</Text>
                 {/* Conditionally render the gallery or a default image */}
                 {userDetails.photos && userDetails.photos.length > 0 && (
-                 <FlatList
-                  data={userDetails.photos}
-                  horizontal={true}
-                  renderItem={renderPhoto}
-                  keyExtractor={(item, index) => index.toString()}
-                  showsHorizontalScrollIndicator={false}
-                  style={styles.gallery}
-                />
+                  <FlatList
+                    data={userDetails.photos}
+                    horizontal={true}
+                    renderItem={renderPhoto}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.gallery}
+                  />
                 )}
                 <Text style={styles.desc}>Les avis</Text>
-                <Image source={require("../assets/avis1.png")} style/>
+                <Image source={require("../assets/avis1.png")} style />
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     onPress={() => handleComment()}
@@ -173,14 +180,14 @@ const styles = StyleSheet.create({
   apropos: {
     textAlign: "justify",
   },
- 
+
   photo: {
     width: 125,
     height: 125,
     marginRight: 10,
     borderRadius: 10,
   },
-  
+
   profileImage: {
     width: 150,
     height: 150,

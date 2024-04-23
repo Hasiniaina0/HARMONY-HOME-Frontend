@@ -7,6 +7,7 @@ const initialState = {
   photos: [],
   favorites: [],
   name: null,
+  photoProfil:[],
 };
 
 export const userSlice = createSlice({
@@ -26,11 +27,15 @@ export const userSlice = createSlice({
       state.email = null;
       state.statut = null;
       state.photos = [];
+      state.photoProfil = [];
       state.userInfo = null; // Remettre userInfo à null lors de la déconnexion
       state.name = null;
     },
     addPhoto: (state, action) => {
       state.photos.push(action.payload);
+    },
+    addPhotoProfil: (state, action) => {
+      state.photoProfil.push(action.payload);
     },
     removePhoto: (state, action) => {
       state.photos = state.photos.filter((photo) => photo !== action.payload);
