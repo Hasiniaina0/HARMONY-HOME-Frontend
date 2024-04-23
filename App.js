@@ -130,6 +130,7 @@ export default function App() {
             />
             <Stack.Screen name="Preferences" component={PreferencesScreen} />
             <Stack.Screen name="Information" component={InformationScreen} />
+
             {/* <Stack.Screen name="UpdateProfil" component={UpdateProfilScreen} /> */}
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>

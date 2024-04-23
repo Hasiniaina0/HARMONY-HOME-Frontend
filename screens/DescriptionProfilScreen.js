@@ -15,7 +15,7 @@ import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-export default function AnnouncementScreen() {
+export default function DescriptionProfilScreen() {
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
   const [userDetails, setUserDetails] = useState(null);
