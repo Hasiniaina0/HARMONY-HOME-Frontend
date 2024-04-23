@@ -25,6 +25,7 @@ export default function LocataireProfilScreen() {
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
+  const [profileImageUrl, setProfileImageUrl] = useState("");
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -36,6 +37,7 @@ export default function LocataireProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
+        setProfileImageUrl(data.photoProfil);
       })
       .catch((error) =>
         console.error(
@@ -55,6 +57,12 @@ export default function LocataireProfilScreen() {
         city,
         description,
         aPropos,
+        photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
+        photo: selectedImages.map(image => ({
+            uri: image.uri,
+            name: `photo-${image.index}.jpg`,
+            type: image.mimeType,
+        })),
       }),
     })
       .then((response) => response.json())
@@ -111,6 +119,56 @@ export default function LocataireProfilScreen() {
     }
   };
 
+  // Fonction pour choisir une image de profil à partir de la galerie
+  const showImagePickerProfil = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permissionResult.granted) {
+      alert("Vous avez refusé l'accès aux photos.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.3,
+      multiple: false, // Autorise une seule image
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      const newImage = result.assets[0];
+      setProfileImageUrl(newImage.uri);
+    }
+  };
+
+  // Fonction pour enregistrer la photo de profil mise à jour
+  const handleSavePhotoProfil = async () => {
+    if (!profileImageUrl) {
+      console.error("Aucune image de profil sélectionnée.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("photoProfil", {
+      uri: profileImageUrl,
+      name: "photoProfil.jpg",
+      type: "image/jpeg",
+    });
+
+    const response = await fetch(`${BACKEND_URL}/updates/photoProfil/${token}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      console.log("Photo de profil mise à jour avec succès:", data);
+      setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
+    } 
+  };
+
   return (
     <SafeAreaView style={styles.inputsContainer}>
       <ScrollView style={styles.scrollView}>
@@ -125,27 +183,46 @@ export default function LocataireProfilScreen() {
             style={styles.back}
           />
 
-          <Image source={require("../assets/logo.png")} style={styles.logo} />
-          <Text style={styles.title}> Je mets à jour mon profil </Text>
+          {/* Section pour afficher et changer la photo de profil */}
+          <View style={styles.profileImageContainer}>
+                    {/* Image de profil */}
+                    <TouchableOpacity onPress={showImagePickerProfil}>
+              <Image
+                source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.jpg")}
+                style={styles.profileImage}
+              />
+                     </TouchableOpacity>
+
+                    
+                </View>
+                <TouchableOpacity style={styles.button} onPress={handleSavePhotoProfil}>
+                        <Text style={styles.buttonText}>Ajouter photo de profil</Text>
+                </TouchableOpacity>
+
+          <Text style ={styles.inputTitle}> Ville :  </Text>
           <TextInput
             style={styles.input}
-            placeholder="ta ville"
-            secureTextEntry={true}
+            placeholder="Ta ville"
             value={city}
             onChangeText={(city) => setCity(city)}
           ></TextInput>
+          <Text style ={styles.inputTitle}> A propos de toi : </Text>
           <TextInput
-            style={styles.input}
+             style={[styles.input, { height: 80 }]}
             placeholder="Parles nous de toi !"
             value={aPropos}
             onChangeText={(aPropos) => setApropos(aPropos)}
+            multiline={true} // Permet d'écrire sur plusieurs lignes
           ></TextInput>
+          <Text style ={styles.inputTitle}> Tes motivations:  </Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { height: 80 }]}
             placeholder="Quelles sont tes motivations ?"
             value={description}
             onChangeText={(description) => setDescription(description)}
+            multiline={true} // Permet d'écrire sur plusieurs lignes
           ></TextInput>
+          
           <Text> Partage des photos de ce qui te représente </Text>
           <View style={styles.imageContainer}>
             {selectedImages.map((image, index) => (
@@ -172,61 +249,71 @@ export default function LocataireProfilScreen() {
 
 const styles = StyleSheet.create({
   inputsContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "white",
   },
   logo: {
-    height: 200,
-    width: 200,
+      height: 200,
+      width: 200,
+      alignItems: "center",
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    // fontFamily: "Poppins",
-    textAlign: "center",
-    marginBottom: 20,
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: "center",
+      marginBottom: 20,
+  },
+  inputTitle: {
+    fontWeight:"bold",
+    marginBottom:5,
   },
   input: {
-    height: 40,
-    borderColor: "black",
-    borderWidth: 0.5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  maj: {
-    color: "white",
-    backgroundColor: "#4FAAAF",
-    padding: 10,
-    borderRadius: 20,
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
-    fontSize: 15,
-    alignSelf: "center",
-  },
-  imageContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginBottom: 10,
-    backgroundColor: "gray",
-    marginRight: 10,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 5,
+      height: 40,
+      borderColor: "black",
+      borderWidth: 0.3,
+      marginBottom: 10,
+      paddingHorizontal: 10,
   },
   button: {
-    backgroundColor: "#4FAAAF",
-    color: "white",
-    padding: 10,
-    borderRadius: 20,
-    alignItems: "center",
+      backgroundColor: "#4FAAAF",
+      color: "white",
+      padding: 10,
+      borderRadius: 20,
+      alignItems: "center",
+      marginBottom: 10,
   },
   buttonText: {
-    color: "white",
-    fontSize: 15,
+      color: "white",
+      fontSize: 15,
   },
-});
+  imageContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "space-around",
+      alignItems: "center",
+      marginBottom: 10,
+  },
+  image: {
+      width: 100,
+      height: 100,
+      borderRadius: 5,
+      margin: 5,
+  },
+  profileImageContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent:"center",
+      marginBottom: 10,
+  },
+  profileImage: {
+      width: 200,
+      height: 200,
+      borderRadius: 50,
+      marginRight: 10,
+  },
+  back: {
+      color: "#4FAAAF",
+  },
+  });
