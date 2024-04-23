@@ -14,6 +14,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { useSelector } from "react-redux";
 import WheelPickerExpo from "react-native-wheel-picker-expo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default function PreferencesScreen() {
   const [citySearch, setCitySearch] = useState("");
@@ -29,6 +30,7 @@ export default function PreferencesScreen() {
   const [balcon, setBalcon] = useState(false);
   const user = useSelector((state) => state.user);
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/token/${user.token}`)
@@ -104,6 +106,12 @@ export default function PreferencesScreen() {
         style={styles.keyboardAvoidingContainer}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <MaterialIcons
+          name="keyboard-backspace"
+          size={60}
+          onPress={() => navigation.goBack()}
+          style={styles.back}
+        />
         <View style={styles.inputContainer}>
           {user.statut === "locataire" && (
             <TextInput
@@ -237,6 +245,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+  },
+  back: {
+    alignSelf: "flex-start",
   },
   inputContainer: {
     width: "100%",

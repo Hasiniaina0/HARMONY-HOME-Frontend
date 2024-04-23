@@ -101,9 +101,9 @@ export default function SignInScreen({ navigation }) {
         />
       </View>
       <View style={styles.forgotPasswordContainer}>
-      <TouchableOpacity onPress={() => toggleModal()}>
-        <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => toggleModal()}>
+          <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.signInButton}
@@ -136,7 +136,7 @@ export default function SignInScreen({ navigation }) {
               <TextInput
                 style={styles.modalInput}
                 placeholder="Adresse e-mail"
-                value={email}
+                value={email.toString()}
                 onChangeText={(email) => setEmail(email)}
               />
               <TouchableOpacity
@@ -208,11 +208,10 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   forgotPasswordContainer: {
-    width: '100%', // Prend toute la largeur disponible
-    alignItems: 'flex-end', // Aligne le contenu à droite
+    width: "100%", // Prend toute la largeur disponible
+    alignItems: "flex-end", // Aligne le contenu à droite
     marginRight: 80,
   },
-  
 
   signInButton: {
     backgroundColor: "#4FAAAF",
