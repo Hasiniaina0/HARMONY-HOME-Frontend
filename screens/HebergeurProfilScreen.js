@@ -11,6 +11,7 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
+  Switch,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 //import { Avatar } from "native-base";
@@ -29,6 +30,7 @@ export default function HebergeurProfilScreen() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const token = useSelector((state) => state.user.token);
+  const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export default function HebergeurProfilScreen() {
         setApropos(data.aPropos);
         setDescription(data.description);
         setProfileImageUrl(data.photoProfil);
+        setAvailability(data.available);
       })
   }, []);
 
@@ -53,6 +56,7 @@ export default function HebergeurProfilScreen() {
         city,
         description,
         aPropos,
+        available: availability,
         photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
         photo: selectedImages.map(image => ({
             uri: image.uri,
@@ -145,7 +149,6 @@ export default function HebergeurProfilScreen() {
 
     const handleSavePhotoProfil = async () => {
       if (selectedImages.length === 0) {
-          console.error("Aucune image de profil sélectionnée.");
           return;
       }
   
@@ -186,7 +189,7 @@ export default function HebergeurProfilScreen() {
                     
                      <TouchableOpacity onPress={showImagePickerProfil}>
                       <Image
-                          source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.jpg")}
+                          source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.png")}
                           style={styles.profileImage}
                         />
                     </TouchableOpacity>
@@ -196,20 +199,35 @@ export default function HebergeurProfilScreen() {
                         <Text style={styles.buttonText}>Ajouter photo de profil</Text>
                 </TouchableOpacity>
 
+                 {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
+                 <View style={styles.toggleContainer}>
+                    <Switch
+                        value={availability === "available"}
+                        onValueChange={() => setAvailability(prev => prev === "available" ? "Logement indisponible" : "Logement disponible")}
+                    />
+                    <Text style={styles.toggleText}>
+                      {availability === "available" ? "Logement disponible" : "Logement indisponible"}
+                    </Text>
+                </View>
+
                 {/* Formulaire pour mettre à jour le profil */}
-                <Text style={styles.title}>Je mets à jour mon profil</Text>
+                <Text style={styles.inputTitle}>Ville :</Text>
                 <TextInput style={styles.input} placeholder="Votre ville" value={city} onChangeText={setCity} />
-                <TextInput style={styles.input} placeholder="Parlez-nous de vous" value={aPropos} onChangeText={setApropos} />
-                <TextInput style={styles.input} placeholder="Décrivez votre logement" value={description} onChangeText={setDescription} />
+                <Text style={styles.inputTitle}>A propos de vous :</Text>
+                <TextInput   style={[styles.input, { height: 80 }]} multiline={true}  placeholder="Parlez-nous de vous" value={aPropos} onChangeText={setApropos} />
+                <Text style={styles.inputTitle}>Description de votre logement :</Text>
+                <TextInput   style={[styles.input, { height: 80 }]} multiline={true}  placeholder="Décrivez votre logement" value={description} onChangeText={setDescription} />
 
                 {/* Section pour ajouter des photos partagées */}
-                <Text>Partagez des photos de ce qui vous représente</Text>
+                <Text style={styles.inputTitle}>Partagez des photos de ce qui vous représente</Text>
                 <View style={styles.imageContainer}>
                     {selectedImages.slice(1).map((image, index) => (
                         // Afficher chaque image partagée
                         <Image key={index} source={{ uri: image.uri }} style={styles.image} />
                     ))}
-                    <Button title="Ajouter une image" onPress={showImagePicker} color="white" />
+                    <View>
+                    <Button title="Ajouter une image" onPress={showImagePicker} color="#4FAAAF" style={styles.addImage} />
+                    </View>
                 </View>
 
                 {/* Bouton pour mettre à jour le profil */}
@@ -228,11 +246,16 @@ inputsContainer: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
+    marginTop:30,
 },
 logo: {
     height: 200,
     width: 200,
     alignItems: "center",
+},
+inputTitle:{
+  fontWeight:"bold",
+  marginBottom:10,
 },
 title: {
     fontSize: 20,
@@ -243,9 +266,10 @@ title: {
 input: {
     height: 40,
     borderColor: "black",
-    borderWidth: 0.5,
+    borderWidth: 0.3,
     marginBottom: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
+    borderRadius:1,
 },
 button: {
     backgroundColor: "#4FAAAF",
@@ -270,7 +294,7 @@ image: {
     width: 100,
     height: 100,
     borderRadius: 5,
-    margin: 5,
+    margin: 1,
 },
 profileImageContainer: {
     flexDirection: "row",
@@ -279,12 +303,20 @@ profileImageContainer: {
     marginBottom: 20,
 },
 profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginRight: 10,
+    width: 150,
+    height: 150,
+    borderRadius: 70,
+  
 },
 back: {
     color: "#4FAAAF",
+},
+toggleContainer: {
+  flexDirection: "row",
+  alignItems: "center",
+  marginBottom: 10,
+},
+toggleText: {
+  marginRight: 10,
 },
 });

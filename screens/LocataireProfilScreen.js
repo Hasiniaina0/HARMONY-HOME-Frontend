@@ -11,6 +11,7 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
+  Switch,
 } from "react-native";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
@@ -26,6 +27,7 @@ export default function LocataireProfilScreen() {
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
   const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [isDisponible, setIsDisponible] = useState(false);
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -145,7 +147,6 @@ export default function LocataireProfilScreen() {
   // Fonction pour enregistrer la photo de profil mise à jour
   const handleSavePhotoProfil = async () => {
     if (!profileImageUrl) {
-      console.error("Aucune image de profil sélectionnée.");
       return;
     }
 
@@ -186,18 +187,26 @@ export default function LocataireProfilScreen() {
           {/* Section pour afficher et changer la photo de profil */}
           <View style={styles.profileImageContainer}>
                     {/* Image de profil */}
-                    <TouchableOpacity onPress={showImagePickerProfil}>
+            <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
-                source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.jpg")}
+                source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.png")}
                 style={styles.profileImage}
               />
-                     </TouchableOpacity>
+            </TouchableOpacity>
 
                     
+            </View>
+              <TouchableOpacity style={styles.button} onPress={handleSavePhotoProfil}>
+                <Text style={styles.buttonText}>Ajouter photo de profil</Text>
+              </TouchableOpacity>
+
+             {/* Toggle Switch pour choisir entre Logement disponible ou non */}
+              <View style={styles.toggleContainer}>
+                <Switch value={isDisponible} onValueChange={setIsDisponible} />
+                <Text style={styles.toggleText}>
+                  {isDisponible ? "Je cherche un logement" : "Je ne cherche plus un logement"}
+                </Text>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={handleSavePhotoProfil}>
-                        <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-                </TouchableOpacity>
 
           <Text style ={styles.inputTitle}> Ville :  </Text>
           <TextInput
@@ -214,7 +223,7 @@ export default function LocataireProfilScreen() {
             onChangeText={(aPropos) => setApropos(aPropos)}
             multiline={true} // Permet d'écrire sur plusieurs lignes
           ></TextInput>
-          <Text style ={styles.inputTitle}> Tes motivations:  </Text>
+          <Text style ={styles.inputTitle}> Tes motivations :  </Text>
           <TextInput
             style={[styles.input, { height: 80 }]}
             placeholder="Quelles sont tes motivations ?"
@@ -223,7 +232,7 @@ export default function LocataireProfilScreen() {
             multiline={true} // Permet d'écrire sur plusieurs lignes
           ></TextInput>
           
-          <Text> Partage des photos de ce qui te représente </Text>
+          <Text style ={styles.inputTitle}> Partage des photos de ce qui te représente : </Text>
           <View style={styles.imageContainer}>
             {selectedImages.map((image, index) => (
               <Image
@@ -235,7 +244,7 @@ export default function LocataireProfilScreen() {
             <Button
               title="Ajouter une image"
               onPress={showImagePicker}
-              color="white"
+              color="#4FAAAF"
             />
           </View>
           <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
@@ -253,11 +262,16 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: "white",
+      marginTop:30,
   },
   logo: {
       height: 200,
       width: 200,
       alignItems: "center",
+  },
+  inputTitle:{
+    fontWeight:"bold",
+    marginBottom:10,
   },
   title: {
       fontSize: 20,
@@ -265,16 +279,13 @@ const styles = StyleSheet.create({
       textAlign: "center",
       marginBottom: 20,
   },
-  inputTitle: {
-    fontWeight:"bold",
-    marginBottom:5,
-  },
   input: {
       height: 40,
       borderColor: "black",
       borderWidth: 0.3,
       marginBottom: 10,
       paddingHorizontal: 10,
+      borderRadius:1,
   },
   button: {
       backgroundColor: "#4FAAAF",
@@ -299,18 +310,18 @@ const styles = StyleSheet.create({
       width: 100,
       height: 100,
       borderRadius: 5,
-      margin: 5,
+      margin: 1,
   },
   profileImageContainer: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent:"center",
-      marginBottom: 10,
+      marginBottom: 20,
   },
   profileImage: {
-      width: 200,
-      height: 200,
-      borderRadius: 50,
+      width: 150,
+      height: 150,
+      borderRadius: 60,
       marginRight: 10,
   },
   back: {
