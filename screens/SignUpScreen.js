@@ -131,7 +131,7 @@ export default function SignUpScreen({ navigation }) {
                 </View>
                 <Text style={styles.text1}>Ou créer:</Text>
                 <View style={styles.inputsContainer}>
-                  <Text>Choisissez votre statut : </Text>
+                  <Text style={styles.statut}>Choisissez votre statut : </Text>
 
                   {/* Toggle Switch pour choisir entre hébergeur ou locataire */}
                   <View style={styles.toggleContainer}>
@@ -140,8 +140,7 @@ export default function SignUpScreen({ navigation }) {
                     </Text>
                     <Switch value={isHost} onValueChange={setIsHost} />
                   </View>
-                  <View style={styles.fieldset}>
-                  <Text style={styles.legend}>Informations de contact</Text>
+                 
                   <TextInput
                     style={styles.input}
                     placeholder="Nom"
@@ -204,7 +203,7 @@ export default function SignUpScreen({ navigation }) {
                   {touched.confirmPassword && errors.confirmPassword && (
                     <Text style={styles.error}>{errors.confirmPassword}</Text>
                   )}
-                  </View>
+                  
                 </View>
                 <TouchableOpacity
                   style={styles.connectButton}
@@ -271,6 +270,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
+  },
+  statut:{
+    fontWeight:"bold",
+    fontSize:15,
+    marginTop:10,
   },
   toggleText: {
     marginRight: 10,

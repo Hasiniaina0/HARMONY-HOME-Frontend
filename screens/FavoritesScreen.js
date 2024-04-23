@@ -19,7 +19,7 @@ export default function FavoritesScreen() {
   const userFavorites = useSelector((state) => state.user.favorites);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
+  const defaultAvatar = require("../assets/annonce.png");
    // Définir les options de navigation pour le header
    useLayoutEffect(() => {
     navigation.setOptions({

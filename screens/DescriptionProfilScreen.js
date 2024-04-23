@@ -100,7 +100,7 @@ export default function AnnouncementScreen() {
               <View style={styles.profileContainer} >
               {userDetails.photos?.length>0 ? (
                 <Image 
-                  source={{uri:userDetails.photos[0] }} 
+                  source={{uri:userDetails.photoProfil[0] }} 
                   alt="photo de profil" 
                   style={styles.profileImage}
                  />
