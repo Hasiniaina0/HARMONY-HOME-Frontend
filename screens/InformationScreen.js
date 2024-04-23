@@ -108,7 +108,11 @@ export default function SignInScreen() {
           />
 
           <Image
-            source={{ uri: photoProfil }}
+            source={
+              photoProfil
+                ? { uri: photoProfil }
+                : require("../assets/ajoutProfil.png")
+            }
             style={[styles.logo, styles.profileImage]}
           />
           <Text style={styles.title}>

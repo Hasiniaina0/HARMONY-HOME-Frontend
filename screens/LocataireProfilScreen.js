@@ -60,10 +60,10 @@ export default function LocataireProfilScreen() {
         description,
         aPropos,
         photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
-        photo: selectedImages.map(image => ({
-            uri: image.uri,
-            name: `photo-${image.index}.jpg`,
-            type: image.mimeType,
+        photo: selectedImages.map((image) => ({
+          uri: image.uri,
+          name: `photo-${image.index}.jpg`,
+          type: image.mimeType,
         })),
       }),
     })
@@ -123,7 +123,8 @@ export default function LocataireProfilScreen() {
 
   // Fonction pour choisir une image de profil à partir de la galerie
   const showImagePickerProfil = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permissionResult.granted) {
       alert("Vous avez refusé l'accès aux photos.");
@@ -157,17 +158,20 @@ export default function LocataireProfilScreen() {
       type: "image/jpeg",
     });
 
-    const response = await fetch(`${BACKEND_URL}/updates/photoProfil/${token}`, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      `${BACKEND_URL}/updates/photoProfil/${token}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const data = await response.json();
 
     if (response.ok && data.success) {
       console.log("Photo de profil mise à jour avec succès:", data);
       setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
-    } 
+    }
   };
 
   return (
@@ -186,44 +190,51 @@ export default function LocataireProfilScreen() {
 
           {/* Section pour afficher et changer la photo de profil */}
           <View style={styles.profileImageContainer}>
-                    {/* Image de profil */}
+            {/* Image de profil */}
             <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
-                source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.png")}
+                source={
+                  profileImageUrl
+                    ? { uri: profileImageUrl }
+                    : require("../assets/ajoutProfil.png")
+                }
                 style={styles.profileImage}
               />
             </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSavePhotoProfil}
+          >
+            <Text style={styles.buttonText}>Ajouter photo de profil</Text>
+          </TouchableOpacity>
 
-                    
-            </View>
-              <TouchableOpacity style={styles.button} onPress={handleSavePhotoProfil}>
-                <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-              </TouchableOpacity>
+          {/* Toggle Switch pour choisir entre Logement disponible ou non */}
+          <View style={styles.toggleContainer}>
+            <Switch value={isDisponible} onValueChange={setIsDisponible} />
+            <Text style={styles.toggleText}>
+              {isDisponible
+                ? "Je cherche un logement"
+                : "Je ne cherche plus un logement"}
+            </Text>
+          </View>
 
-             {/* Toggle Switch pour choisir entre Logement disponible ou non */}
-              <View style={styles.toggleContainer}>
-                <Switch value={isDisponible} onValueChange={setIsDisponible} />
-                <Text style={styles.toggleText}>
-                  {isDisponible ? "Je cherche un logement" : "Je ne cherche plus un logement"}
-                </Text>
-                </View>
-
-          <Text style ={styles.inputTitle}> Ville :  </Text>
+          <Text style={styles.inputTitle}> Ville : </Text>
           <TextInput
             style={styles.input}
             placeholder="Ta ville"
             value={city}
             onChangeText={(city) => setCity(city)}
           ></TextInput>
-          <Text style ={styles.inputTitle}> A propos de toi : </Text>
+          <Text style={styles.inputTitle}> A propos de toi : </Text>
           <TextInput
-             style={[styles.input, { height: 80 }]}
+            style={[styles.input, { height: 80 }]}
             placeholder="Parles nous de toi !"
             value={aPropos}
             onChangeText={(aPropos) => setApropos(aPropos)}
             multiline={true} // Permet d'écrire sur plusieurs lignes
           ></TextInput>
-          <Text style ={styles.inputTitle}> Tes motivations :  </Text>
+          <Text style={styles.inputTitle}> Tes motivations : </Text>
           <TextInput
             style={[styles.input, { height: 80 }]}
             placeholder="Quelles sont tes motivations ?"
@@ -231,8 +242,11 @@ export default function LocataireProfilScreen() {
             onChangeText={(description) => setDescription(description)}
             multiline={true} // Permet d'écrire sur plusieurs lignes
           ></TextInput>
-          
-          <Text style ={styles.inputTitle}> Partage des photos de ce qui te représente : </Text>
+
+          <Text style={styles.inputTitle}>
+            {" "}
+            Partage des photos de ce qui te représente :{" "}
+          </Text>
           <View style={styles.imageContainer}>
             {selectedImages.map((image, index) => (
               <Image
@@ -258,73 +272,73 @@ export default function LocataireProfilScreen() {
 
 const styles = StyleSheet.create({
   inputsContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "white",
-      marginTop:30,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    marginTop: 30,
   },
   logo: {
-      height: 200,
-      width: 200,
-      alignItems: "center",
+    height: 200,
+    width: 200,
+    alignItems: "center",
   },
-  inputTitle:{
-    fontWeight:"bold",
-    marginBottom:10,
+  inputTitle: {
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   title: {
-      fontSize: 20,
-      fontWeight: "bold",
-      textAlign: "center",
-      marginBottom: 20,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
   },
   input: {
-      height: 40,
-      borderColor: "black",
-      borderWidth: 0.3,
-      marginBottom: 10,
-      paddingHorizontal: 10,
-      borderRadius:1,
+    height: 40,
+    borderColor: "black",
+    borderWidth: 0.3,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 1,
   },
   button: {
-      backgroundColor: "#4FAAAF",
-      color: "white",
-      padding: 10,
-      borderRadius: 20,
-      alignItems: "center",
-      marginBottom: 10,
+    backgroundColor: "#4FAAAF",
+    color: "white",
+    padding: 10,
+    borderRadius: 20,
+    alignItems: "center",
+    marginBottom: 10,
   },
   buttonText: {
-      color: "white",
-      fontSize: 15,
+    color: "white",
+    fontSize: 15,
   },
   imageContainer: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "space-around",
-      alignItems: "center",
-      marginBottom: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginBottom: 10,
   },
   image: {
-      width: 100,
-      height: 100,
-      borderRadius: 5,
-      margin: 1,
+    width: 100,
+    height: 100,
+    borderRadius: 5,
+    margin: 1,
   },
   profileImageContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent:"center",
-      marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
   profileImage: {
-      width: 150,
-      height: 150,
-      borderRadius: 60,
-      marginRight: 10,
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+    marginRight: 10,
   },
   back: {
-      color: "#4FAAAF",
+    color: "#4FAAAF",
   },
-  });
+});
