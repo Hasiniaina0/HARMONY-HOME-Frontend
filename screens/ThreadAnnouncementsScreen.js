@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Image,
@@ -36,7 +36,6 @@ export default function ThreadAnnouncementsScreen() {
       );
   }, []);
 
-  
   // Définir les options de navigation pour le header
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -53,7 +52,6 @@ export default function ThreadAnnouncementsScreen() {
     });
   }, [navigation]);
 
- 
   const handleDetailsAnnonce = (announceToken) => {
     // Naviguer vers l'écran de détails de l'annonce et passer les détails de l'annonce
     navigation.navigate("DescriptionAnnouncement", { token: announceToken });
@@ -120,7 +118,7 @@ export default function ThreadAnnouncementsScreen() {
                         ? "heart"
                         : "heart-outline"
                     }
-                    size={15}
+                    size={25}
                     color={
                       userFavorites.some((fav) => fav._id === announcement._id)
                         ? "red"
@@ -196,6 +194,8 @@ const styles = StyleSheet.create({
     position: "absolute", // Position absolutely within the header container
     top: 0, // Position at the top
     right: 0, // Position at the right
+    marginRight: 15,
+    marginTop: 5,
   },
   location: {
     color: "#666",
