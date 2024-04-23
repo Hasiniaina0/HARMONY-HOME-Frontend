@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useLayoutEffect} from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Image,
@@ -9,7 +9,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  FlatList
+  FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -46,7 +46,7 @@ export default function DescriptionAnnouncementScreen() {
       headerStyle: {
         backgroundColor: "#4FAAAF", // Couleur de fond du header
       },
-      headerTitle: `Logement de ${userDetails ? userDetails.prenom : ''}`,
+      headerTitle: `Logement de ${userDetails ? userDetails.prenom : ""}`,
       headerStyle: {
         backgroundColor: "#4FAAAF",
       },
@@ -57,7 +57,10 @@ export default function DescriptionAnnouncementScreen() {
       },
       headerTitleAlign: "center",
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{ marginLeft: 10 }}
+        >
           <MaterialIcons name="keyboard-backspace" size={24} color="white" />
         </TouchableOpacity>
       ),
@@ -70,7 +73,7 @@ export default function DescriptionAnnouncementScreen() {
 
   const handleContact = () => {
     // Logique pour contacter l'annonceur
-    navigation.navigate("MessageScreen");
+    navigation.navigate("Chat");
   };
 
   const handleMessages = () => {
@@ -90,7 +93,11 @@ export default function DescriptionAnnouncementScreen() {
 
   // Function to render each photo in the gallery
   const renderPhoto = ({ item }) => (
-    <Image source={{ uri: item }} style={styles.photo} alt="Photo de logement" />
+    <Image
+      source={{ uri: item }}
+      style={styles.photo}
+      alt="Photo de logement"
+    />
   );
 
   return (
@@ -103,16 +110,16 @@ export default function DescriptionAnnouncementScreen() {
           {userDetails && (
             <View>
               <View>
-                 {/* Conditionally render the gallery or a default image */}
-                 {userDetails.photos && userDetails.photos.length > 0 ? (
-                 <FlatList
-                  data={userDetails.photos}
-                  horizontal={true}
-                  renderItem={renderPhoto}
-                  keyExtractor={(item, index) => index.toString()}
-                  showsHorizontalScrollIndicator={false}
-                  style={styles.gallery}
-                />
+                {/* Conditionally render the gallery or a default image */}
+                {userDetails.photos && userDetails.photos.length > 0 ? (
+                  <FlatList
+                    data={userDetails.photos}
+                    horizontal={true}
+                    renderItem={renderPhoto}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.gallery}
+                  />
                 ) : (
                   <Image
                     source={require("../assets/annonce.png")}
@@ -226,5 +233,4 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  
 });
