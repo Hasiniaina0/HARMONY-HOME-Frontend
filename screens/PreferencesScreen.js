@@ -15,6 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useSelector } from "react-redux";
 import WheelPickerExpo from "react-native-wheel-picker-expo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PreferencesScreen() {
   const [citySearch, setCitySearch] = useState("");

@@ -60,11 +60,11 @@ export default function LocataireProfilScreen() {
         description,
         aPropos,
         photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
-        photo: selectedImages.map((image) => ({
-          uri: image.uri,
-          name: `photo-${image.index}.jpg`,
-          type: image.mimeType,
-        })),
+        // photo: selectedImages.map((image) => ({
+        //   uri: image.uri,
+        //   name: `photo-${image.index}.jpg`,
+        //   type: image.mimeType,
+        // })),
       }),
     })
       .then((response) => response.json())
