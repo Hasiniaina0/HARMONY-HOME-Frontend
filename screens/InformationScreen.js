@@ -20,28 +20,23 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 export default function SignInScreen() {
-  const [nom, setNom] = useState("");
-  const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [numPhone, setNumPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [photoProfil, setPhotoProfil] = useState("");
-  const token = useSelector((state) => state.user.token);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const user = useSelector((state) => state.user);
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/users/token/${token}`)
+    fetch(`${BACKEND_URL}/users/token/${user.token}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setNom(data.nom);
-        setPrenom(data.prenom);
         setEmail(data.email);
         setNumPhone(data.numPhone);
-        setPassword(data.password);
-        setConfirmPassword(data.confirmPassword);
         setPhotoProfil(data.photoProfil);
       })
       .catch((error) =>
@@ -53,27 +48,47 @@ export default function SignInScreen() {
   }, []);
   // save la mise à jour
   const handleSaveProfil = () => {
-    fetch(`${BACKEND_URL}/updates/information`, {
-      method: "PUT",
+    fetch(`${BACKEND_URL}/users/signin`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        token,
-        email,
-        numPhone,
-        password,
+        email: user.email,
+        password: currentPassword,
       }),
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
-        console.log("Informations mis à jour:", data);
+        if (data.result) {
+          fetch(`${BACKEND_URL}/updates/information`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              token: user.token,
+              email,
+              numPhone,
+              password,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Informations mis à jour:", data);
+            })
+            .catch((error) =>
+              console.error(
+                "Erreur lors de la mise à jour des informations de l'utilisateur:",
+                error
+              )
+            )
+            .finally(() => navigation.navigate("Account"));
+        } else {
+          // Erreur de connexion
+          alert("Veuillez entrer le bon mot de passe !");
+        }
       })
-      .catch((error) =>
-        console.error(
-          "Erreur lors de la mise à jour des informations de l'utilisateur:",
-          error
-        )
-      )
-      .finally(() => navigation.navigate("Account"));
+      .catch((error) => {
+        // Erreur lors de la connexion au serveur
+        console.error("Vérification du mot de passe Error:", error);
+      });
   };
 
   const emailRegex =
@@ -82,8 +97,8 @@ export default function SignInScreen() {
   const validationSchema = Yup.object().shape({
     email: Yup.string().matches(emailRegex, "Format email invalide"),
     numPhone: Yup.string().matches(
-      /^\+33[0-9]{9}$/,
-      "Le numéro de téléphone contenir 9 chiffres"
+      /[0-9]{10}/,
+      "Le numéro de téléphone contenir 10 chiffres"
     ),
     confirmPassword: Yup.string()
       .oneOf(
@@ -95,21 +110,20 @@ export default function SignInScreen() {
 
   return (
     <SafeAreaView style={styles.inputsContainer}>
-      <ScrollView style={styles.scrollView}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <MaterialIcons
-            name="keyboard-backspace"
-            size={60}
-            onPress={() => navigation.goBack()}
-            style={styles.back}
-          />
-
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <MaterialIcons
+          name="keyboard-backspace"
+          size={60}
+          onPress={() => navigation.goBack()}
+          style={styles.back}
+        />
+        <ScrollView style={styles.scrollView}>
           <Image
             source={
-              photoProfil
+              photoProfil.length
                 ? { uri: photoProfil }
                 : require("../assets/ajoutProfil.png")
             }
@@ -133,13 +147,13 @@ export default function SignInScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Nom"
-                  value={nom}
+                  value={user.nom}
                   editable={false}
                 ></TextInput>
                 <TextInput
                   style={styles.input}
                   placeholder="Prénom"
-                  value={prenom}
+                  value={user.prenom}
                   editable={false}
                 ></TextInput>
                 <TextInput
@@ -164,7 +178,7 @@ export default function SignInScreen() {
                 )}
                 <TextInput
                   style={styles.input}
-                  placeholder="Mot de passe"
+                  placeholder="Nouveau mot de passe"
                   secureTextEntry={true}
                   value={password}
                   onChangeText={(password) => setPassword(password)}
@@ -186,17 +200,29 @@ export default function SignInScreen() {
                 {touched.confirmPassword && errors.confirmPassword && (
                   <Text style={styles.error}>{errors.confirmPassword}</Text>
                 )}
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={handleSaveProfil}
-                >
-                  <Text style={styles.buttonText}>Mettre à jour</Text>
-                </TouchableOpacity>
+                <View style={styles.validationContenaire}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Mot de passe actuel"
+                    secureTextEntry={true}
+                    value={currentPassword}
+                    onChangeText={(currentPassword) =>
+                      setCurrentPassword(currentPassword)
+                    }
+                  />
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleSaveProfil}
+                    disabled={currentPassword === ""}
+                  >
+                    <Text style={styles.buttonText}>Mettre à jour</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
           </Formik>
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

@@ -44,7 +44,7 @@ export default function HebergeurProfilScreen() {
         setDescription(data.description);
         setProfileImageUrl(data.photoProfil);
         setAvailability(data.available);
-      })
+      });
   }, []);
 
   // save la mise à jour
@@ -59,11 +59,11 @@ export default function HebergeurProfilScreen() {
         aPropos,
         available: availability,
         photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
-        photo: selectedImages.map(image => ({
-            uri: image.uri,
-            name: `photo-${image.index}.jpg`,
-            type: image.mimeType,
-        })),
+        // photo: selectedImages.map(image => ({
+        //     uri: image.uri,
+        //     name: `photo-${image.index}.jpg`,
+        //     type: image.mimeType,
+        // })),
       }),
     })
       .then((response) => response.json())
@@ -95,7 +95,7 @@ export default function HebergeurProfilScreen() {
           .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error))
-      .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));   
+      .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
   };
 
   // ajouter une image à partir de la galerie du téléphone
@@ -121,65 +121,80 @@ export default function HebergeurProfilScreen() {
     }
   };
 
-
   const showImagePickerProfil = async () => {
     // Demander la permission d'accéder à la galerie
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-        alert("Vous avez refusé l'accès aux photos");
-        return;
+      alert("Vous avez refusé l'accès aux photos");
+      return;
     }
 
     // Lancer la galerie pour choisir une image
     const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.3,
-        multiple: false, // Permet de choisir une seule image pour la photo de profil
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.3,
+      multiple: false, // Permet de choisir une seule image pour la photo de profil
     });
 
     // Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
     if (!result.canceled && result.assets.length > 0) {
-        const newImage = result.assets[0];
-        setProfileImageUrl(newImage.uri);
-        setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
+      const newImage = result.assets[0];
+      setProfileImageUrl(newImage.uri);
+      setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
     }
-};
-
-    const handleSavePhotoProfil = async () => {
-      if (selectedImages.length === 0) {
-          return;
-      }
-  
-      // Préparer les données de l'image de profil pour l'envoi
-      const formData = new FormData();
-      const photoProfil = selectedImages[0]; // Prenez la première image comme photo de profil
-      formData.append("photoProfil", {
-          uri: photoProfil.uri,
-          name: "photoProfil.jpg",
-          type: photoProfil.mimeType,
-      });
-  
-      // Envoyer la photo de profil au serveur
-      const response = await fetch(`${BACKEND_URL}/updates/photoProfil/${token}`, {
-          method: "POST",
-          body: formData,
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok && data.success) {
-          console.log("Photo de profil mise à jour avec succès:", data);
-          setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
-      } 
   };
 
-   // Interface utilisateur du composant
-   return (
+  const handleSavePhotoProfil = async () => {
+    if (selectedImages.length === 0) {
+      return;
+    }
+
+    // Préparer les données de l'image de profil pour l'envoi
+    const formData = new FormData();
+    const photoProfil = selectedImages[0]; // Prenez la première image comme photo de profil
+    formData.append("photoProfil", {
+      uri: photoProfil.uri,
+      name: "photoProfil.jpg",
+      type: photoProfil.mimeType,
+    });
+
+    // Envoyer la photo de profil au serveur
+    const response = await fetch(
+      `${BACKEND_URL}/updates/photoProfil/${token}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      console.log("Photo de profil mise à jour avec succès:", data);
+      setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
+    }
+  };
+
+  // Interface utilisateur du composant
+  return (
     <SafeAreaView style={styles.inputsContainer}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        {/* Bouton de retour */}
+        <MaterialIcons
+          name="keyboard-backspace"
+          size={60}
+          onPress={() => navigation.goBack()}
+          style={styles.back}
+        />
         <ScrollView style={styles.scrollView}>
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
                 {/* Bouton de retour */}
                 <MaterialIcons name="keyboard-backspace" size={60} onPress={() => navigation.goBack()} style={styles.back} />
 
@@ -199,123 +214,160 @@ export default function HebergeurProfilScreen() {
                         <Text style={styles.buttonText}>Ajouter photo de profil</Text>
                 </TouchableOpacity>
 
-                 {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
-                 <View style={styles.toggleContainer}>
-                    <Switch
-                        value={availability === "available"}
-                        onValueChange={() => setAvailability(prev => prev === "available" ? "Logement indisponible" : "Logement disponible")}
-                    />
-                    <Text style={styles.toggleText}>
-                      {availability === "available" ? "Logement disponible" : "Logement indisponible"}
-                    </Text>
-                </View>
+          {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
+          <View style={styles.toggleContainer}>
+            <Switch
+              value={availability === "available"}
+              onValueChange={() =>
+                setAvailability((prev) =>
+                  prev === "available"
+                    ? "Logement indisponible"
+                    : "Logement disponible"
+                )
+              }
+            />
+            <Text style={styles.toggleText}>
+              {availability === "available"
+                ? "Logement disponible"
+                : "Logement indisponible"}
+            </Text>
+          </View>
 
-                {/* Formulaire pour mettre à jour le profil */}
-                <Text style={styles.inputTitle}>Ville :</Text>
-                <TextInput style={styles.input} placeholder="Votre ville" value={city} onChangeText={setCity} />
-                <Text style={styles.inputTitle}>A propos de vous :</Text>
-                <TextInput   style={[styles.input, { height: 80 }]} multiline={true}  placeholder="Parlez-nous de vous" value={aPropos} onChangeText={setApropos} />
-                <Text style={styles.inputTitle}>Description de votre logement :</Text>
-                <TextInput   style={[styles.input, { height: 80 }]} multiline={true}  placeholder="Décrivez votre logement" value={description} onChangeText={setDescription} />
+          {/* Formulaire pour mettre à jour le profil */}
+          <Text style={styles.inputTitle}>Ville :</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Votre ville"
+            value={city}
+            onChangeText={setCity}
+          />
+          <Text style={styles.inputTitle}>A propos de vous :</Text>
+          <TextInput
+            style={[styles.input, { height: 80 }]}
+            multiline={true}
+            placeholder="Parlez-nous de vous"
+            value={aPropos}
+            onChangeText={setApropos}
+          />
+          <Text style={styles.inputTitle}>Description de votre logement :</Text>
+          <TextInput
+            style={[styles.input, { height: 80 }]}
+            multiline={true}
+            placeholder="Décrivez votre logement"
+            value={description}
+            onChangeText={setDescription}
+          />
 
-                {/* Section pour ajouter des photos partagées */}
-                <Text style={styles.inputTitle}>Partagez des photos de ce qui vous représente</Text>
-                <View style={styles.imageContainer}>
-                    {selectedImages.slice(1).map((image, index) => (
-                        // Afficher chaque image partagée
-                        <Image key={index} source={{ uri: image.uri }} style={styles.image} />
-                    ))}
-                    <View>
-                    <Button title="Ajouter une image" onPress={showImagePicker} color="#4FAAAF" style={styles.addImage} />
-                    </View>
-                </View>
+          {/* Section pour ajouter des photos partagées */}
+          <Text style={styles.inputTitle}>
+            Partagez des photos de ce qui vous représente
+          </Text>
+          <View style={styles.imageContainer}>
+            {selectedImages.slice(1).map((image, index) => (
+              // Afficher chaque image partagée
+              <Image
+                key={index}
+                source={{ uri: image.uri }}
+                style={styles.image}
+              />
+            ))}
+            <View>
+              <Button
+                title="Ajouter une image"
+                onPress={showImagePicker}
+                color="#4FAAAF"
+                style={styles.addImage}
+              />
+            </View>
+          </View>
 
                 {/* Bouton pour mettre à jour le profil */}
                 <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
                     <Text style={styles.buttonText}>Mettre à jour</Text>
                 </TouchableOpacity>
+            </KeyboardAvoidingView>
         </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
-);
+  );
 }
 
 const styles = StyleSheet.create({
-inputsContainer: {
+  inputsContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
-    marginTop:30,
-},
-logo: {
+    marginTop: 30,
+  },
+  logo: {
     height: 200,
     width: 200,
     alignItems: "center",
-},
-inputTitle:{
-  fontWeight:"bold",
-  marginBottom:10,
-},
-title: {
+  },
+  inputTitle: {
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  title: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
-},
-input: {
+  },
+  input: {
     height: 40,
     borderColor: "black",
     borderWidth: 0.3,
     marginBottom: 10,
     paddingHorizontal: 5,
-    borderRadius:1,
-},
-button: {
+    borderRadius: 1,
+  },
+  button: {
     backgroundColor: "#4FAAAF",
     color: "white",
     padding: 10,
     borderRadius: 20,
     alignItems: "center",
     marginBottom: 10,
-},
-buttonText: {
+  },
+  buttonText: {
     color: "white",
     fontSize: 15,
-},
-imageContainer: {
+  },
+  imageContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 10,
-},
-image: {
+  },
+  image: {
     width: 100,
     height: 100,
     borderRadius: 5,
     margin: 1,
-},
-profileImageContainer: {
+  },
+  profileImageContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     marginBottom: 20,
-},
-profileImage: {
+  },
+  profileImage: {
     width: 150,
     height: 150,
     borderRadius: 70,
-  
-},
-back: {
+  },
+  back: {
     color: "#4FAAAF",
-},
-toggleContainer: {
-  flexDirection: "row",
-  alignItems: "center",
-  marginBottom: 10,
-},
-toggleText: {
-  marginRight: 10,
-},
+  },
+  toggleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  toggleText: {
+    marginRight: 10,
+  },
 });

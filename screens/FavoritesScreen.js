@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -14,14 +14,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-
 export default function FavoritesScreen() {
   const userFavorites = useSelector((state) => state.user.favorites);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const defaultAvatar = require("../assets/annonce.png");
-   // Définir les options de navigation pour le header
-   useLayoutEffect(() => {
+  // Définir les options de navigation pour le header
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
       headerStyle: {
@@ -34,13 +33,15 @@ export default function FavoritesScreen() {
       ),
       headerTitleAlign: "center", // Aligne le titre au centre
       headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{ marginLeft: 10 }}
+        >
           <MaterialIcons name="keyboard-backspace" size={24} color="white" />
         </TouchableOpacity>
       ),
     });
   }, [navigation]);
-
 
   const handleFavorite = (announcement) => {
     // Vérifie si l'annonce est déjà dans les favoris
@@ -55,18 +56,18 @@ export default function FavoritesScreen() {
   function truncateText(text, maxLength) {
     // Vérifiez si le texte est défini et non nul
     if (text === undefined || text === null) {
-      return '';
+      return "";
     }
-  
+
     // Tronquez le texte si nécessaire
     if (text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
+      return text.substring(0, maxLength) + "...";
     }
-  
+
     // Retourne le texte tel quel s'il n'est pas trop long
     return text;
   }
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -82,7 +83,7 @@ export default function FavoritesScreen() {
                     ? "heart"
                     : "heart-outline"
                 }
-                size={15}
+                size={25}
                 color={
                   userFavorites.some((fav) => fav._id === favorite._id)
                     ? "red"
@@ -91,28 +92,31 @@ export default function FavoritesScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-                {favorite.photos?.length>0 ? (
-                <Image 
-                  source={{uri:favorite.photos[0] }} 
-                  alt="photo de profil" 
-                  style={styles.imageProfil}/>
-                ) : (
-                    <Image
-                      source={defaultAvatar}
-                      style={styles.imageProfil}
-                      alt="Avatar par défaut"
-                    />
-                  )}
+              {favorite.photos?.length > 0 ? (
+                <Image
+                  source={{ uri: favorite.photos[0] }}
+                  alt="photo de profil"
+                  style={styles.imageProfil}
+                />
+              ) : (
+                <Image
+                  source={defaultAvatar}
+                  style={styles.imageProfil}
+                  alt="Avatar par défaut"
+                />
+              )}
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{favorite.prenom}</Text>
               <Text style={styles.location}>{favorite.city}</Text>
-              <Text style={styles.description}>{truncateText(favorite.description,80)}</Text>
+              <Text style={styles.description}>
+                {truncateText(favorite.description, 80)}
+              </Text>
             </View>
           </View>
         ))}
       </ScrollView>
-      </SafeAreaView>
+    </SafeAreaView>
   );
 }
 
@@ -163,6 +167,8 @@ const styles = StyleSheet.create({
     position: "absolute", // Position absolutely within the header container
     top: 0, // Position at the top
     right: 0, // Position at the right
+    marginRight: 15,
+    marginTop: 5,
   },
   location: {
     color: "#666",

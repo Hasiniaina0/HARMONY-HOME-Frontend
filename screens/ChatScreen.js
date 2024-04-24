@@ -1,12 +1,19 @@
 import PubNub from "pubnub";
 import { PubNubProvider } from "pubnub-react";
-import { KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+} from "react-native";
 import {
   Chat,
   MessageList,
   MessageInput,
 } from "@pubnub/react-native-chat-components";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function ChatScreen() {
   const user = useSelector((state) => state.user);
@@ -26,9 +33,9 @@ export default function ChatScreen() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.greetingText}> Messages 👋</Text>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         {/* SafeAreaView and KeyboardAvoidingView are React Native utilities that 
@@ -48,3 +55,14 @@ export default function ChatScreen() {
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  greetingText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 18,
+    marginLeft: 15,
+  },
+});

@@ -42,7 +42,8 @@ export default function SignInScreen({ navigation }) {
               email: data.email,
               token: data.token,
               statut: data.statut,
-              name: data.name,
+              nom: data.nom,
+              prenom: data.prenom,
             })
           );
           setEmail("");

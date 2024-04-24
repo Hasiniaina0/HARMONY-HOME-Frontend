@@ -60,11 +60,11 @@ export default function LocataireProfilScreen() {
         description,
         aPropos,
         photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
-        photo: selectedImages.map((image) => ({
-          uri: image.uri,
-          name: `photo-${image.index}.jpg`,
-          type: image.mimeType,
-        })),
+        // photo: selectedImages.map((image) => ({
+        //   uri: image.uri,
+        //   name: `photo-${image.index}.jpg`,
+        //   type: image.mimeType,
+        // })),
       }),
     })
       .then((response) => response.json())
@@ -176,18 +176,17 @@ export default function LocataireProfilScreen() {
 
   return (
     <SafeAreaView style={styles.inputsContainer}>
-      <ScrollView style={styles.scrollView}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <MaterialIcons
-            name="keyboard-backspace"
-            size={60}
-            onPress={() => navigation.goBack()}
-            style={styles.back}
-          />
-
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <MaterialIcons
+          name="keyboard-backspace"
+          size={60}
+          onPress={() => navigation.goBack()}
+          style={styles.back}
+        />
+        <ScrollView style={styles.scrollView}>
           {/* Section pour afficher et changer la photo de profil */}
           <View style={styles.profileImageContainer}>
             {/* Image de profil */}
@@ -261,8 +260,8 @@ export default function LocataireProfilScreen() {
           <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
             <Text style={styles.buttonText}>Mettre à jour</Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Image,
@@ -12,7 +12,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../reducers/user";
 import { useNavigation } from "@react-navigation/native";
-
 
 export default function ThreadAnnouncementsScreen() {
   const [announcements, setAnnouncements] = useState([]);
@@ -53,10 +52,9 @@ export default function ThreadAnnouncementsScreen() {
     });
   }, [navigation]);
 
-
   const handleDetailsAnnonce = (announceToken) => {
     // Naviguer vers l'écran de détails de l'annonce et passer les détails de l'annonce
-    navigation.navigate('DescriptionProfile', {token:announceToken});
+    navigation.navigate("DescriptionProfile", { token: announceToken });
   };
 
   const handleFavorite = (announcement) => {
@@ -79,14 +77,14 @@ export default function ThreadAnnouncementsScreen() {
   function truncateText(text, maxLength) {
     // Vérifiez si le texte est défini et non nul
     if (text === undefined || text === null) {
-      return '';
+      return "";
     }
-  
+
     // Tronquez le texte si nécessaire
     if (text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
+      return text.substring(0, maxLength) + "...";
     }
-  
+
     // Retourne le texte tel quel s'il n'est pas trop long
     return text;
   }
@@ -106,7 +104,7 @@ export default function ThreadAnnouncementsScreen() {
                     ? "heart"
                     : "heart-outline"
                 }
-                size={15}
+                size={25}
                 color={
                   userFavorites.some((fav) => fav._id === announcement._id)
                     ? "red"
@@ -115,12 +113,13 @@ export default function ThreadAnnouncementsScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-            {announcement.photos?.length>0 ? (
-            <Image 
-              source={{uri:announcement.photos[0] }} 
-              alt="photo de profil" 
-              style={styles.imageProfil}/>
-            ) : (
+              {announcement.photos?.length > 0 ? (
+                <Image
+                  source={{ uri: announcement.photos[0] }}
+                  alt="photo de profil"
+                  style={styles.imageProfil}
+                />
+              ) : (
                 <Image
                   source={defaultAvatar}
                   style={styles.imageProfil}
@@ -131,7 +130,9 @@ export default function ThreadAnnouncementsScreen() {
             <View style={styles.textContainer}>
               <Text style={styles.title}>{announcement.prenom}</Text>
               <Text style={styles.location}>{announcement.city}</Text>
-              <Text style={styles.description}>{truncateText(announcement.description,80)}</Text>
+              <Text style={styles.description}>
+                {truncateText(announcement.description, 80)}
+              </Text>
               <TouchableOpacity
                 // onPress={() => handleContact()}
                 onPress={() => handleDetailsAnnonce(announcement.token)}
@@ -194,6 +195,8 @@ const styles = StyleSheet.create({
     position: "absolute", // Position absolutely within the header container
     top: 0, // Position at the top
     right: 0, // Position at the right
+    marginRight: 15,
+    marginTop: 5,
   },
   location: {
     color: "#666",
