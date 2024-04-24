@@ -38,7 +38,7 @@ export default function SignUpScreen({ navigation }) {
       .matches(emailRegex, "Format email invalide")
       .required("L'email est requis"),
     numPhone: Yup.string()
-      .matches(/[0-9]{10}/, "Le numéro de téléphone contenir 10 chiffres")
+      .matches(/[0-9]{10}/, "Le numéro de téléphone doit contenir 9 chiffres")
       .required("Le numéro de téléphone est requis"),
     password: Yup.string().required("Le mot de passe est requis"),
     confirmPassword: Yup.string()
@@ -130,7 +130,7 @@ export default function SignUpScreen({ navigation }) {
                     />
                   </TouchableOpacity>
                 </View>
-                <Text style={styles.text1}>Ou créer:</Text>
+                <Text style={styles.text1}>Ou créer</Text>
                 <View style={styles.inputsContainer}>
                   <Text style={styles.statut}>Choisissez votre statut : </Text>
 
@@ -303,15 +303,16 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 10,
     paddingHorizontal: 10,
+    
   },
   formContainer: {
     width: "90%",
   },
   text1: {
-    fontSize: 19,
-    marginBottom: 10,
+    fontSize: 17,
+    marginBottom: 20,
     textAlign: "center",
-    fontWeight: "bold",
+    
   },
   input: {
     height: 40,
@@ -319,6 +320,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     marginBottom: 10,
     paddingHorizontal: 10,
+   
   },
   error: {
     color: "red",
@@ -349,6 +351,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     marginTop: 30,
     alignSelf: "center",
+    width:130,
   },
   connectButtonText: {
     color: "white",

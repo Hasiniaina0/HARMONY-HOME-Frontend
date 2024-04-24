@@ -26,7 +26,7 @@ export default function LocataireProfilScreen() {
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [photoProfil, setphotoProfil] = useState("");
   const [isDisponible, setIsDisponible] = useState(false);
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -39,7 +39,7 @@ export default function LocataireProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
-        setProfileImageUrl(data.photoProfil);
+        setphotoProfil(data.photoProfil);
       })
       .catch((error) =>
         console.error(
@@ -59,10 +59,10 @@ export default function LocataireProfilScreen() {
         city,
         description,
         aPropos,
-        photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
+        photoProfil, // Utiliser profileImageUrl au lieu de photoProfil
         // photo: selectedImages.map((image) => ({
         //   uri: image.uri,
-        //   name: `photo-${image.index}.jpg`,
+        //   name: photo-${image.index}.jpg,
         //   type: image.mimeType,
         // })),
       }),
@@ -72,53 +72,53 @@ export default function LocataireProfilScreen() {
         console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
 
-        const formData = new FormData();
-        selectedImages.forEach((photo, index) => {
-          formData.append(`photoFromFront-${index}`, {
-            uri: photo?.uri,
-            name: `photo-${index}.jpg`,
-            type: photo?.mimeType,
-          });
-        });
+    const formData = new FormData();
+    selectedImages.forEach((photo, index) => {
+      formData.append(`photoFromFront-${index}`, {
+        uri: photo?.uri,
+        name: `photo-${index}.jpg`,
+        type: photo?.mimeType,
+      });
+    });
 
-        fetch(`${BACKEND_URL}/updates/photos/${token}`, {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
+    fetch(`${BACKEND_URL}/updates/photos/${token}`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
 
-          .then((data) => {
-            console.log("photo maj", data);
-            // const cloudinaryURL = data.uri;
-            // console.log("cloudinaryURL", cloudinaryURL);
-            // dispatch(addPhoto(cloudinaryURL));
-          })
-          .catch((error) => console.log(error));
+      .then((data) => {
+        console.log("photo maj", data);
+        // const cloudinaryURL = data.uri;
+        // console.log("cloudinaryURL", cloudinaryURL);
+        // dispatch(addPhoto(cloudinaryURL));
       })
-      .catch((error) => console.log(error))
-      .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
+      .catch((error) => console.log(error));
+  })
+  .catch((error) => console.log(error))
+  .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
   };
 
   // ajouter une image à partir de la galerie du téléphone
   const showImagePicker = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (permissionResult.granted === false) {
-      alert("Vous avez refusé l'accès aux photos");
-      return;
-    }
+if (permissionResult.granted === false) {
+  alert("Vous avez refusé l'accès aux photos");
+  return;
+}
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.3,
-      multiple: true,
-    });
+const result = await ImagePicker.launchImageLibraryAsync({
+  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  allowsEditing: true,
+  aspect: [4, 3],
+  quality: 0.3,
+  multiple: true,
+});
 
-    if (!result.canceled) {
-      setSelectedImages([...selectedImages, ...result.assets]);
-    }
+if (!result.canceled) {
+  setSelectedImages([...selectedImages, ...result.assets]);
+}
   };
 
   // Fonction pour choisir une image de profil à partir de la galerie
@@ -126,52 +126,52 @@ export default function LocataireProfilScreen() {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!permissionResult.granted) {
-      alert("Vous avez refusé l'accès aux photos.");
-      return;
-    }
+if (!permissionResult.granted) {
+  alert("Vous avez refusé l'accès aux photos.");
+  return;
+}
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.3,
-      multiple: false, // Autorise une seule image
-    });
+const result = await ImagePicker.launchImageLibraryAsync({
+  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  allowsEditing: true,
+  aspect: [4, 3],
+  quality: 0.3,
+  multiple: false, // Autorise une seule image
+});
 
-    if (!result.canceled && result.assets.length > 0) {
-      const newImage = result.assets[0];
-      setProfileImageUrl(newImage.uri);
-    }
+if (!result.canceled && result.assets.length > 0) {
+  const newImage = result.assets[0];
+  setphotoProfil(newImage.uri);
+}
   };
 
   // Fonction pour enregistrer la photo de profil mise à jour
   const handleSavePhotoProfil = async () => {
-    if (!profileImageUrl) {
+    if (!photoProfil) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("photoProfil", {
-      uri: profileImageUrl,
-      name: "photoProfil.jpg",
-      type: "image/jpeg",
-    });
+const formData = new FormData();
+formData.append("photoProfil", {
+  uri: photoProfil,
+  name: "photoProfil.jpg",
+  type: "image/jpeg",
+});
 
-    const response = await fetch(
-      `${BACKEND_URL}/updates/photoProfil/${token}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+const response = await fetch(
+  `${BACKEND_URL}/updates/photoProfil/${token}`,
+  {
+    method: "POST",
+    body: formData,
+  }
+);
 
-    const data = await response.json();
+const data = await response.json();
 
-    if (response.ok && data.success) {
-      console.log("Photo de profil mise à jour avec succès:", data);
-      setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
-    }
+if (response.ok && data.success) {
+  console.log("Photo de profil mise à jour avec succès:", data);
+  setphotoProfil(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
+}
   };
 
   return (
@@ -187,14 +187,14 @@ export default function LocataireProfilScreen() {
           style={styles.back}
         />
         <ScrollView style={styles.scrollView}>
-          {/* Section pour afficher et changer la photo de profil */}
+          {/* Section pour afficher et changer la photo de profil /} */}
           <View style={styles.profileImageContainer}>
             {/* Image de profil */}
             <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
                 source={
-                  profileImageUrl
-                    ? { uri: profileImageUrl }
+                  photoProfil
+                    ? { uri: photoProfil }
                     : require("../assets/ajoutProfil.png")
                 }
                 style={styles.profileImage}
@@ -208,61 +208,65 @@ export default function LocataireProfilScreen() {
             <Text style={styles.buttonText}>Ajouter photo de profil</Text>
           </TouchableOpacity>
 
-          {/* Toggle Switch pour choisir entre Logement disponible ou non */}
-          <View style={styles.toggleContainer}>
-            <Switch value={isDisponible} onValueChange={setIsDisponible} />
-            <Text style={styles.toggleText}>
-              {isDisponible
-                ? "Je cherche un logement"
-                : "Je ne cherche plus un logement"}
-            </Text>
-          </View>
+      {/* Toggle Switch pour choisir entre Logement disponible ou non */}
+      <View style={styles.toggleContainer}>
+        <Switch value={isDisponible} onValueChange={setIsDisponible} />
+        <Text style={styles.toggleText}>
+          {isDisponible
+            ? "Je cherche un logement"
+            : "Je ne cherche plus un logement"}
+        </Text>
+      </View>
 
-          <Text style={styles.inputTitle}> Ville : </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Ta ville"
-            value={city}
-            onChangeText={(city) => setCity(city)}
-          ></TextInput>
-          <Text style={styles.inputTitle}> A propos de toi : </Text>
-          <TextInput
-            style={[styles.input, { height: 80 }]}
-            placeholder="Parles nous de toi !"
-            value={aPropos}
-            onChangeText={(aPropos) => setApropos(aPropos)}
-            multiline={true} // Permet d'écrire sur plusieurs lignes
-          ></TextInput>
-          <Text style={styles.inputTitle}> Tes motivations : </Text>
-          <TextInput
-            style={[styles.input, { height: 80 }]}
-            placeholder="Quelles sont tes motivations ?"
-            value={description}
-            onChangeText={(description) => setDescription(description)}
-            multiline={true} // Permet d'écrire sur plusieurs lignes
-          ></TextInput>
+      <Text style={styles.inputTitle}> Ville : </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Ta ville"
+        value={city}
+        onChangeText={(city) => setCity(city)}
+      ></TextInput>
+      <Text style={styles.inputTitle}> A propos de toi : </Text>
+      <TextInput
+        style={[styles.input, { height: 80 }]}
+        placeholder="Parles nous de toi !"
+        value={aPropos}
+        onChangeText={(aPropos) => setApropos(aPropos)}
+        multiline={true} // Permet d'écrire sur plusieurs lignes
+      ></TextInput>
+      <Text style={styles.inputTitle}> Tes motivations : </Text>
+      <TextInput
+        style={[styles.input, { height: 80 }]}
+        placeholder="Quelles sont tes motivations ?"
+        value={description}
+        onChangeText={(description) => setDescription(description)}
+        multiline={true} // Permet d'écrire sur plusieurs lignes
+      ></TextInput>
 
-          <Text style={styles.inputTitle}>
-            {" "}
-            Partage des photos de ce qui te représente :{" "}
-          </Text>
-          <View style={styles.imageContainer}>
-          {selectedImages.slice(1).map((image, index) => (
-                        // Afficher chaque image partagée
-              <Image key={index} source={{ uri: image.uri }} style={styles.image} />
-           ))}
-            <Button
-              title="Ajouter une image"
-              onPress={showImagePicker}
-              color="#4FAAAF"
-            />
-          </View>
-          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-            <Text style={styles.buttonText}>Mettre à jour</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      <Text style={styles.inputTitle}>
+        {" "}
+        Partage des photos de ce qui te représente :{" "}
+      </Text>
+      <View style={styles.imageContainer}>
+        {selectedImages.slice(0).map((image, index) => (
+          // Afficher chaque image partagée
+          <Image
+            key={index}
+            source={{ uri: image.uri }}
+            style={styles.image}
+          />
+        ))}
+        <Button
+          title="Ajouter une image"
+          onPress={showImagePicker}
+          color="#4FAAAF"
+        />
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+        <Text style={styles.buttonText}>Mettre à jour</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  </KeyboardAvoidingView>
+</SafeAreaView>
   );
 }
 
