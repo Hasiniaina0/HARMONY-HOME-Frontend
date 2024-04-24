@@ -124,8 +124,8 @@ export default function SignInScreen() {
           <Image
             source={
               photoProfil.length
-                ? { uri: photoProfil }
-                : require("../assets/ajoutProfil.png")
+                ? { uri: photoProfil[0] }
+                : require("../assets/photoProfil.png")
             }
             style={[styles.logo, styles.profileImage]}
           />
@@ -236,16 +236,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 200,
-    height: 200,
     marginBottom: 20,
   },
   profileImage: {
-    borderRadius: 100, // Pour donner une forme circulaire à l'image
+    width: 150,
+    height: 150,
+    borderRadius: 100,
     alignSelf: "center",
     borderColor: "#4FAAAF",
     borderWidth: 4,
-    backgroundColor: "gray",
   },
   title: {
     fontSize: 20,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -22,8 +22,27 @@ export default function AccountScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [email, setEmail] = useState(""); // État pour l'adresse e-mail
   const [message, setMessage] = useState("");
+  const [photoProfil, setPhotoProfil] = useState("");
+  const [prenom, setPrenom] = useState("");
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/users/token/${user.token}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setPhotoProfil(data.photoProfil);
+        setPrenom(data.prenom);
+      })
+      .catch((error) =>
+        console.error(
+          "Erreur lors de la récupération de la photo de profil de l'utilisateur:",
+          error
+        )
+      );
+  }, []);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -35,23 +54,26 @@ export default function AccountScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.container}>
             <View style={styles.title}>
               <View style={styles.imageContainer}>
                 <Image
-                  source={require("../assets/profil.png")}
-                  style={styles.profil}
-                  alt="profil de l'utilisateur"
+                  source={
+                    photoProfil.length
+                      ? { uri: photoProfil[0] }
+                      : require("../assets/photoProfil.png")
+                  }
+                  style={[styles.logo, styles.profileImage]}
                 />
               </View>
 
-              <Text style={styles.textNom}>Prénom de l'utilisateur</Text>
+              <Text style={styles.textNom}>{prenom}</Text>
             </View>
             <View style={styles.containerText}>
               <Text
@@ -141,8 +163,8 @@ export default function AccountScreen() {
             </View>
           </Modal>
         </ScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
@@ -154,6 +176,17 @@ const styles = StyleSheet.create({
   imageContainer: {
     justifyContent: "center", // Centrer les éléments verticalement
     alignItems: "center", // Centrer les éléments horizontalement
+  },
+  logo: {
+    marginBottom: 20,
+  },
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+    alignSelf: "center",
+    borderColor: "#4FAAAF",
+    borderWidth: 4,
   },
   containerText: {
     flex: 1,

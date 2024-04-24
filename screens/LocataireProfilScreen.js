@@ -27,6 +27,7 @@ export default function LocataireProfilScreen() {
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
   const [photoProfil, setphotoProfil] = useState("");
+  const [photoProfil, setphotoProfil] = useState("");
   const [isDisponible, setIsDisponible] = useState(false);
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -39,6 +40,7 @@ export default function LocataireProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
+        setphotoProfil(data.photoProfil);
         setphotoProfil(data.photoProfil);
       })
       .catch((error) =>
@@ -148,6 +150,7 @@ if (!result.canceled && result.assets.length > 0) {
   // Fonction pour enregistrer la photo de profil mise à jour
   const handleSavePhotoProfil = async () => {
     if (!photoProfil) {
+    if (!photoProfil) {
       return;
     }
 
@@ -193,6 +196,8 @@ if (response.ok && data.success) {
             <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
                 source={
+                  photoProfil
+                    ? { uri: photoProfil }
                   photoProfil
                     ? { uri: photoProfil }
                     : require("../assets/ajoutProfil.png")

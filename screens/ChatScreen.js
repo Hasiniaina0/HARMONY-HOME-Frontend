@@ -7,19 +7,22 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   Chat,
   MessageList,
   MessageInput,
 } from "@pubnub/react-native-chat-components";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ChatScreen() {
+  const navigation = useNavigation();
   const user = useSelector((state) => state.user);
 
   const currentChannel = "Harmony-Home";
   const theme = "light";
+
   // const myUser = {
   //   id: user.token,
   //   name: user.nom,
@@ -33,20 +36,19 @@ export default function ChatScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
+      <MaterialIcons
+        name="keyboard-backspace"
+        size={60}
+        onPress={() => navigation.goBack()}
+        style={styles.back}
+      />
       <Text style={styles.greetingText}> Messages 👋</Text>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        {/* SafeAreaView and KeyboardAvoidingView are React Native utilities that 
-      allow your app to be rendered within the safe area boundaries of a device */}
         <PubNubProvider client={pubnub}>
-          {/* PubNubProvider is a part of the PubNub React SDK and allows you to access 
-              PubNub instance in components down the tree. */}
           <Chat {...{ currentChannel, theme }}>
-            {/* Chat is an obligatory state provider. It allows you to configure some 
-                common component options, like the current channel and the general theme 
-                for the app. */}
             <MessageList />
             <MessageInput senderInfo={true} />
           </Chat>
@@ -64,5 +66,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     marginLeft: 15,
+  },
+  back: {
+    color: "#4FAAAF",
   },
 });

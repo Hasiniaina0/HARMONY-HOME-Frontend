@@ -29,6 +29,7 @@ export default function HebergeurProfilScreen() {
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [photoProfil, setProfilPhoto] = useState("");
+  const [photoProfil, setProfilPhoto] = useState("");
   const token = useSelector((state) => state.user.token);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -41,6 +42,7 @@ export default function HebergeurProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
+        setProfilPhoto(data.photoProfil);
         setProfilPhoto(data.photoProfil);
         setAvailability(data.available);
       });
@@ -60,6 +62,7 @@ export default function HebergeurProfilScreen() {
       }),
     })
       .then((response) => response.json())
+      .then(async (data) => {
       .then(async (data) => {
         console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
@@ -350,6 +353,11 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
+    borderRadius: 100,
+    alignSelf: "center",
+    borderColor: "#4FAAAF",
+    borderWidth: 4,
+    // backgroundColor: "gray",
     borderRadius: 100,
     alignSelf: "center",
     borderColor: "#4FAAAF",
