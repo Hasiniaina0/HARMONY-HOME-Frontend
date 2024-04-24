@@ -34,12 +34,22 @@ export default function ChatScreen() {
     subscribeKey: process.env.EXPO_PUBLIC_SUSCRIBE_KEY,
     userId: user.token,
   });
+  //  const renderMessage = (props) => {
+  //    return (
+  //      <View>
+  //        <Text>
+  //          <Text style={{ fontWeight: "bold" }}>{props.userId}</Text> {props.time}
+  //        </Text>
+  //        <Text>{props.message.message.text}</Text>
+  //      </View>
+  //    );
+  //  };
 
   return (
     <SafeAreaView>
       <MaterialIcons
         name="keyboard-backspace"
-        size={60}
+        size={50}
         onPress={() => navigation.goBack()}
         style={styles.back}
       />
@@ -69,5 +79,21 @@ const styles = StyleSheet.create({
   },
   back: {
     color: "#4FAAAF",
+  },
+  messageContainer: {
+    marginVertical: 5,
+    padding: 10,
+    borderRadius: 10,
+  },
+  myMessage: {
+    backgroundColor: "#DCF8C6", // Couleur des messages de l'utilisateur
+    alignSelf: "flex-end", // Alignement à droite
+  },
+  otherMessage: {
+    backgroundColor: "#FFFFFF", // Couleur des messages des autres
+    alignSelf: "flex-start", // Alignement à gauche
+  },
+  messageText: {
+    color: "black",
   },
 });
