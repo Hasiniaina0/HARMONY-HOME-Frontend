@@ -29,7 +29,6 @@ export default function HebergeurProfilScreen() {
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [photoProfil, setProfilPhoto] = useState("");
-  const [photoProfil, setProfilPhoto] = useState("");
   const token = useSelector((state) => state.user.token);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -42,7 +41,6 @@ export default function HebergeurProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
-        setProfilPhoto(data.photoProfil);
         setProfilPhoto(data.photoProfil);
         setAvailability(data.available);
       });
@@ -58,38 +56,38 @@ export default function HebergeurProfilScreen() {
         city,
         description,
         aPropos,
+        photoProfil,
         available: availability,
       }),
     })
       .then((response) => response.json())
       .then(async (data) => {
-      .then(async (data) => {
         console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
 
-    const formData = new FormData();
+        const formData = new FormData();
 
-    selectedImages.forEach((photo, index) => {
-      formData.append(`photoFromFront-${index}`, {
-        uri: photo?.uri,
-        name: `photo-${index}.jpg`,
-        type: photo?.mimeType,
-      });
-    });
+        selectedImages.forEach((photo, index) => {
+          formData.append(`photoFromFront-${index}`, {
+            uri: photo?.uri,
+            name: `photo-${index}.jpg`,
+            type: photo?.mimeType,
+          });
+        });
 
-    fetch(`${BACKEND_URL}/updates/photos/${token}`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
+        fetch(`${BACKEND_URL}/updates/photos/${token}`, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
 
-      .then((data) => {
-        console.log("photos maj", data);
+          .then((data) => {
+            console.log("photos maj", data);
+          })
+          .catch((error) => console.log(error));
       })
-      .catch((error) => console.log(error));
-  })
-  .catch((error) => console.log(error))
-  .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
+      .catch((error) => console.log(error))
+      .finally(() => navigation.navigate("TabNavigator", { screen: "Thread" }));
   };
 
   // ajouter une image à partir de la galerie du téléphone
@@ -97,22 +95,22 @@ export default function HebergeurProfilScreen() {
   const showImagePicker = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
-if (permissionResult.granted === false) {
-  alert("Vous avez refusé l'accès aux photos");
-  return;
-}
+    if (permissionResult.granted === false) {
+      alert("Vous avez refusé l'accès aux photos");
+      return;
+    }
 
-const result = await ImagePicker.launchImageLibraryAsync({
-  mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  allowsEditing: true,
-  aspect: [4, 3],
-  quality: 0.3,
-  multiple: true,
-});
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.3,
+      multiple: true,
+    });
 
-if (!result.canceled) {
-  setSelectedImages([...selectedImages, ...result.assets]);
-}
+    if (!result.canceled) {
+      setSelectedImages([...selectedImages, ...result.assets]);
+    }
   };
 
   const showImagePickerProfil = async () => {
@@ -120,26 +118,26 @@ if (!result.canceled) {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-if (permissionResult.granted === false) {
-  alert("Vous avez refusé l'accès aux photos");
-  return;
-}
+    if (permissionResult.granted === false) {
+      alert("Vous avez refusé l'accès aux photos");
+      return;
+    }
 
-// Lancer la galerie pour choisir une image
-const result = await ImagePicker.launchImageLibraryAsync({
-  mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  allowsEditing: true,
-  aspect: [4, 3],
-  quality: 0.3,
-  multiple: false, // Permet de choisir une seule image pour la photo de profil
-});
+    // Lancer la galerie pour choisir une image
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.3,
+      multiple: false, // Permet de choisir une seule image pour la photo de profil
+    });
 
-// Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
-if (!result.canceled && result.assets.length > 0) {
-  const newImage = result.assets[0];
-  setProfilPhoto(newImage.uri);
-  setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
-}
+    // Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
+    if (!result.canceled && result.assets.length > 0) {
+      const newImage = result.assets[0];
+      setProfilPhoto(newImage.uri);
+      setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
+    }
   };
 
   const handleSavePhotoProfil = async () => {
@@ -147,30 +145,30 @@ if (!result.canceled && result.assets.length > 0) {
       return;
     }
 
-// Préparer les données de l'image de profil pour l'envoi
-const formData = new FormData();
-const photoProfil = selectedImages[0]; // Prenez la première image comme photo de profil
-formData.append("photoProfil", {
-  uri: photoProfil.uri,
-  name: "photoProfil.jpg",
-  type: photoProfil.mimeType,
-});
+    // Préparer les données de l'image de profil pour l'envoi
+    const formData = new FormData();
+    const photoProfil = selectedImages[0]; // Prenez la première image comme photo de profil
+    formData.append("photoProfil", {
+      uri: photoProfil.uri,
+      name: "photoProfil.jpg",
+      type: photoProfil.mimeType,
+    });
 
-// Envoyer la photo de profil au serveur
-const response = await fetch(
-  `${BACKEND_URL}/updates/photoProfil/${token}`,
-  {
-    method: "POST",
-    body: formData,
-  }
-);
+    // Envoyer la photo de profil au serveur
+    const response = await fetch(
+      `${BACKEND_URL}/updates/photoProfil/${token}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
-const data = await response.json();
+    const data = await response.json();
 
-if (response.ok && data.success) {
-  console.log("Photo de profil mise à jour avec succès:", data);
-  setProfilPhoto(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
-}
+    if (response.ok && data.success) {
+      console.log("Photo de profil mise à jour avec succès:", data);
+      setProfilPhoto(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
+    }
   };
 
   // Interface utilisateur du composant
@@ -187,104 +185,105 @@ if (response.ok && data.success) {
           onPress={() => navigation.goBack()}
           style={styles.back}
         />
-        <ScrollView style={styles.scrollView}> 
-         {/*Section pour afficher et changer la photo de profil */}
+        <ScrollView style={styles.scrollView}>
+          {/* Section pour afficher et changer la photo de profil */}
           <View style={styles.profileImageContainer}>
-             {/* Image de profil */}
+            {/* Image de profil */}
 
-        <TouchableOpacity onPress={showImagePickerProfil}>
-          <Image
-            source={
-              photoProfil.length
-                ? { uri: photoProfil }
-                : require("../assets/photoProfil.png")
-            }
-            style={styles.profileImage}
+            <TouchableOpacity onPress={showImagePickerProfil}>
+              <Image
+                source={
+                  photoProfil
+                    ? { uri: photoProfil }
+                    : require("../assets/photoProfil.png")
+                }
+                style={styles.profileImage}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSavePhotoProfil}
+          >
+            <Text style={styles.buttonText}>Ajouter photo de profil</Text>
+          </TouchableOpacity>
+
+          {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
+          <View style={styles.toggleContainer}>
+            <Switch
+              value={availability === "available"}
+              onValueChange={() =>
+                setAvailability((prev) =>
+                  prev === "available"
+                    ? "Logement indisponible"
+                    : "Logement disponible"
+                )
+              }
+            />
+            <Text style={styles.toggleText}>
+              {availability === "available"
+                ? "Logement disponible"
+                : "Logement indisponible"}
+            </Text>
+          </View>
+
+          {/* Formulaire pour mettre à jour le profil */}
+          <Text style={styles.inputTitle}>Ville :</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Votre ville"
+            value={city}
+            onChangeText={setCity}
           />
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSavePhotoProfil}
-      >
-        <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-      </TouchableOpacity>
-
-      {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
-      <View style={styles.toggleContainer}>
-        <Switch
-          value={availability === "available"}
-          onValueChange={() =>
-            setAvailability((prev) =>
-              prev === "available"
-                ? "Logement indisponible"
-                : "Logement disponible"
-            )
-          }
-        />
-        <Text style={styles.toggleText}>
-          {availability === "available"
-            ? "Logement disponible"
-            : "Logement indisponible"}
-        </Text>
-      </View>
-
-      {/* Formulaire pour mettre à jour le profil */}
-      <Text style={styles.inputTitle}>Ville :</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Votre ville"
-        value={city}
-        onChangeText={setCity}
-      />
-      <Text style={styles.inputTitle}>A propos de vous :</Text>
-      <TextInput
-        style={[styles.input, { height: 80 }]}
-        multiline={true}
-        placeholder="Parlez-nous de vous"
-        value={aPropos}
-        onChangeText={setApropos}
-      />
-      <Text style={styles.inputTitle}>Description de votre logement :</Text>
-      <TextInput
-        style={[styles.input, { height: 80 }]}
-        multiline={true}
-        placeholder="Décrivez votre logement"
-        value={description}
-        onChangeText={setDescription}
-      />
-
-      {/* Section pour ajouter des photos partagées */}
-      <Text style={styles.inputTitle}>
-        Partagez des photos de ce qui vous représente
-      </Text>
-      <View style={styles.imageContainer}>
-        {selectedImages.slice(0).map((image, index) => (
-          // Afficher chaque image partagée
-          <Image
-            key={index}
-            source={{ uri: image.uri }}
-            style={styles.image}
+          <Text style={styles.inputTitle}>A propos de vous :</Text>
+          <TextInput
+            style={[styles.input, { height: 80 }]}
+            multiline={true}
+            placeholder="Parlez-nous de vous"
+            value={aPropos}
+            onChangeText={setApropos}
           />
-        ))}
-        <View>
-          <Button
-            title="Ajouter une image"
-            onPress={showImagePicker}
-            color="#4FAAAF"
-            style={styles.addImage}
+          <Text style={styles.inputTitle}>Description de votre logement :</Text>
+          <TextInput
+            style={[styles.input, { height: 80 }]}
+            multiline={true}
+            placeholder="Décrivez votre logement"
+            value={description}
+            onChangeText={setDescription}
           />
-        </View>
-      </View>
 
-      {/* Bouton pour mettre à jour le profil */}
-      <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-        <Text style={styles.buttonText}>Mettre à jour</Text>
-      </TouchableOpacity>
-    </ScrollView>
-  </KeyboardAvoidingView>
-</SafeAreaView>
+          {/* Section pour ajouter des photos partagées */}
+          <Text style={styles.inputTitle}>
+            {" "}
+            Partagez des photos de ce qui vous représente:{" "}
+          </Text>
+          <View style={styles.imageContainer}>
+            {selectedImages.slice(0).map((image, index) => (
+              // Afficher chaque image partagée
+              <Image
+                key={index}
+                source={{ uri: image.uri }}
+                style={styles.image}
+              />
+            ))}
+            <View>
+              <Button
+                title="Ajouter une image"
+                onPress={showImagePicker}
+                color="#4FAAAF"
+                style={styles.addImage}
+              />
+            </View>
+          </View>
+
+          {/* Bouton pour mettre à jour le profil */}
+          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+            <Text style={styles.buttonText}>Mettre à jour</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -353,11 +352,6 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 100,
-    alignSelf: "center",
-    borderColor: "#4FAAAF",
-    borderWidth: 4,
-    // backgroundColor: "gray",
     borderRadius: 100,
     alignSelf: "center",
     borderColor: "#4FAAAF",
