@@ -34,10 +34,11 @@ export default function HebergeurProfilScreen() {
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
+    
     fetch(`${BACKEND_URL}/users/token/${token}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("Données de l'utilisateur:", data);
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
@@ -193,27 +194,25 @@ export default function HebergeurProfilScreen() {
           style={styles.back}
         />
         <ScrollView style={styles.scrollView}>
-          {/* Section pour afficher et changer la photo de profil */}
-          <View style={styles.profileImageContainer}>
-            {/* Image de profil */}
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                {/* Bouton de retour */}
+                <MaterialIcons name="keyboard-backspace" size={60} onPress={() => navigation.goBack()} style={styles.back} />
 
-            <TouchableOpacity onPress={showImagePickerProfil}>
-              <Image
-                source={
-                  profileImageUrl
-                    ? { uri: profileImageUrl }
-                    : require("../assets/ajoutProfil.png")
-                }
-                style={styles.profileImage}
-              />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSavePhotoProfil}
-          >
-            <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-          </TouchableOpacity>
+                {/* Section pour afficher et changer la photo de profil */}
+                <View style={styles.profileImageContainer}>
+                    {/* Image de profil */}
+                    
+                     <TouchableOpacity onPress={showImagePickerProfil}>
+                      <Image
+                          source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.png")}
+                          style={styles.profileImage}
+                        />
+                    </TouchableOpacity>
+  
+                </View>
+                <TouchableOpacity style={styles.button} onPress={handleSavePhotoProfil}>
+                        <Text style={styles.buttonText}>Ajouter photo de profil</Text>
+                </TouchableOpacity>
 
           {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
           <View style={styles.toggleContainer}>
@@ -282,10 +281,11 @@ export default function HebergeurProfilScreen() {
             </View>
           </View>
 
-          {/* Bouton pour mettre à jour le profil */}
-          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-            <Text style={styles.buttonText}>Mettre à jour</Text>
-          </TouchableOpacity>
+                {/* Bouton pour mettre à jour le profil */}
+                <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+                    <Text style={styles.buttonText}>Mettre à jour</Text>
+                </TouchableOpacity>
+            </KeyboardAvoidingView>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

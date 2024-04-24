@@ -247,13 +247,10 @@ export default function LocataireProfilScreen() {
             Partage des photos de ce qui te représente :{" "}
           </Text>
           <View style={styles.imageContainer}>
-            {selectedImages.map((image, index) => (
-              <Image
-                key={index}
-                source={{ uri: image.uri }}
-                style={styles.image}
-              />
-            ))}
+          {selectedImages.slice(1).map((image, index) => (
+                        // Afficher chaque image partagée
+              <Image key={index} source={{ uri: image.uri }} style={styles.image} />
+           ))}
             <Button
               title="Ajouter une image"
               onPress={showImagePicker}
