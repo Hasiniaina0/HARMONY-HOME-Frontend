@@ -58,6 +58,7 @@ export default function HebergeurProfilScreen() {
         description,
         aPropos,
         photoProfil,
+        photoProfil,
         available: availability,
       }),
     })
@@ -257,7 +258,8 @@ export default function HebergeurProfilScreen() {
 
           {/* Section pour ajouter des photos partagées */}
           <Text style={styles.inputTitle}>
-            Partagez des photos de ce qui vous représente
+            {" "}
+            Partagez des photos de ce qui vous représente:{" "}
           </Text>
           <View style={styles.imageContainer}>
             {selectedImages.slice(1).map((image, index) => (

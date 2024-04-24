@@ -73,6 +73,7 @@ export default function SignInScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      
       <Image source={require("../assets/logo.png")} style={styles.logo} />
       <View style={styles.sloganTitle}>
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
@@ -86,7 +87,7 @@ export default function SignInScreen({ navigation }) {
         </View>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Votre email"
           value={email.toString()}
           onChangeText={(email) => setEmail(email)}
         />
@@ -112,7 +113,9 @@ export default function SignInScreen({ navigation }) {
       >
         <Text style={styles.signInButtonText}>Connexion</Text>
       </TouchableOpacity>
+      
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+      
       <Modal
         animationType="slide"
         transparent={true}
@@ -154,6 +157,7 @@ export default function SignInScreen({ navigation }) {
           </View>
         </View>
       </Modal>
+     
     </KeyboardAvoidingView>
   );
 }
@@ -168,6 +172,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
+    marginTop:30,
   },
   logo: {
     marginTop: 20,
@@ -222,10 +227,12 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     marginTop: 30,
+    width:130,
   },
   signInButtonText: {
     color: "white",
     fontSize: 15,
+    alignSelf: "center",
   },
   modalContainer: {
     flex: 1,

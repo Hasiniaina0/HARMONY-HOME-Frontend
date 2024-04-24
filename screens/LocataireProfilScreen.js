@@ -59,12 +59,7 @@ export default function LocataireProfilScreen() {
         city,
         description,
         aPropos,
-        photoProfil, // Utiliser `profileImageUrl` au lieu de `photoProfil`
-        // photo: selectedImages.map((image) => ({
-        //   uri: image.uri,
-        //   name: `photo-${image.index}.jpg`,
-        //   type: image.mimeType,
-        // })),
+        photoProfil,
       }),
     })
       .then((response) => response.json())
