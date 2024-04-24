@@ -34,10 +34,11 @@ export default function HebergeurProfilScreen() {
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
+    
     fetch(`${BACKEND_URL}/users/token/${token}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("Données de l'utilisateur:", data);
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
@@ -179,7 +180,6 @@ export default function HebergeurProfilScreen() {
    return (
     <SafeAreaView style={styles.inputsContainer}>
         <ScrollView style={styles.scrollView}>
-            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
                 {/* Bouton de retour */}
                 <MaterialIcons name="keyboard-backspace" size={60} onPress={() => navigation.goBack()} style={styles.back} />
 
@@ -234,7 +234,6 @@ export default function HebergeurProfilScreen() {
                 <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
                     <Text style={styles.buttonText}>Mettre à jour</Text>
                 </TouchableOpacity>
-            </KeyboardAvoidingView>
         </ScrollView>
     </SafeAreaView>
 );
