@@ -28,8 +28,9 @@ export default function HebergeurProfilScreen() {
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
-  const [photoProfil, setProfilPhoto] = useState("");
+  const [profileImageUrl, setProfileImageUrl] = useState("");
   const token = useSelector((state) => state.user.token);
+  //const user = useSelector((state) => state.user);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -37,11 +38,11 @@ export default function HebergeurProfilScreen() {
     fetch(`${BACKEND_URL}/users/token/${token}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Données de l'utilisateur:", data);
+        console.log(data);
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
-        setProfilPhoto(data.photoProfil);
+        setProfileImageUrl(data.photoProfil);
         setAvailability(data.available);
       });
   }, []);
@@ -56,16 +57,16 @@ export default function HebergeurProfilScreen() {
         city,
         description,
         aPropos,
+        photoProfil,
         available: availability,
       }),
     })
       .then((response) => response.json())
-      .then(async (data) => {
+      .then((data) => {
         console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
 
         const formData = new FormData();
-
         selectedImages.forEach((photo, index) => {
           formData.append(`photoFromFront-${index}`, {
             uri: photo?.uri,
@@ -81,7 +82,10 @@ export default function HebergeurProfilScreen() {
           .then((response) => response.json())
 
           .then((data) => {
-            console.log("photos maj", data);
+            console.log("photo maj", data);
+            // const cloudinaryURL = data.uri;
+            // console.log("cloudinaryURL", cloudinaryURL);
+            // dispatch(addPhoto(cloudinaryURL));
           })
           .catch((error) => console.log(error));
       })
@@ -134,7 +138,7 @@ export default function HebergeurProfilScreen() {
     // Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
     if (!result.canceled && result.assets.length > 0) {
       const newImage = result.assets[0];
-      setProfilPhoto(newImage.uri);
+      setProfileImageUrl(newImage.uri);
       setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
     }
   };
@@ -166,7 +170,7 @@ export default function HebergeurProfilScreen() {
 
     if (response.ok && data.success) {
       console.log("Photo de profil mise à jour avec succès:", data);
-      setProfilPhoto(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
+      setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
     }
   };
 
@@ -192,15 +196,14 @@ export default function HebergeurProfilScreen() {
             <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
                 source={
-                  photoProfil.length
-                    ? { uri: photoProfil }
-                    : require("../assets/photoProfil.png")
+                  profileImageUrl
+                    ? { uri: profileImageUrl }
+                    : require("../assets/ajoutProfil.png")
                 }
                 style={styles.profileImage}
               />
             </TouchableOpacity>
           </View>
-
           <TouchableOpacity
             style={styles.button}
             onPress={handleSavePhotoProfil}
@@ -257,7 +260,7 @@ export default function HebergeurProfilScreen() {
             Partagez des photos de ce qui vous représente
           </Text>
           <View style={styles.imageContainer}>
-            {selectedImages.slice(0).map((image, index) => (
+            {selectedImages.slice(1).map((image, index) => (
               // Afficher chaque image partagée
               <Image
                 key={index}
@@ -350,11 +353,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 100,
-    alignSelf: "center",
-    borderColor: "#4FAAAF",
-    borderWidth: 4,
-    // backgroundColor: "gray",
+    borderRadius: 70,
   },
   back: {
     color: "#4FAAAF",
