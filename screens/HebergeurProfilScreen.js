@@ -56,6 +56,7 @@ export default function HebergeurProfilScreen() {
         city,
         description,
         aPropos,
+        photoProfil,
         available: availability,
       }),
     })
@@ -192,7 +193,7 @@ export default function HebergeurProfilScreen() {
             <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
                 source={
-                  photoProfil.length
+                  photoProfil
                     ? { uri: photoProfil }
                     : require("../assets/photoProfil.png")
                 }
@@ -254,7 +255,8 @@ export default function HebergeurProfilScreen() {
 
           {/* Section pour ajouter des photos partagées */}
           <Text style={styles.inputTitle}>
-            Partagez des photos de ce qui vous représente
+            {" "}
+            Partagez des photos de ce qui vous représente:{" "}
           </Text>
           <View style={styles.imageContainer}>
             {selectedImages.slice(0).map((image, index) => (
