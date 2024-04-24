@@ -28,13 +28,12 @@ export default function HebergeurProfilScreen() {
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [photoProfil, setProfilPhoto] = useState("");
   const token = useSelector((state) => state.user.token);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
-    
     fetch(`${BACKEND_URL}/users/token/${token}`)
       .then((response) => response.json())
       .then((data) => {
@@ -42,7 +41,7 @@ export default function HebergeurProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
-        setProfileImageUrl(data.photoProfil);
+        setProfilPhoto(data.photoProfil);
         setAvailability(data.available);
       });
   }, []);
@@ -58,20 +57,15 @@ export default function HebergeurProfilScreen() {
         description,
         aPropos,
         available: availability,
-        photoProfil: profileImageUrl, // Utiliser `profileImageUrl` au lieu de `photoProfil`
-        // photo: selectedImages.map(image => ({
-        //     uri: image.uri,
-        //     name: `photo-${image.index}.jpg`,
-        //     type: image.mimeType,
-        // })),
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(async (data) => {
         console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
 
         const formData = new FormData();
+
         selectedImages.forEach((photo, index) => {
           formData.append(`photoFromFront-${index}`, {
             uri: photo?.uri,
@@ -87,10 +81,7 @@ export default function HebergeurProfilScreen() {
           .then((response) => response.json())
 
           .then((data) => {
-            console.log("photo maj", data);
-            // const cloudinaryURL = data.uri;
-            // console.log("cloudinaryURL", cloudinaryURL);
-            // dispatch(addPhoto(cloudinaryURL));
+            console.log("photos maj", data);
           })
           .catch((error) => console.log(error));
       })
@@ -143,7 +134,7 @@ export default function HebergeurProfilScreen() {
     // Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
     if (!result.canceled && result.assets.length > 0) {
       const newImage = result.assets[0];
-      setProfileImageUrl(newImage.uri);
+      setProfilPhoto(newImage.uri);
       setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
     }
   };
@@ -175,7 +166,7 @@ export default function HebergeurProfilScreen() {
 
     if (response.ok && data.success) {
       console.log("Photo de profil mise à jour avec succès:", data);
-      setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
+      setProfilPhoto(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
     }
   };
 
@@ -194,25 +185,28 @@ export default function HebergeurProfilScreen() {
           style={styles.back}
         />
         <ScrollView style={styles.scrollView}>
-            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                {/* Bouton de retour */}
-                <MaterialIcons name="keyboard-backspace" size={60} onPress={() => navigation.goBack()} style={styles.back} />
+          {/* Section pour afficher et changer la photo de profil */}
+          <View style={styles.profileImageContainer}>
+            {/* Image de profil */}
 
-                {/* Section pour afficher et changer la photo de profil */}
-                <View style={styles.profileImageContainer}>
-                    {/* Image de profil */}
-                    
-                     <TouchableOpacity onPress={showImagePickerProfil}>
-                      <Image
-                          source={profileImageUrl ? { uri: profileImageUrl } : require("../assets/ajoutProfil.png")}
-                          style={styles.profileImage}
-                        />
-                    </TouchableOpacity>
-  
-                </View>
-                <TouchableOpacity style={styles.button} onPress={handleSavePhotoProfil}>
-                        <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-                </TouchableOpacity>
+            <TouchableOpacity onPress={showImagePickerProfil}>
+              <Image
+                source={
+                  photoProfil.length
+                    ? { uri: photoProfil }
+                    : require("../assets/photoProfil.png")
+                }
+                style={styles.profileImage}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSavePhotoProfil}
+          >
+            <Text style={styles.buttonText}>Ajouter photo de profil</Text>
+          </TouchableOpacity>
 
           {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
           <View style={styles.toggleContainer}>
@@ -263,7 +257,7 @@ export default function HebergeurProfilScreen() {
             Partagez des photos de ce qui vous représente
           </Text>
           <View style={styles.imageContainer}>
-            {selectedImages.slice(1).map((image, index) => (
+            {selectedImages.slice(0).map((image, index) => (
               // Afficher chaque image partagée
               <Image
                 key={index}
@@ -281,11 +275,10 @@ export default function HebergeurProfilScreen() {
             </View>
           </View>
 
-                {/* Bouton pour mettre à jour le profil */}
-                <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-                    <Text style={styles.buttonText}>Mettre à jour</Text>
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
+          {/* Bouton pour mettre à jour le profil */}
+          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+            <Text style={styles.buttonText}>Mettre à jour</Text>
+          </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -357,7 +350,11 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 70,
+    borderRadius: 100,
+    alignSelf: "center",
+    borderColor: "#4FAAAF",
+    borderWidth: 4,
+    // backgroundColor: "gray",
   },
   back: {
     color: "#4FAAAF",

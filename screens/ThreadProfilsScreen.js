@@ -113,9 +113,9 @@ export default function ThreadAnnouncementsScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-              {announcement.photos?.length > 0 ? (
+              {announcement.photoProfil?.length > 0 ? (
                 <Image
-                  source={{ uri: announcement.photos[0] }}
+                  source={{ uri: announcement.photoProfil[0] }}
                   alt="photo de profil"
                   style={styles.imageProfil}
                 />
