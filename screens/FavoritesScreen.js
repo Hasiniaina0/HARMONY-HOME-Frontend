@@ -164,12 +164,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   favoriteButton: {
-    position: "absolute", // Position absolutely within the header container
-    top: 0, // Position at the top
-    right: 0, // Position at the right
-    marginRight: 15,
-    marginTop: 5,
-  },
+    position: "absolute",
+    top: 10,
+    right: 10,
+    padding: 10, // Ajoute du padding pour agrandir la zone cliquable
+    zIndex: 10,
+    },
   location: {
     color: "#666",
     marginBottom: 5,
