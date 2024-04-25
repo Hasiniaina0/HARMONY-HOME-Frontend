@@ -61,7 +61,7 @@ export default function DescriptionAnnouncementScreen() {
           onPress={() => navigation.goBack()}
           style={{ marginLeft: 10 }}
         >
-          <MaterialIcons name="keyboard-backspace" size={24} color="white" />
+          <MaterialIcons name="keyboard-backspace" size={40} color="white" />
         </TouchableOpacity>
       ),
     });
@@ -127,10 +127,10 @@ export default function DescriptionAnnouncementScreen() {
                     alt="Image par défaut"
                   />
                 )}
-                <Text style={styles.desc}>A propos du logement : </Text>
+                <Text style={styles.desc}>Mon logement : </Text>
                 <Text style={styles.apropos}>Situé à {userDetails.city},</Text>
                 <Text style={styles.apropos}>{userDetails.description}</Text>
-                <Text style={styles.desc}>A propos du propriétaire : </Text>
+                <Text style={styles.desc}>A propos de moi : </Text>
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
                 <Text style={styles.desc}>Les avis</Text>
                 <Image
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 17,
     marginVertical: 10,
+    color: "#eb7134",
   },
   apropos: {
     textAlign: "justify",
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   contactButton: {
-    backgroundColor: "#4FAAAF", // Couleur de fond définie ici
+    backgroundColor: "#eb7134", // Couleur de fond définie ici
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
