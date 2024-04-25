@@ -33,6 +33,7 @@ export default function HebergeurProfilScreen() {
   const token = useSelector((state) => state.user.token);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  const [isDisponible, setIsDisponible] = useState(false);
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/users/token/${token}`)
@@ -190,18 +191,9 @@ export default function HebergeurProfilScreen() {
 
           {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
           <View style={styles.toggleContainer}>
-            <Switch
-              value={availability === "available"}
-              onValueChange={() =>
-                setAvailability((prev) =>
-                  prev === "available"
-                    ? "Logement indisponible"
-                    : "Logement disponible"
-                )
-              }
-            />
+            <Switch value={isDisponible} onValueChange={setIsDisponible} />
             <Text style={styles.toggleText}>
-              {availability === "available"
+              {isDisponible
                 ? "Logement disponible"
                 : "Logement indisponible"}
             </Text>
