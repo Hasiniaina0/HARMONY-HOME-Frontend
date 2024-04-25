@@ -28,9 +28,8 @@ export default function HebergeurProfilScreen() {
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [photoProfil, setPhotoProfil] = useState("");
   const token = useSelector((state) => state.user.token);
-  //const user = useSelector((state) => state.user);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -38,11 +37,11 @@ export default function HebergeurProfilScreen() {
     fetch(`${BACKEND_URL}/users/token/${token}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("Données de l'utilisateur:", data);
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
-        setProfileImageUrl(data.photoProfil);
+        setPhotoProfil(data.photoProfil);
         setAvailability(data.available);
       });
   }, []);
@@ -62,16 +61,16 @@ export default function HebergeurProfilScreen() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(async (data) => {
         console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
-
         const formData = new FormData();
+
         selectedImages.forEach((photo, index) => {
           formData.append(`photoFromFront-${index}`, {
-            uri: photo?.uri,
+            uri: photo.uri,
             name: `photo-${index}.jpg`,
-            type: photo?.mimeType,
+            type: "image/jpeg",
           });
         });
 
@@ -82,10 +81,7 @@ export default function HebergeurProfilScreen() {
           .then((response) => response.json())
 
           .then((data) => {
-            console.log("photo maj", data);
-            // const cloudinaryURL = data.uri;
-            // console.log("cloudinaryURL", cloudinaryURL);
-            // dispatch(addPhoto(cloudinaryURL));
+            console.log("photos maj", data);
           })
           .catch((error) => console.log(error));
       })
@@ -196,20 +192,14 @@ export default function HebergeurProfilScreen() {
             <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
                 source={
-                  profileImageUrl
-                    ? { uri: profileImageUrl }
-                    : require("../assets/ajoutProfil.png")
+                  photoProfil[0]
+                    ? { uri: photoProfil[0] }
+                    : require("../assets/photoProfil.png")
                 }
                 style={styles.profileImage}
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSavePhotoProfil}
-          >
-            <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-          </TouchableOpacity>
 
           {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
           <View style={styles.toggleContainer}>
@@ -261,7 +251,7 @@ export default function HebergeurProfilScreen() {
             Partagez des photos de ce qui vous représente:{" "}
           </Text>
           <View style={styles.imageContainer}>
-            {selectedImages.slice(1).map((image, index) => (
+            {selectedImages.slice(0).map((image, index) => (
               // Afficher chaque image partagée
               <Image
                 key={index}
@@ -354,7 +344,11 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 70,
+    borderRadius: 100,
+    alignSelf: "center",
+    borderColor: "#4FAAAF",
+    borderWidth: 4,
+    // backgroundColor: "gray",
   },
   back: {
     color: "#4FAAAF",

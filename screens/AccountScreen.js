@@ -42,7 +42,7 @@ export default function AccountScreen() {
           error
         )
       );
-  }, []);
+  }, [user]);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);

@@ -26,7 +26,7 @@ export default function LocataireProfilScreen() {
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const token = useSelector((state) => state.user.token);
-  const [photoProfil, setphotoProfil] = useState("");
+  const [photoProfil, setPhotoProfil] = useState("");
   const [isDisponible, setIsDisponible] = useState(false);
   const navigation = useNavigation();
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -39,7 +39,7 @@ export default function LocataireProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
-        setphotoProfil(data.photoProfil);
+        setPhotoProfil(data.photoProfil);
       })
       .catch((error) =>
         console.error(
@@ -59,7 +59,6 @@ export default function LocataireProfilScreen() {
         city,
         description,
         aPropos,
-        photoProfil,
       }),
     })
       .then((response) => response.json())
@@ -68,14 +67,32 @@ export default function LocataireProfilScreen() {
         // save photo dans cloudinary
 
         const formData = new FormData();
+
         selectedImages.forEach((photo, index) => {
+          console.log("Boucle forEach photo uri",photo.uri);
           formData.append(`photoFromFront-${index}`, {
-            uri: photo?.uri,
+            uri: photo.uri,
             name: `photo-${index}.jpg`,
-            type: photo?.mimeType,
+            type: "image/jpeg",
           });
         });
+        console.log(" selectedImages" ,  selectedImages );
+        // console.log("formData" , formData.get("photoFromFront-0"));
+        
+        const regex= new RegExp("^http(s?)\:\/\/");
+        const photoProfilChanged = !regex.test(photoProfil);
+    
+       if (photoProfilChanged) {
+         formData.append(`photoProfil`, {
+           uri: photoProfil,
+           name: "photo.jpg",
+           type: "image/jpeg",
+         });
+       }
+        console.log("photoProfil" , photoProfil ); 
+        // console.log("formData" , formData.get("photoProfil"));
 
+    
         fetch(`${BACKEND_URL}/updates/photos/${token}`, {
           method: "POST",
           body: formData,
@@ -118,56 +135,31 @@ export default function LocataireProfilScreen() {
 
   // Fonction pour choisir une image de profil à partir de la galerie
   const showImagePickerProfil = async () => {
+    // Demander la permission d'accéder à la galerie
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!permissionResult.granted) {
-      alert("Vous avez refusé l'accès aux photos.");
+    if (permissionResult.granted === false) {
+      alert("Vous avez refusé l'accès aux photos");
       return;
     }
 
+    // Lancer la galerie pour choisir une image
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.3,
-      multiple: false, // Autorise une seule image
+      multiple: false, // Permet de choisir une seule image pour la photo de profil
     });
 
+    // Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
     if (!result.canceled && result.assets.length > 0) {
       const newImage = result.assets[0];
-      setphotoProfil(newImage.uri);
+      setPhotoProfil(newImage.uri);
     }
   };
 
-  // Fonction pour enregistrer la photo de profil mise à jour
-  const handleSavePhotoProfil = async () => {
-    if (!photoProfil) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("photoProfil", {
-      uri: photoProfil,
-      name: "photoProfil.jpg",
-      type: "image/jpeg",
-    });
-
-    const response = await fetch(
-      `${BACKEND_URL}/updates/photoProfil/${token}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await response.json();
-
-    if (response.ok && data.success) {
-      console.log("Photo de profil mise à jour avec succès:", data);
-      setphotoProfil(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
-    }
-  };
 
   return (
     <SafeAreaView style={styles.inputsContainer}>
@@ -186,24 +178,17 @@ export default function LocataireProfilScreen() {
           <View style={styles.profileImageContainer}>
             {/* Image de profil */}
             <TouchableOpacity onPress={showImagePickerProfil}>
-              <Image
+            <Image
                 source={
-                  photoProfil
-                    ? { uri: photoProfil }
-                    : require("../assets/ajoutProfil.png")
+                  photoProfil[0]
+                    ? { uri: photoProfil[0] }
+                    : require("../assets/photoProfil.png")
                 }
                 style={styles.profileImage}
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSavePhotoProfil}
-          >
-            <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-          </TouchableOpacity>
-
-          {/* Toggle Switch pour choisir entre Logement disponible ou non */}
+         
           <View style={styles.toggleContainer}>
             <Switch value={isDisponible} onValueChange={setIsDisponible} />
             <Text style={styles.toggleText}>
@@ -242,7 +227,7 @@ export default function LocataireProfilScreen() {
             Partage des photos de ce qui te représente :{" "}
           </Text>
           <View style={styles.imageContainer}>
-            {selectedImages.slice(0).map((image, index) => (
+            {selectedImages.map((image, index) => (
               // Afficher chaque image partagée
               <Image
                 key={index}
