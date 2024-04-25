@@ -125,7 +125,7 @@ export default function PreferencesScreen() {
           )}
           <TextInput
             style={styles.input}
-            placeholder="Durée de location souhaitée"
+            placeholder="Durée de colocation souhaitée"
             placeholderTextColor="#4FAAAF"
             value={duration}
             onChangeText={(duration) => setDuration(duration)}
