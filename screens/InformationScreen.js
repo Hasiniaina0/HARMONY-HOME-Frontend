@@ -229,11 +229,13 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   back: {
     alignSelf: "flex-start",
+    color:"#4FAAAF",
   },
   inputsContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop:20,
   },
   logo: {
     marginBottom: 20,

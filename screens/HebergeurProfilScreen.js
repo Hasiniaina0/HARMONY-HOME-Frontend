@@ -18,12 +18,14 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { addPhoto, addPhotoProfil } from "../reducers/user";
 
 //import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [aPropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
@@ -97,6 +99,8 @@ export default function HebergeurProfilScreen() {
 
           .then((data) => {
             console.log("photos maj", data);
+            dispatch(addPhotoProfil(data.photoProfil));
+            dispatch(addPhoto(data.photos));
           })
           .catch((error) => console.log(error));
       })

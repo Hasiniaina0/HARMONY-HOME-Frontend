@@ -60,6 +60,7 @@ export const {
   addPhoto,
   removePhoto,
   addFavorite,
+  addPhotoProfil,
   removeFavorite,
 } = userSlice.actions;
 export default userSlice.reducer;
