@@ -30,6 +30,7 @@ export default function HebergeurProfilScreen() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [photoProfil, setPhotoProfil] = useState("");
   const token = useSelector((state) => state.user.token);
+  //const user = useSelector((state) => state.user);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -37,7 +38,7 @@ export default function HebergeurProfilScreen() {
     fetch(`${BACKEND_URL}/users/token/${token}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Données de l'utilisateur:", data);
+        console.log(data);
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
@@ -64,7 +65,6 @@ export default function HebergeurProfilScreen() {
         // console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
         const formData = new FormData();
-
         selectedImages.forEach((photo, index) => {
           console.log("Boucle forEach photo uri",photo.uri);
           formData.append(`photoFromFront-${index}`, {
@@ -235,7 +235,7 @@ export default function HebergeurProfilScreen() {
             Partagez des photos de ce qui vous représente:{" "}
           </Text>
           <View style={styles.imageContainer}>
-            {selectedImages.slice(0).map((image, index) => (
+            {selectedImages.slice(1).map((image, index) => (
               // Afficher chaque image partagée
               <Image
                 key={index}
@@ -328,11 +328,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 100,
-    alignSelf: "center",
-    borderColor: "#4FAAAF",
-    borderWidth: 4,
-    // backgroundColor: "gray",
+    borderRadius: 70,
   },
   back: {
     color: "#4FAAAF",
