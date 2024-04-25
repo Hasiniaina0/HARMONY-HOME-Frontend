@@ -109,121 +109,127 @@ export default function SignInScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.inputsContainer}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <MaterialIcons
-          name="keyboard-backspace"
-          size={60}
-          onPress={() => navigation.goBack()}
-          style={styles.back}
-        />
-        <ScrollView style={styles.scrollView}>
-          <Image
-            source={
-              photoProfil.length
-                ? { uri: photoProfil[0] }
-                : require("../assets/photoProfil.png")
-            }
-            style={[styles.logo, styles.profileImage]}
+    <ImageBackground
+      source={require("../assets/fond8.jpg")}
+      style={styles.backgroundImage}
+    >
+      <SafeAreaView style={styles.inputsContainer}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <MaterialIcons
+            name="keyboard-backspace"
+            size={60}
+            onPress={() => navigation.goBack()}
+            style={styles.back}
           />
-          <Text style={styles.title}>
-            {" "}
-            Je mets à jour mes informations personnelles{" "}
-          </Text>
-          <Formik
-            initialValues={{
-              email: email,
-              numPhone: numPhone,
-              password: password,
-              confirmPassword: "",
-            }}
-            validationSchema={validationSchema}
-          >
-            {({ handleBlur, errors, touched }) => (
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Nom"
-                  value={user.nom}
-                  editable={false}
-                ></TextInput>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Prénom"
-                  value={user.prenom}
-                  editable={false}
-                ></TextInput>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Email"
-                  value={email}
-                  onChangeText={(email) => setEmail(email)}
-                  onBlur={handleBlur("email")}
-                ></TextInput>
-                {touched.email && errors.email && (
-                  <Text style={styles.error}>{errors.email}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Numéro de téléphone"
-                  value={numPhone.toString()}
-                  onChangeText={(numPhone) => setNumPhone(numPhone)}
-                  onBlur={handleBlur("numPhone")}
-                ></TextInput>
-                {touched.numPhone && errors.numPhone && (
-                  <Text style={styles.error}>{errors.numPhone}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Nouveau mot de passe"
-                  secureTextEntry={true}
-                  value={password}
-                  onChangeText={(password) => setPassword(password)}
-                  onBlur={handleBlur("password")}
-                ></TextInput>
-                {touched.password && errors.password && (
-                  <Text style={styles.error}>{errors.password}</Text>
-                )}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Confirmer mot de passe"
-                  secureTextEntry={true}
-                  value={confirmPassword}
-                  onChangeText={(confirmPassword) =>
-                    setConfirmPassword(confirmPassword)
-                  }
-                  onBlur={handleBlur("confirmPassword")}
-                ></TextInput>
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <Text style={styles.error}>{errors.confirmPassword}</Text>
-                )}
-                <View style={styles.validationContenaire}>
+
+          <ScrollView style={styles.scrollView}>
+            <Image
+              source={
+                photoProfil.length
+                  ? { uri: photoProfil[0] }
+                  : require("../assets/photoProfil.png")
+              }
+              style={[styles.logo, styles.profileImage]}
+            />
+            <Text style={styles.title}>
+              {" "}
+              Je mets à jour mes informations personnelles{" "}
+            </Text>
+            <Formik
+              initialValues={{
+                email: email,
+                numPhone: numPhone,
+                password: password,
+                confirmPassword: "",
+              }}
+              validationSchema={validationSchema}
+            >
+              {({ handleBlur, errors, touched }) => (
+                <View style={styles.inputContainer}>
                   <TextInput
                     style={styles.input}
-                    placeholder="Mot de passe actuel"
+                    placeholder="Nom"
+                    value={user.nom}
+                    editable={false}
+                  ></TextInput>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Prénom"
+                    value={user.prenom}
+                    editable={false}
+                  ></TextInput>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={(email) => setEmail(email)}
+                    onBlur={handleBlur("email")}
+                  ></TextInput>
+                  {touched.email && errors.email && (
+                    <Text style={styles.error}>{errors.email}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Numéro de téléphone"
+                    value={numPhone.toString()}
+                    onChangeText={(numPhone) => setNumPhone(numPhone)}
+                    onBlur={handleBlur("numPhone")}
+                  ></TextInput>
+                  {touched.numPhone && errors.numPhone && (
+                    <Text style={styles.error}>{errors.numPhone}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Nouveau mot de passe"
                     secureTextEntry={true}
-                    value={currentPassword}
-                    onChangeText={(currentPassword) =>
-                      setCurrentPassword(currentPassword)
+                    value={password}
+                    onChangeText={(password) => setPassword(password)}
+                    onBlur={handleBlur("password")}
+                  ></TextInput>
+                  {touched.password && errors.password && (
+                    <Text style={styles.error}>{errors.password}</Text>
+                  )}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Confirmer mot de passe"
+                    secureTextEntry={true}
+                    value={confirmPassword}
+                    onChangeText={(confirmPassword) =>
+                      setConfirmPassword(confirmPassword)
                     }
-                  />
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleSaveProfil}
-                    disabled={currentPassword === ""}
-                  >
-                    <Text style={styles.buttonText}>Mettre à jour</Text>
-                  </TouchableOpacity>
+                    onBlur={handleBlur("confirmPassword")}
+                  ></TextInput>
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <Text style={styles.error}>{errors.confirmPassword}</Text>
+                  )}
+                  <View style={styles.validationContenaire}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Mot de passe actuel"
+                      secureTextEntry={true}
+                      value={currentPassword}
+                      onChangeText={(currentPassword) =>
+                        setCurrentPassword(currentPassword)
+                      }
+                    />
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={handleSaveProfil}
+                      disabled={currentPassword === ""}
+                    >
+                      <Text style={styles.buttonText}>Mettre à jour</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            )}
-          </Formik>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+              )}
+            </Formik>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
@@ -231,11 +237,18 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     color: "#eb7134",
   },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   inputsContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+    opacity: 1,
   },
   logo: {
     marginBottom: 20,
@@ -256,16 +269,16 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginTop: 20,
   },
-  inputContainer: {},
   input: {
     height: 40,
-    borderColor: "grey",
-    borderWidth: 0.5,
+    borderColor: "#4FAAAF",
+    borderWidth: 2,
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
+    backgroundColor: "rgba(255, 255, 255,  0.3)",
   },
   error: {
     color: "red",

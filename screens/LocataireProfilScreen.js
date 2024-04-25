@@ -160,91 +160,96 @@ export default function LocataireProfilScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.inputsContainer}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <MaterialIcons
-          name="keyboard-backspace"
-          size={60}
-          onPress={() => navigation.goBack()}
-          style={styles.back}
-        />
-        <ScrollView style={styles.scrollView}>
-          {/* Section pour afficher et changer la photo de profil */}
-          <View style={styles.profileImageContainer}>
-            {/* Image de profil */}
-            <TouchableOpacity onPress={showImagePickerProfil}>
-              <Image
-                source={
-                  photoProfil[0]
-                    ? { uri: photoProfil[0] }
-                    : require("../assets/photoProfil.png")
-                }
-                style={styles.profileImage}
-              />
-            </TouchableOpacity>
-          </View>
+    <ImageBackground
+      source={require("../assets/fond8.jpg")}
+      style={styles.backgroundImage}
+    >
+      <SafeAreaView style={styles.inputsContainer}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <MaterialIcons
+            name="keyboard-backspace"
+            size={60}
+            onPress={() => navigation.goBack()}
+            style={styles.back}
+          />
+          <ScrollView style={styles.scrollView}>
+            {/* Section pour afficher et changer la photo de profil */}
+            <View style={styles.profileImageContainer}>
+              {/* Image de profil */}
+              <TouchableOpacity onPress={showImagePickerProfil}>
+                <Image
+                  source={
+                    photoProfil[0]
+                      ? { uri: photoProfil[0] }
+                      : require("../assets/photoProfil.png")
+                  }
+                  style={styles.profileImage}
+                />
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.toggleContainer}>
-            <Switch value={isDisponible} onValueChange={setIsDisponible} />
-            <Text style={styles.toggleText}>
-              {isDisponible
-                ? "Je cherche un logement"
-                : "Je ne cherche plus un logement"}
+            <View style={styles.toggleContainer}>
+              <Switch value={isDisponible} onValueChange={setIsDisponible} />
+              <Text style={styles.toggleText}>
+                {isDisponible
+                  ? "Je cherche un logement"
+                  : "Je ne cherche plus un logement"}
+              </Text>
+            </View>
+
+            <Text style={styles.inputTitle}> Ville : </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Ta ville"
+              value={city}
+              onChangeText={(city) => setCity(city)}
+            ></TextInput>
+            <Text style={styles.inputTitle}> A propos de toi : </Text>
+            <TextInput
+              style={[styles.input, { height: 80 }]}
+              placeholder="Parles nous de toi !"
+              value={aPropos}
+              onChangeText={(aPropos) => setApropos(aPropos)}
+              multiline={true} // Permet d'écrire sur plusieurs lignes
+            ></TextInput>
+            <Text style={styles.inputTitle}> Tes motivations : </Text>
+            <TextInput
+              style={[styles.input, { height: 80 }]}
+              placeholder="Quelles sont tes motivations ?"
+              value={description}
+              onChangeText={(description) => setDescription(description)}
+              multiline={true} // Permet d'écrire sur plusieurs lignes
+            ></TextInput>
+
+            <Text style={styles.inputTitle}>
+              {" "}
+              Partage des photos de ce qui te représente :{" "}
             </Text>
-          </View>
-
-          <Text style={styles.inputTitle}> Ville : </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Ta ville"
-            value={city}
-            onChangeText={(city) => setCity(city)}
-          ></TextInput>
-          <Text style={styles.inputTitle}> A propos de toi : </Text>
-          <TextInput
-            style={[styles.input, { height: 80 }]}
-            placeholder="Parles nous de toi !"
-            value={aPropos}
-            onChangeText={(aPropos) => setApropos(aPropos)}
-            multiline={true} // Permet d'écrire sur plusieurs lignes
-          ></TextInput>
-          <Text style={styles.inputTitle}> Tes motivations : </Text>
-          <TextInput
-            style={[styles.input, { height: 80 }]}
-            placeholder="Quelles sont tes motivations ?"
-            value={description}
-            onChangeText={(description) => setDescription(description)}
-            multiline={true} // Permet d'écrire sur plusieurs lignes
-          ></TextInput>
-
-          <Text style={styles.inputTitle}>
-            {" "}
-            Partage des photos de ce qui te représente :{" "}
-          </Text>
-          <View style={styles.imageContainer}>
-            {selectedImages.map((image, index) => (
-              // Afficher chaque image partagée
-              <Image
-                key={index}
-                source={{ uri: image.uri }}
-                style={styles.image}
+            <View style={styles.imageContainer}>
+              {selectedImages.map((image, index) => (
+                // Afficher chaque image partagée
+                <Image
+                  key={index}
+                  source={{ uri: image.uri }}
+                  style={styles.image}
+                />
+              ))}
+              <Button
+                title="Ajouter une image"
+                onPress={showImagePicker}
+                color="#4FAAAF"
               />
-            ))}
-            <Button
-              title="Ajouter une image"
-              onPress={showImagePicker}
-              color="#4FAAAF"
-            />
-          </View>
-          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-            <Text style={styles.buttonText}>Mettre à jour</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+              <Text style={styles.buttonText}>Mettre à jour</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
@@ -256,14 +261,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
   },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   logo: {
     height: 200,
     width: 200,
     alignItems: "center",
-  },
-  toggleContainer: {
-    marginBottom: 10,
-    marginLeft: 20,
   },
   inputTitle: {
     fontWeight: "bold",
@@ -280,13 +287,14 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: "black",
-    borderWidth: 0.3,
-    marginBottom: 10,
-    marginRight: 20,
+    borderColor: "#4FAAAF",
+    borderWidth: 2,
     marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
+    backgroundColor: "rgba(255, 255, 255,  0.3)",
   },
   button: {
     backgroundColor: "#4FAAAF",
@@ -309,6 +317,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
     marginTop: 30,
+    backgroundColor: "rgba(255, 255, 255,  0.3)",
+    height: 100,
   },
   image: {
     width: 100,
@@ -330,5 +340,21 @@ const styles = StyleSheet.create({
   },
   back: {
     color: "#eb7134",
+    marginLeft: 10,
+  },
+  toggleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  toggleText: {
+    marginRight: 10,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  addImage: {
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
   },
 });

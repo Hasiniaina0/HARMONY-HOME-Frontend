@@ -11,6 +11,7 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -54,124 +55,140 @@ export default function AccountScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <View style={styles.container}>
-            <View style={styles.title}>
-              <View style={styles.imageContainer}>
-                <Image
-                  source={
-                    photoProfil.length
-                      ? { uri: photoProfil[0] }
-                      : require("../assets/photoProfil.png")
-                  }
-                  style={[styles.logo, styles.profileImage]}
-                />
-              </View>
+    <ImageBackground
+      source={require("../assets/fond8.jpg")}
+      style={styles.backgroundImage}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
+              <View style={styles.title}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={
+                      photoProfil.length
+                        ? { uri: photoProfil[0] }
+                        : require("../assets/photoProfil.png")
+                    }
+                    style={[styles.logo, styles.profileImage]}
+                  />
+                </View>
 
-              <Text style={styles.textNom}>{prenom}</Text>
-            </View>
-            <View style={styles.containerText}>
-              <Text
-                style={styles.text}
-                onPress={() => navigation.navigate("Information")}
-              >
-                Mes informations personnelles
-              </Text>
-              <Text
-                style={styles.text}
-                onPress={() => {
-                  navigation.navigate(
-                    user.statut === "hebergeur"
-                      ? "HebergeurProfil"
-                      : "LocataireProfil"
-                  );
-                }}
-              >
-                Mon profil
-              </Text>
-              <Text
-                style={styles.text}
-                onPress={() => navigation.navigate("Preferences")}
-              >
-                Mes préférences
-              </Text>
-              <Text style={styles.text} onPress={() => navigation.navigate("")}>
-                Mes avis
-              </Text>
-              <Text style={styles.text} onPress={() => navigation.navigate("")}>
-                Informations légales- RGPD
-              </Text>
-              <Text style={styles.text} onPress={() => toggleModal()}>
-                Contactez-nous
-              </Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => handleLogout()}
-              >
-                <Text style={styles.buttonText}>Se déconnecter</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalInnerContainer}>
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setModalVisible(false)}
+                <Text style={styles.textNom}>{prenom}</Text>
+              </View>
+              <View style={styles.containerText}>
+                <Text
+                  style={styles.text}
+                  onPress={() => navigation.navigate("Information")}
                 >
-                  <Ionicons name="close" size={24} color="black" />
+                  Mes informations personnelles
+                </Text>
+                <Text
+                  style={styles.text}
+                  onPress={() => {
+                    navigation.navigate(
+                      user.statut === "hebergeur"
+                        ? "HebergeurProfil"
+                        : "LocataireProfil"
+                    );
+                  }}
+                >
+                  Mon profil
+                </Text>
+                <Text
+                  style={styles.text}
+                  onPress={() => navigation.navigate("Preferences")}
+                >
+                  Mes préférences
+                </Text>
+                <Text
+                  style={styles.text}
+                  onPress={() => navigation.navigate("")}
+                >
+                  Mes avis
+                </Text>
+                <Text
+                  style={styles.text}
+                  onPress={() => navigation.navigate("")}
+                >
+                  Informations légales- RGPD
+                </Text>
+                <Text style={styles.text} onPress={() => toggleModal()}>
+                  Contactez-nous
+                </Text>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => handleLogout()}
+                >
+                  <Text style={styles.buttonText}>Se déconnecter</Text>
                 </TouchableOpacity>
-                <View style={styles.modalContent}>
-                  <Text style={styles.modalTitle}>On vous écoute</Text>
-                  <TextInput
-                    style={styles.modalEmailInput}
-                    placeholder="Adresse e-mail"
-                    placeholderTextColor="#badbd7"
-                    value={email}
-                  />
-                  <TextInput
-                    style={styles.modalMessageInput}
-                    placeholder="Rédigez votre message"
-                    placeholderTextColor="#badbd7"
-                    multiline={true} // Permettre plusieurs lignes de texte
-                    // numberOfLines={5} // Définir le nombre de lignes affichées par défaut
-                    value={message}
-                    onChangeText={(text) => setMessage(text)}
-                  />
+              </View>
+            </View>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalInnerContainer}>
                   <TouchableOpacity
-                    style={styles.sendButton}
-                    onPress={() => {
-                      setModalVisible(false);
-                      setEmail(""); // Réinitialiser l'état email à une chaîne vide
-                      setMessage(""); // Réinitialiser l'état message à une chaîne vide
-                    }}
+                    style={styles.closeButton}
+                    onPress={() => setModalVisible(false)}
                   >
-                    <Text style={styles.sendButtonText}>Envoyer</Text>
+                    <Ionicons name="close" size={24} color="black" />
                   </TouchableOpacity>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>On vous écoute</Text>
+                    <TextInput
+                      style={styles.modalEmailInput}
+                      placeholder="Adresse e-mail"
+                      placeholderTextColor="#badbd7"
+                      value={email}
+                    />
+                    <TextInput
+                      style={styles.modalMessageInput}
+                      placeholder="Rédigez votre message"
+                      placeholderTextColor="#badbd7"
+                      multiline={true} // Permettre plusieurs lignes de texte
+                      // numberOfLines={5} // Définir le nombre de lignes affichées par défaut
+                      value={message}
+                      onChangeText={(text) => setMessage(text)}
+                    />
+                    <TouchableOpacity
+                      style={styles.sendButton}
+                      onPress={() => {
+                        setModalVisible(false);
+                        setEmail(""); // Réinitialiser l'état email à une chaîne vide
+                        setMessage(""); // Réinitialiser l'état message à une chaîne vide
+                      }}
+                    >
+                      <Text style={styles.sendButtonText}>Envoyer</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
-          </Modal>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+            </Modal>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
     padding: 10,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageContainer: {
     justifyContent: "center", // Centrer les éléments verticalement
@@ -197,7 +214,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     marginTop: 30,
     textAlign: "center",
-    color: "#eb7134",
+    color: "#4FAAAF",
   },
   text: {
     color: "black",
@@ -214,7 +231,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: "#eb7134",
+    backgroundColor: "white",
     width: 200,
     justifyContent: "center",
     alignItems: "center",
@@ -227,7 +244,7 @@ const styles = StyleSheet.create({
     marginLeft: 150,
   },
   buttonText: {
-    color: "white",
+    color: "#eb7134",
     fontSize: 15,
   },
   modalContainer: {

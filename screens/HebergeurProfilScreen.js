@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   ScrollView,
   Switch,
+  ImageBackground,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 //import { Avatar } from "native-base";
@@ -159,99 +160,106 @@ export default function HebergeurProfilScreen() {
 
   // Interface utilisateur du composant
   return (
-    <SafeAreaView style={styles.inputsContainer}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        {/* Bouton de retour */}
-        <MaterialIcons
-          name="keyboard-backspace"
-          size={60}
-          onPress={() => navigation.goBack()}
-          style={styles.back}
-        />
-        <ScrollView style={styles.scrollView}>
-          {/* Section pour afficher et changer la photo de profil */}
-          <View style={styles.profileImageContainer}>
-            {/* Image de profil */}
-
-            <TouchableOpacity onPress={showImagePickerProfil}>
-              <Image
-                source={
-                  photoProfil[0]
-                    ? { uri: photoProfil[0] }
-                    : require("../assets/photoProfil.png")
-                }
-                style={styles.profileImage}
-              />
-            </TouchableOpacity>
-          </View>
-
-          {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
-          <View style={styles.toggleContainer}>
-            <Switch value={isDisponible} onValueChange={setIsDisponible} />
-            <Text style={styles.toggleText}>
-              {isDisponible ? "Logement disponible" : "Logement indisponible"}
-            </Text>
-          </View>
-
-          {/* Formulaire pour mettre à jour le profil */}
-          <Text style={styles.inputTitle}>Ville :</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Votre ville"
-            value={city}
-            onChangeText={setCity}
+    <ImageBackground
+      source={require("../assets/fond8.jpg")}
+      style={styles.backgroundImage}
+    >
+      <SafeAreaView style={styles.inputsContainer}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          {/* Bouton de retour */}
+          <MaterialIcons
+            name="keyboard-backspace"
+            size={60}
+            onPress={() => navigation.goBack()}
+            style={styles.back}
           />
-          <Text style={styles.inputTitle}>A propos de vous :</Text>
-          <TextInput
-            style={[styles.input, { height: 80 }]}
-            multiline={true}
-            placeholder="Parlez-nous de vous"
-            value={aPropos}
-            onChangeText={setApropos}
-          />
-          <Text style={styles.inputTitle}>Description de votre logement :</Text>
-          <TextInput
-            style={[styles.input, { height: 80 }]}
-            multiline={true}
-            placeholder="Décrivez votre logement"
-            value={description}
-            onChangeText={setDescription}
-          />
+          <ScrollView style={styles.scrollView}>
+            {/* Section pour afficher et changer la photo de profil */}
+            <View style={styles.profileImageContainer}>
+              {/* Image de profil */}
 
-          {/* Section pour ajouter des photos partagées */}
-          <Text style={styles.inputTitle}>
-            {" "}
-            Partagez des photos de ce qui vous représente:{" "}
-          </Text>
-          <View style={styles.imageContainer}>
-            {selectedImages.slice(0).map((image, index) => (
-              // Afficher chaque image partagée
-              <Image
-                key={index}
-                source={{ uri: image.uri }}
-                style={styles.image}
-              />
-            ))}
-            <View>
-              <Button
-                title="Ajouter une image"
-                onPress={showImagePicker}
-                color="#4FAAAF"
-                style={styles.addImage}
-              />
+              <TouchableOpacity onPress={showImagePickerProfil}>
+                <Image
+                  source={
+                    photoProfil[0]
+                      ? { uri: photoProfil[0] }
+                      : require("../assets/photoProfil.png")
+                  }
+                  style={styles.profileImage}
+                />
+              </TouchableOpacity>
             </View>
-          </View>
 
-          {/* Bouton pour mettre à jour le profil */}
-          <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
-            <Text style={styles.buttonText}>Mettre à jour</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+            {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
+            <View style={styles.toggleContainer}>
+              <Switch value={isDisponible} onValueChange={setIsDisponible} />
+              <Text style={styles.toggleText}>
+                {isDisponible ? "Logement disponible" : "Logement indisponible"}
+              </Text>
+            </View>
+
+            {/* Formulaire pour mettre à jour le profil */}
+            <Text style={styles.inputTitle}>Ville :</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Votre ville"
+              value={city}
+              onChangeText={setCity}
+            />
+            <Text style={styles.inputTitle}>A propos de vous :</Text>
+            <TextInput
+              style={[styles.input, { height: 80 }]}
+              multiline={true}
+              placeholder="Parlez-nous de vous"
+              value={aPropos}
+              onChangeText={setApropos}
+            />
+            <Text style={styles.inputTitle}>
+              Description de votre logement :
+            </Text>
+            <TextInput
+              style={[styles.input, { height: 80 }]}
+              multiline={true}
+              placeholder="Décrivez votre logement"
+              value={description}
+              onChangeText={setDescription}
+            />
+
+            {/* Section pour ajouter des photos partagées */}
+            <Text style={styles.inputTitle}>
+              {" "}
+              Partagez des photos de ce qui vous représente:{" "}
+            </Text>
+            <View style={styles.imageContainer}>
+              {selectedImages.slice(0).map((image, index) => (
+                // Afficher chaque image partagée
+                <Image
+                  key={index}
+                  source={{ uri: image.uri }}
+                  style={styles.image}
+                />
+              ))}
+              <View>
+                <Button
+                  title="Ajouter une image"
+                  onPress={showImagePicker}
+                  color="black"
+                  style={styles.addImage}
+                />
+              </View>
+            </View>
+
+            {/* Bouton pour mettre à jour le profil */}
+            <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
+              <Text style={styles.buttonText}>Mettre à jour</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
@@ -260,8 +268,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
     padding: 10,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  toggleContainer: {
+    marginBottom: 10,
+    marginLeft: 20,
+    paddingLeft: 20,
   },
   logo: {
     height: 200,
@@ -273,7 +291,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 10,
     marginLeft: 20,
-    color: "#eb7134",
+    color: "black",
   },
   title: {
     fontSize: 20,
@@ -283,13 +301,14 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: "black",
-    borderWidth: 0.3,
-    marginBottom: 10,
-    marginRight: 20,
+    borderColor: "#4FAAAF",
+    borderWidth: 2,
     marginLeft: 20,
-    paddingHorizontal: 5,
+    marginRight: 20,
+    marginBottom: 10,
+    paddingHorizontal: 10,
     borderRadius: 5,
+    backgroundColor: "rgba(255, 255, 255,  0.3)",
   },
   button: {
     backgroundColor: "#4FAAAF",
@@ -311,6 +330,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 10,
+    backgroundColor: "rgba(255, 255, 255,  0.3)",
+    height: 100,
   },
   image: {
     width: 100,
@@ -331,10 +352,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderColor: "#4FAAAF",
     borderWidth: 4,
-    // backgroundColor: "gray",
   },
   back: {
     color: "#eb7134",
+    marginLeft: 10,
   },
   toggleContainer: {
     flexDirection: "row",
@@ -343,5 +364,12 @@ const styles = StyleSheet.create({
   },
   toggleText: {
     marginRight: 10,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  addImage: {
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
   },
 });
