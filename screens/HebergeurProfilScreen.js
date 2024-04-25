@@ -18,14 +18,13 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector,useDispatch } from "react-redux";
-import { addPhoto, addPhotoProfil } from "../reducers/user";
+import { useSelector } from "react-redux";
+import { addPhotoProfil } from "../reducers/user";
 
 //import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const [aPropos, setApropos] = useState("");
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
@@ -58,7 +57,6 @@ export default function HebergeurProfilScreen() {
         city,
         description,
         aPropos,
-        photoProfil,
         available: availability,
       }),
     })
@@ -69,12 +67,28 @@ export default function HebergeurProfilScreen() {
         const formData = new FormData();
 
         selectedImages.forEach((photo, index) => {
+          console.log("Boucle forEach photo uri",photo.uri);
           formData.append(`photoFromFront-${index}`, {
             uri: photo.uri,
             name: `photo-${index}.jpg`,
             type: "image/jpeg",
           });
         });
+        console.log(" selectedImages" ,  selectedImages );
+        // console.log("formData" , formData.get("photoFromFront-0"));
+        
+        const regex= new RegExp("^http(s?)\:\/\/");
+        const photoProfilChanged = !regex.test(photoProfil);
+    
+       if (photoProfilChanged) {
+         formData.append(`photoProfil`, {
+           uri: photoProfil,
+           name: "photo.jpg",
+           type: "image/jpeg",
+         });
+       }
+        console.log("photoProfil" , photoProfil ); 
+        // console.log("formData" , formData.get("photoProfil"));
 
         fetch(`${BACKEND_URL}/updates/photos/${token}`, {
           method: "POST",
@@ -138,41 +152,10 @@ export default function HebergeurProfilScreen() {
     // Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
     if (!result.canceled && result.assets.length > 0) {
       const newImage = result.assets[0];
-      setProfileImageUrl(newImage.uri);
-      setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
+      setPhotoProfil(newImage.uri);
     }
   };
 
-  const handleSavePhotoProfil = async () => {
-    if (selectedImages.length === 0) {
-      return;
-    }
-
-    // Préparer les données de l'image de profil pour l'envoi
-    const formData = new FormData();
-    const photoProfil = selectedImages[0]; // Prenez la première image comme photo de profil
-    formData.append("photoProfil", {
-      uri: photoProfil.uri,
-      name: "photoProfil.jpg",
-      type: photoProfil.mimeType,
-    });
-
-    // Envoyer la photo de profil au serveur
-    const response = await fetch(
-      `${BACKEND_URL}/updates/photoProfil/${token}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await response.json();
-
-    if (response.ok && data.success) {
-      console.log("Photo de profil mise à jour avec succès:", data);
-      setProfileImageUrl(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
-    }
-  };
 
   // Interface utilisateur du composant
   return (
