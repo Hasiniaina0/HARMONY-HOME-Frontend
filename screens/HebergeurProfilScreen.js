@@ -28,7 +28,7 @@ export default function HebergeurProfilScreen() {
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
-  const [photoProfil, setProfilPhoto] = useState("");
+  const [photoProfil, setPhotoProfil] = useState("");
   const token = useSelector((state) => state.user.token);
   const [availability, setAvailability] = useState("Logement disponible");
   const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
@@ -41,7 +41,7 @@ export default function HebergeurProfilScreen() {
         setCity(data.city);
         setApropos(data.aPropos);
         setDescription(data.description);
-        setProfilPhoto(data.photoProfil);
+        setPhotoProfil(data.photoProfil);
         setAvailability(data.available);
       });
   }, []);
@@ -56,24 +56,38 @@ export default function HebergeurProfilScreen() {
         city,
         description,
         aPropos,
-        photoProfil,
         available: availability,
       }),
     })
       .then((response) => response.json())
       .then(async (data) => {
-        console.log("Profil mis à jour:", data);
+        // console.log("Profil mis à jour:", data);
         // save photo dans cloudinary
-
         const formData = new FormData();
 
         selectedImages.forEach((photo, index) => {
+          console.log("Boucle forEach photo uri",photo.uri);
           formData.append(`photoFromFront-${index}`, {
-            uri: photo?.uri,
+            uri: photo.uri,
             name: `photo-${index}.jpg`,
-            type: photo?.mimeType,
+            type: "image/jpeg",
           });
         });
+        // console.log(" selectedImages" ,  selectedImages );
+        // console.log("formData" , formData.get("photoFromFront-0"));
+        
+        const regex= new RegExp("^http(s?)\:\/\/");
+        const photoProfilChanged = !regex.test(photoProfil);
+    
+       if (photoProfilChanged) {
+         formData.append(`photoProfil`, {
+           uri: photoProfil,
+           name: "photo.jpg",
+           type: "image/jpeg",
+         });
+       }
+        console.log("photoProfil" , photoProfil ); 
+        // console.log("formData" , formData.get("photoProfil"));
 
         fetch(`${BACKEND_URL}/updates/photos/${token}`, {
           method: "POST",
@@ -82,7 +96,7 @@ export default function HebergeurProfilScreen() {
           .then((response) => response.json())
 
           .then((data) => {
-            console.log("photos maj", data);
+            // console.log("photos maj", data);
           })
           .catch((error) => console.log(error));
       })
@@ -135,41 +149,10 @@ export default function HebergeurProfilScreen() {
     // Remplacer l'image de profil actuelle par la nouvelle image sélectionnée
     if (!result.canceled && result.assets.length > 0) {
       const newImage = result.assets[0];
-      setProfilPhoto(newImage.uri);
-      setSelectedImages([newImage]); // Mettre à jour selectedImages avec la nouvelle photo de profil
+      setPhotoProfil(newImage.uri);
     }
   };
 
-  const handleSavePhotoProfil = async () => {
-    if (selectedImages.length === 0) {
-      return;
-    }
-
-    // Préparer les données de l'image de profil pour l'envoi
-    const formData = new FormData();
-    const photoProfil = selectedImages[0]; // Prenez la première image comme photo de profil
-    formData.append("photoProfil", {
-      uri: photoProfil.uri,
-      name: "photoProfil.jpg",
-      type: photoProfil.mimeType,
-    });
-
-    // Envoyer la photo de profil au serveur
-    const response = await fetch(
-      `${BACKEND_URL}/updates/photoProfil/${token}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await response.json();
-
-    if (response.ok && data.success) {
-      console.log("Photo de profil mise à jour avec succès:", data);
-      setProfilPhoto(photoProfil.uri); // Mettre à jour l'URL de l'image de profil après une mise à jour réussie
-    }
-  };
 
   // Interface utilisateur du composant
   return (
@@ -193,21 +176,14 @@ export default function HebergeurProfilScreen() {
             <TouchableOpacity onPress={showImagePickerProfil}>
               <Image
                 source={
-                  photoProfil
-                    ? { uri: photoProfil }
+                  photoProfil.length
+                    ? { uri: photoProfil[0] }
                     : require("../assets/photoProfil.png")
                 }
                 style={styles.profileImage}
               />
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSavePhotoProfil}
-          >
-            <Text style={styles.buttonText}>Ajouter photo de profil</Text>
-          </TouchableOpacity>
 
           {/* Toggle Switch pour choisir entre logement disponible ou indisponible */}
           <View style={styles.toggleContainer}>
