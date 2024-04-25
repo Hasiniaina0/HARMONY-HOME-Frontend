@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   ScrollView,
   Switch,
+  ImageBackground,
 } from "react-native";
 //import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
