@@ -58,6 +58,25 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
+        name="Annonces"
+        component={ThreadScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search-outline" size={30} color={"white"} />
+          ),
+        }}
+      ></Tab.Screen>
+
+      <Tab.Screen
+        name="Profil"
+        component={AccountScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" size={30} color={"white"} />
+          ),
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
         name="Chat"
         component={ChatScreen}
         options={{
@@ -70,24 +89,7 @@ const TabNavigator = () => {
           ),
         }}
       ></Tab.Screen>
-      <Tab.Screen
-        name="Thread"
-        component={ThreadScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search-outline" size={30} color={"white"} />
-          ),
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name="Account"
-        component={AccountScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={30} color={"white"} />
-          ),
-        }}
-      ></Tab.Screen>
+
       <Tab.Screen
         name="Favoris"
         component={FavoritesScreen}
