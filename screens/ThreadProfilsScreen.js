@@ -160,38 +160,43 @@ const styles = StyleSheet.create({
   },
   announcementContainer: {
     flexDirection: "row",
-    marginVertical: 10,
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    borderRadius: 8,
+    marginVertical: 10, // Add vertical margins between announcements
+    backgroundColor: "#f0f0f0", // Set light gray background color
+    padding: 10, // Add padding around the announcement
+    borderRadius: 8, // Add rounded corners to the announcement container
   },
   imageContainer: {
     width: 120,
     height: 120,
-    borderRadius: 8,
-    overflow: "hidden",
+    borderRadius: 8, // Add rounded corners to the image container
+    overflow: "hidden", // Hide overflow content
   },
   imageProfil: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
-    borderRadius: 8,
+    resizeMode: "cover", // Use 'cover' mode to fill the container while preserving aspect ratio
+    borderRadius: 8, // Add rounded corners to the image
   },
   textContainer: {
     flex: 1,
     marginLeft: 10,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
   },
   favoriteButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    padding: 10, // Ajoute du padding pour agrandir la zone cliquable
-    borderRadius: 20,
-    zIndex: 10,
+    position: "absolute", // Position absolutely within the header container
+    top: 0, // Position at the top
+    right: 0, // Position at the right
+    marginRight: 15,
+    marginTop: 5,
   },
   location: {
     color: "#666",
