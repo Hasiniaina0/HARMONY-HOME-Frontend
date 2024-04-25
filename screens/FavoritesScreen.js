@@ -132,26 +132,32 @@ const styles = StyleSheet.create({
   },
   favoriteContainer: {
     flexDirection: "row",
-    marginVertical: 10,
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    borderRadius: 8,
+    marginVertical: 10, // Add vertical margins between announcements
+    backgroundColor: "#f0f0f0", // Set light gray background color
+    padding: 10, // Add padding around the announcement
+    borderRadius: 8, // Add rounded corners to the announcement container
   },
   imageContainer: {
     width: 120,
     height: 120,
-    borderRadius: 8,
-    overflow: "hidden",
+    borderRadius: 8, // Add rounded corners to the image container
+    overflow: "hidden", // Hide overflow content
   },
   imageProfil: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
-    borderRadius: 8,
+    resizeMode: "cover", // Use 'cover' mode to fill the container while preserving aspect ratio
+    borderRadius: 8, // Add rounded corners to the image
   },
   textContainer: {
     flex: 1,
     marginLeft: 10,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
   },
   title: {
     fontSize: 16,
@@ -161,16 +167,25 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
-    // Augmente la zone cliquable
-    padding: 10,
-    borderRadius: 20,
+    padding: 10, // Ajoute du padding pour agrandir la zone cliquable
     zIndex: 10,
-  },
+    },
   location: {
     color: "#666",
     marginBottom: 5,
   },
   description: {
     marginBottom: 5,
+  },
+  contactButton: {
+    alignSelf: "flex-end",
+    backgroundColor: "#4FAAAF",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+  },
+  contactButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
