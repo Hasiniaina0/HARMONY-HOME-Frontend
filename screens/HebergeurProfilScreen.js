@@ -58,7 +58,6 @@ export default function HebergeurProfilScreen() {
         description,
         aPropos,
         photoProfil,
-        photoProfil,
         available: availability,
       }),
     })
