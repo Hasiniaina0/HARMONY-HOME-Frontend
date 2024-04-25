@@ -83,7 +83,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons
               name="chatbubble-ellipses-outline"
-              size={20}
+              size={30}
               color={"white"}
             />
           ),

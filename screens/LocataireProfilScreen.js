@@ -70,30 +70,29 @@ export default function LocataireProfilScreen() {
         const formData = new FormData();
 
         selectedImages.forEach((photo, index) => {
-          console.log("Boucle forEach photo uri",photo.uri);
+          console.log("Boucle forEach photo uri", photo.uri);
           formData.append(`photoFromFront-${index}`, {
             uri: photo.uri,
             name: `photo-${index}.jpg`,
             type: "image/jpeg",
           });
         });
-        console.log(" selectedImages" ,  selectedImages );
+        console.log(" selectedImages", selectedImages);
         // console.log("formData" , formData.get("photoFromFront-0"));
-        
-        const regex= new RegExp("^http(s?)\:\/\/");
+
+        const regex = new RegExp("^http(s?)://");
         const photoProfilChanged = !regex.test(photoProfil);
-    
-       if (photoProfilChanged) {
-         formData.append(`photoProfil`, {
-           uri: photoProfil,
-           name: "photo.jpg",
-           type: "image/jpeg",
-         });
-       }
-        console.log("photoProfil" , photoProfil ); 
+
+        if (photoProfilChanged) {
+          formData.append(`photoProfil`, {
+            uri: photoProfil,
+            name: "photo.jpg",
+            type: "image/jpeg",
+          });
+        }
+        console.log("photoProfil", photoProfil);
         // console.log("formData" , formData.get("photoProfil"));
 
-    
         fetch(`${BACKEND_URL}/updates/photos/${token}`, {
           method: "POST",
           body: formData,
@@ -160,7 +159,6 @@ export default function LocataireProfilScreen() {
     }
   };
 
-
   return (
     <SafeAreaView style={styles.inputsContainer}>
       <KeyboardAvoidingView
@@ -178,7 +176,7 @@ export default function LocataireProfilScreen() {
           <View style={styles.profileImageContainer}>
             {/* Image de profil */}
             <TouchableOpacity onPress={showImagePickerProfil}>
-            <Image
+              <Image
                 source={
                   photoProfil[0]
                     ? { uri: photoProfil[0] }
@@ -188,7 +186,7 @@ export default function LocataireProfilScreen() {
               />
             </TouchableOpacity>
           </View>
-         
+
           <View style={styles.toggleContainer}>
             <Switch value={isDisponible} onValueChange={setIsDisponible} />
             <Text style={styles.toggleText}>
@@ -278,6 +276,8 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 0.3,
     marginBottom: 10,
+    marginRight: 20,
+    marginLeft: 20,
     paddingHorizontal: 10,
     borderRadius: 1,
   },
