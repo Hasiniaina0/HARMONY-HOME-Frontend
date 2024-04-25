@@ -254,16 +254,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
-    marginTop: 30,
+    padding: 10,
   },
   logo: {
     height: 200,
     width: 200,
     alignItems: "center",
   },
+  toggleContainer: {
+    marginBottom: 10,
+    marginLeft: 20,
+  },
   inputTitle: {
     fontWeight: "bold",
+    marginTop: 15,
     marginBottom: 10,
+    marginLeft: 20,
+    color: "#eb7134",
   },
   title: {
     fontSize: 20,
@@ -279,7 +286,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     paddingHorizontal: 10,
-    borderRadius: 1,
+    borderRadius: 5,
   },
   button: {
     backgroundColor: "#4FAAAF",
@@ -288,6 +295,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     marginBottom: 10,
+    marginRight: 20,
+    marginLeft: 20,
   },
   buttonText: {
     color: "white",
@@ -299,6 +308,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 10,
+    marginTop: 30,
   },
   image: {
     width: 100,

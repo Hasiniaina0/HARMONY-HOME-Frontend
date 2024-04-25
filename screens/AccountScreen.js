@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    marginTop: 30,
+    padding: 10,
   },
   imageContainer: {
     justifyContent: "center", // Centrer les éléments verticalement
@@ -192,17 +192,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textNom: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 50,
     marginTop: 30,
     textAlign: "center",
+    color: "#4FAAAF",
   },
   text: {
-    color: "blue",
+    color: "black",
     marginLeft: 40,
     marginBottom: 20,
     fontSize: 16,
+    fontWeight: "bold",
   },
   profil: {
     alignItems: "center",
@@ -222,7 +224,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     marginTop: 30,
-    marginLeft: 200,
+    marginLeft: 150,
   },
   buttonText: {
     color: "white",
