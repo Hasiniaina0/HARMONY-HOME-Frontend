@@ -241,7 +241,7 @@ export default function LocataireProfilScreen() {
               <Button
                 title="Ajouter une image"
                 onPress={showImagePicker}
-                color="#4FAAAF"
+                color="black"
               />
             </View>
             <TouchableOpacity style={styles.button} onPress={handleSaveProfil}>
@@ -274,10 +274,10 @@ const styles = StyleSheet.create({
   },
   inputTitle: {
     fontWeight: "bold",
-    marginTop: 15,
+    marginTop: 20,
     marginBottom: 10,
     marginLeft: 20,
-    color: "#eb7134",
+    color: "black",
   },
   title: {
     fontSize: 20,
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 10,
-    marginTop: 30,
+    marginTop: 10,
     backgroundColor: "rgba(255, 255, 255,  0.3)",
     height: 100,
   },
@@ -346,6 +346,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
+    marginLeft: 20,
   },
   toggleText: {
     marginRight: 10,

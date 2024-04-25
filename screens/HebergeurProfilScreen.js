@@ -361,6 +361,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
+    marginLeft: 20,
   },
   toggleText: {
     marginRight: 10,
