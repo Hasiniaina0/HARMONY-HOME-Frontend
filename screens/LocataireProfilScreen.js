@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import { addPhotoProfil } from "../reducers/user";
 
 export default function LocataireProfilScreen() {
   const [aPropos, setApropos] = useState("");
@@ -101,9 +102,8 @@ export default function LocataireProfilScreen() {
 
           .then((data) => {
             console.log("photo maj", data);
-            // const cloudinaryURL = data.uri;
-            // console.log("cloudinaryURL", cloudinaryURL);
-            // dispatch(addPhoto(cloudinaryURL));
+            dispatch(addPhotoProfil(data.photoProfil));
+            dispatch(addPhoto(data.photos));
           })
           .catch((error) => console.log(error));
       })

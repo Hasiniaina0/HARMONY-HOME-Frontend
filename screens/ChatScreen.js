@@ -60,7 +60,7 @@ export default function ChatScreen() {
         <PubNubProvider client={pubnub}>
           <Chat {...{ currentChannel, theme }}>
             <MessageList />
-            <MessageInput senderInfo={true} />
+            <MessageInput senderInfo={true} stickyFooter={true} />
           </Chat>
         </PubNubProvider>
       </KeyboardAvoidingView>
