@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     right: 10,
     padding: 10, // Ajoute du padding pour agrandir la zone cliquable
     zIndex: 10,
-    },
+  },
   location: {
     color: "#666",
     marginBottom: 5,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   contactButton: {
     alignSelf: "flex-end",
-    backgroundColor: "#4FAAAF",
+    backgroundColor: "#eb7134",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
