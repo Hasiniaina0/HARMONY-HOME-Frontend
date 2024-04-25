@@ -118,9 +118,9 @@ export default function DescriptionProfilScreen() {
                     alt="Avatar par défaut"
                   />
                 )}
-                <Text style={styles.desc}>A propos du futur colocataire: </Text>
+                <Text style={styles.desc}>A propos de moi ! </Text>
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
-                <Text style={styles.desc}>Ses motivations : </Text>
+                <Text style={styles.desc}>Mes motivations : </Text>
                 <Text style={styles.apropos}>{userDetails.description}</Text>
                 {/* Conditionally render the gallery or a default image */}
                 {userDetails.photos && userDetails.photos.length > 0 && (
