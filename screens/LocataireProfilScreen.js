@@ -267,8 +267,10 @@ const styles = StyleSheet.create({
   },
   inputTitle: {
     fontWeight: "bold",
+    marginTop: 15,
     marginBottom: 10,
     marginLeft: 20,
+    color: "#eb7134",
   },
   title: {
     fontSize: 20,
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     paddingHorizontal: 10,
-    borderRadius: 1,
+    borderRadius: 5,
   },
   button: {
     backgroundColor: "#4FAAAF",
@@ -306,6 +308,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 10,
+    marginTop: 30,
   },
   image: {
     width: 100,
