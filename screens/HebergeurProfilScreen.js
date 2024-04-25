@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "gray",
   },
   back: {
-    color: "#4FAAAF",
+    color: "#eb7134",
   },
   toggleContainer: {
     flexDirection: "row",

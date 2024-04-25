@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
   },
   back: {
     alignSelf: "flex-start",
+    color: "#eb7134",
   },
   inputContainer: {
     width: "100%",

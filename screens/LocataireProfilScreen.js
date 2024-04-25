@@ -329,6 +329,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   back: {
-    color: "#4FAAAF",
+    color: "#eb7134",
   },
 });
