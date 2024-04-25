@@ -92,9 +92,9 @@ export default function FavoritesScreen() {
               />
             </TouchableOpacity>
             <View style={styles.imageContainer}>
-              {favorite.photos?.length > 0 ? (
+              {favorite.photoProfil?.length > 0 ? (
                 <Image
-                  source={{ uri: favorite.photos[0] }}
+                  source={{ uri: favorite.photoProfil[0] }}
                   alt="photo de profil"
                   style={styles.imageProfil}
                 />
