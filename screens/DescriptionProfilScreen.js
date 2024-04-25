@@ -51,7 +51,7 @@ export default function DescriptionProfilScreen() {
       },
       headerTitleStyle: {
         color: "white",
-        fontSize: 18,
+        fontSize: 25,
         fontWeight: "bold",
       },
       headerTitleAlign: "center",
@@ -60,7 +60,7 @@ export default function DescriptionProfilScreen() {
           onPress={() => navigation.goBack()}
           style={{ marginLeft: 10 }}
         >
-          <MaterialIcons name="keyboard-backspace" size={24} color="white" />
+          <MaterialIcons name="keyboard-backspace" size={40} color="white" />
         </TouchableOpacity>
       ),
     });
@@ -118,9 +118,9 @@ export default function DescriptionProfilScreen() {
                     alt="Avatar par défaut"
                   />
                 )}
-                <Text style={styles.desc}>A propos du futur colocataire: </Text>
+                <Text style={styles.desc}>A propos de moi ! </Text>
                 <Text style={styles.apropos}>{userDetails.aPropos}</Text>
-                <Text style={styles.desc}>Ses motivations : </Text>
+                <Text style={styles.desc}>Mes motivations : </Text>
                 <Text style={styles.apropos}>{userDetails.description}</Text>
                 {/* Conditionally render the gallery or a default image */}
                 {userDetails.photos && userDetails.photos.length > 0 && (
@@ -176,22 +176,26 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 17,
     marginVertical: 10,
+    color: "#eb7134",
   },
   apropos: {
     textAlign: "justify",
   },
 
   photo: {
-    width: 125,
-    height: 125,
+    width: 150,
+    height: 150,
     marginRight: 10,
     borderRadius: 10,
+    marginTop: 20,
   },
 
   profileImage: {
     width: 150,
     height: 150,
     marginBottom: 20,
+    borderRadius: 10,
+    alignSelf: "center",
   },
   reviewImage: {
     width: 100,
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   contactButton: {
-    backgroundColor: "#4FAAAF", // Couleur de fond définie ici
+    backgroundColor: "#eb7134", // Couleur de fond définie ici
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
