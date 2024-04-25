@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 20,
     borderRadius: 10,
+    alignSelf: "center",
   },
   reviewImage: {
     width: 100,
