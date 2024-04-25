@@ -193,7 +193,6 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     padding: 10, // Ajoute du padding pour agrandir la zone cliquable
-    borderRadius: 20,
     zIndex: 10,
   },
   location: {

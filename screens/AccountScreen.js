@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: "#4FAAAF",
+    backgroundColor: "#eb7134",
     width: 200,
     justifyContent: "center",
     alignItems: "center",
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#4FAAAF",
+    color: "#eb7134",
   },
   modalEmailInput: {
     borderWidth: 1,
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     alignItems: "center",
-    backgroundColor: "#4FAAAF",
+    backgroundColor: "#eb7134",
   },
   sendButtonText: {
     color: "#fff",
