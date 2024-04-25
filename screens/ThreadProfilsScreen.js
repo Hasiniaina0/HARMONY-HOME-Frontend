@@ -91,7 +91,10 @@ export default function ThreadAnnouncementsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {announcements.map((announcement) => (
           <View style={styles.announcementContainer} key={announcement._id}>
             <TouchableOpacity
