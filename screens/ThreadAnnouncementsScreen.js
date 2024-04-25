@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   contactButton: {
     alignSelf: "flex-end",
-    backgroundColor: "#4FAAAF",
+    backgroundColor: "#eb7134",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
