@@ -20,6 +20,7 @@ import { Provider } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { Title } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+//import "react-native-reanimated";
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
