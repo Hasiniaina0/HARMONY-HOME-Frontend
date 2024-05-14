@@ -50,9 +50,6 @@ export default function SignInScreen({ navigation }) {
           navigation.navigate("TabNavigator", { screen: "Thread" });
         } else {
           // Erreur de connexion
-          alert(
-            "La connexion n'est pas réussie. Veuillez entrer le bon email et mot de passe !"
-          );
           setErrorMessage(data.error);
         }
       })
@@ -177,6 +174,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 310,
     height: 300,
+  },
+  errorMessage:{
+    color:"red",
+    fontStyle:"italic",
   },
   sloganTitle: {
     marginBottom: 20,

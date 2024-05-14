@@ -144,6 +144,7 @@ export default function SignUpScreen({ navigation }) {
                   <TextInput
                     style={styles.input}
                     placeholder="Nom"
+                    placeholderTextColor="#796D8C"
                     value={values.nom}
                     onChangeText={handleChange("nom")}
                     onBlur={handleBlur("nom")}
@@ -154,6 +155,7 @@ export default function SignUpScreen({ navigation }) {
                   <TextInput
                     style={styles.input}
                     placeholder="Prénom"
+                    placeholderTextColor="#796D8C"
                     value={values.prenom}
                     onChangeText={handleChange("prenom")}
                     onBlur={handleBlur("prenom")}
@@ -164,6 +166,7 @@ export default function SignUpScreen({ navigation }) {
                   <TextInput
                     style={styles.input}
                     placeholder="Email"
+                    placeholderTextColor="#796D8C"
                     value={values.email}
                     onChangeText={handleChange("email")}
                     onBlur={handleBlur("email")}
@@ -174,6 +177,7 @@ export default function SignUpScreen({ navigation }) {
                   <TextInput
                     style={styles.input}
                     placeholder="Numéro de téléphone"
+                    placeholderTextColor="#796D8C"
                     value={values.numPhone}
                     onChangeText={handleChange("numPhone")}
                     onBlur={handleBlur("numPhone")}
@@ -184,6 +188,7 @@ export default function SignUpScreen({ navigation }) {
                   <TextInput
                     style={styles.input}
                     placeholder="Mot de passe"
+                    placeholderTextColor="#796D8C"
                     secureTextEntry={true}
                     value={values.password}
                     onChangeText={handleChange("password")}
@@ -195,6 +200,7 @@ export default function SignUpScreen({ navigation }) {
                   <TextInput
                     style={styles.input}
                     placeholder="Confirmation mot de passe"
+                    placeholderTextColor="#796D8C"
                     secureTextEntry={true}
                     value={values.confirmPassword}
                     onChangeText={handleChange("confirmPassword")}

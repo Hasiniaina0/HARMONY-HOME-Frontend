@@ -79,7 +79,7 @@ export default function SignInScreen() {
                 error
               )
             )
-            .finally(() => navigation.navigate("Account"));
+            .finally(() => navigation.navigate("Profil"));
         } else {
           // Erreur de connexion
           alert("Veuillez entrer le bon mot de passe !");
@@ -154,18 +154,21 @@ export default function SignInScreen() {
                   <TextInput
                     style={styles.input}
                     placeholder="Nom"
+                    placeholderTextColor="#796D8C"
                     value={user.nom}
                     editable={false}
                   ></TextInput>
                   <TextInput
                     style={styles.input}
                     placeholder="Prénom"
+                    placeholderTextColor="#796D8C"
                     value={user.prenom}
                     editable={false}
                   ></TextInput>
                   <TextInput
                     style={styles.input}
                     placeholder="Email"
+                    placeholderTextColor="#796D8C"
                     value={email}
                     onChangeText={(email) => setEmail(email)}
                     onBlur={handleBlur("email")}
@@ -176,6 +179,7 @@ export default function SignInScreen() {
                   <TextInput
                     style={styles.input}
                     placeholder="Numéro de téléphone"
+                    placeholderTextColor="#796D8C"
                     value={numPhone.toString()}
                     onChangeText={(numPhone) => setNumPhone(numPhone)}
                     onBlur={handleBlur("numPhone")}
@@ -186,6 +190,7 @@ export default function SignInScreen() {
                   <TextInput
                     style={styles.input}
                     placeholder="Nouveau mot de passe"
+                    placeholderTextColor="#796D8C"
                     secureTextEntry={true}
                     value={password}
                     onChangeText={(password) => setPassword(password)}
@@ -197,6 +202,7 @@ export default function SignInScreen() {
                   <TextInput
                     style={styles.input}
                     placeholder="Confirmer mot de passe"
+                    placeholderTextColor="#796D8C"
                     secureTextEntry={true}
                     value={confirmPassword}
                     onChangeText={(confirmPassword) =>
