@@ -25,6 +25,7 @@ import option from "./reducers/option";
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import "react-native-reanimated";
 
 const reducers = combineReducers({ user, option });
 const persistConfig = {
