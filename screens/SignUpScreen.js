@@ -76,7 +76,7 @@ export default function SignUpScreen({ navigation }) {
           setModalVisible(true);
         } else {
           // Échec : Afficher un message d'erreur
-          alert("Une erreur s'est produite lors de l'inscription.");
+          alert("Une erreur s'est produite lors de l'inscription. Veuillez vérifier tous les champs et vous assurer que l'email n'est pas déjà utilisé.");
         }
       })
       .catch((error) => {
