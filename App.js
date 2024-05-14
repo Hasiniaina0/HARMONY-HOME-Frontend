@@ -1,9 +1,9 @@
-import { LogBox } from 'react-native'; 
+import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./screens/HomeScreen"; // Page d'acceuil
+import HomeScreen from "./screens/HomeScreen"; // Page d'accueil
 import AccountScreen from "./screens/AccountScreen"; // Page mon compte
 import SignUpScreen from "./screens/SignUpScreen"; // Page d'inscription
 import SignInScreen from "./screens/SignInScreen"; // Page de connexion
