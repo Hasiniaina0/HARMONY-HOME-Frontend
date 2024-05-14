@@ -67,10 +67,6 @@ export default function DescriptionAnnouncementScreen() {
     });
   }, [navigation, userDetails]);
 
-  const handleFavorite = () => {
-    // Logique pour ajouter l'annonce aux favoris
-  };
-
   const handleContact = () => {
     // Logique pour contacter l'annonceur
     navigation.navigate("Chat");

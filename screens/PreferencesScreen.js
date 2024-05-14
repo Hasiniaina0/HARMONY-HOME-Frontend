@@ -5,14 +5,12 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
   TextInput,
   Switch,
   ImageBackground,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { useSelector } from "react-redux";
 import WheelPickerExpo from "react-native-wheel-picker-expo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -106,6 +104,7 @@ export default function PreferencesScreen() {
     <ImageBackground
       source={require("../assets/fond8.jpg")}
       style={styles.backgroundImage}
+      alt="image de fond colorée"
     >
       <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView

@@ -58,6 +58,7 @@ export default function AccountScreen() {
     <ImageBackground
       source={require("../assets/fond8.jpg")}
       style={styles.backgroundImage}
+      alt="image de fond bleu"
     >
       <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAvoidingView
@@ -75,6 +76,7 @@ export default function AccountScreen() {
                         : require("../assets/photoProfil.png")
                     }
                     style={[styles.logo, styles.profileImage]}
+                    alt="image de photo de profil"
                   />
                 </View>
 

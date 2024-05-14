@@ -13,19 +13,13 @@ import ThreadScreen from "./screens/ThreadScreen";
 import PreferencesScreen from "./screens/PreferencesScreen";
 import DescriptionAnnouncementScreen from "./screens/DescriptionAnnouncementScreen";
 import DescriptionProfilScreen from "./screens/DescriptionProfilScreen";
-// import UpdateProfilScreen from "./screens/UpdateProfilScreen";
 import HebergeurProfilScreen from "./screens/HebergeurProfilScreen";
 import InformationScreen from "./screens/InformationScreen";
 import { Provider } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { Title } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-//import "react-native-reanimated";
-
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import option from "./reducers/option";
-
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -122,7 +116,6 @@ export default function App() {
             />
             <Stack.Screen name="MessageScreen" component={MessagesScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
-
             <Stack.Screen
               name="HebergeurProfil"
               component={HebergeurProfilScreen}
@@ -133,8 +126,6 @@ export default function App() {
             />
             <Stack.Screen name="Preferences" component={PreferencesScreen} />
             <Stack.Screen name="Information" component={InformationScreen} />
-
-            {/* <Stack.Screen name="UpdateProfil" component={UpdateProfilScreen} /> */}
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>

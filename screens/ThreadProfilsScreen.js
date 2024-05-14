@@ -70,10 +70,6 @@ export default function ThreadAnnouncementsScreen() {
     }
   };
 
-  // const handleContact = () => {
-  //   // Logique pour contacter l'annonceur
-  // };
-
   function truncateText(text, maxLength) {
     // Vérifiez si le texte est défini et non nul
     if (text === undefined || text === null) {
@@ -84,7 +80,6 @@ export default function ThreadAnnouncementsScreen() {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
-
     // Retourne le texte tel quel s'il n'est pas trop long
     return text;
   }
@@ -137,7 +132,6 @@ export default function ThreadAnnouncementsScreen() {
                 {truncateText(announcement.description, 80)}
               </Text>
               <TouchableOpacity
-                // onPress={() => handleContact()}
                 onPress={() => handleDetailsAnnonce(announcement.token)}
                 style={styles.contactButton}
               >
@@ -163,22 +157,22 @@ const styles = StyleSheet.create({
   },
   announcementContainer: {
     flexDirection: "row",
-    marginVertical: 10, // Add vertical margins between announcements
-    backgroundColor: "#f0f0f0", // Set light gray background color
-    padding: 10, // Add padding around the announcement
-    borderRadius: 8, // Add rounded corners to the announcement container
+    marginVertical: 10,
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 8,
   },
   imageContainer: {
     width: 120,
     height: 120,
-    borderRadius: 8, // Add rounded corners to the image container
-    overflow: "hidden", // Hide overflow content
+    borderRadius: 8,
+    overflow: "hidden",
   },
   imageProfil: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover", // Use 'cover' mode to fill the container while preserving aspect ratio
-    borderRadius: 8, // Add rounded corners to the image
+    resizeMode: "cover",
+    borderRadius: 8,
   },
   textContainer: {
     flex: 1,

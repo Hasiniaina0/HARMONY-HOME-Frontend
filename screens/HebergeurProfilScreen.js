@@ -15,14 +15,11 @@ import {
   ImageBackground,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-//import { Avatar } from "native-base";
 import { useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { addPhotoProfil } from "../reducers/user";
-
-//import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function HebergeurProfilScreen() {
   const navigation = useNavigation();
@@ -90,7 +87,6 @@ export default function HebergeurProfilScreen() {
           });
         }
         console.log("photoProfil", photoProfil);
-        // console.log("formData" , formData.get("photoProfil"));
 
         fetch(`${BACKEND_URL}/updates/photos/${token}`, {
           method: "POST",
@@ -163,6 +159,7 @@ export default function HebergeurProfilScreen() {
     <ImageBackground
       source={require("../assets/fond8.jpg")}
       style={styles.backgroundImage}
+      alt="image de fond bleue"
     >
       <SafeAreaView style={styles.inputsContainer}>
         <KeyboardAvoidingView
@@ -189,6 +186,7 @@ export default function HebergeurProfilScreen() {
                       : require("../assets/photoProfil.png")
                   }
                   style={styles.profileImage}
+                  alt="photo de profil utilisateur"
                 />
               </TouchableOpacity>
             </View>
@@ -240,6 +238,7 @@ export default function HebergeurProfilScreen() {
                   key={index}
                   source={{ uri: image.uri }}
                   style={styles.image}
+                  alt="affichage des photos utilisateur partagées"
                 />
               ))}
               <View>

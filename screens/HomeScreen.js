@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
   View,
@@ -14,9 +13,14 @@ export default function HomeScreen({ navigation }) {
     <ImageBackground
       source={require("../assets/background.png")}
       style={styles.backgroundImage}
+      alt="image de fond bleue"
     >
       <View style={styles.container}>
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <Image
+          source={require("../assets/logo.png")}
+          style={styles.logo}
+          alt="logo Harmony Home"
+        />
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
         <Text style={styles.slogan}>de vie et de partage</Text>
@@ -59,7 +63,6 @@ const styles = StyleSheet.create({
     color: "white",
     alignItems: "center",
     justifyContent: "center",
-    
   },
   button: {
     backgroundColor: "#4FAAAF",

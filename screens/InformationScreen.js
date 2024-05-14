@@ -112,6 +112,7 @@ export default function SignInScreen() {
     <ImageBackground
       source={require("../assets/fond8.jpg")}
       style={styles.backgroundImage}
+      alt="image de fond bleue"
     >
       <SafeAreaView style={styles.inputsContainer}>
         <KeyboardAvoidingView
@@ -133,6 +134,7 @@ export default function SignInScreen() {
                   : require("../assets/photoProfil.png")
               }
               style={[styles.logo, styles.profileImage]}
+              alt="image de photo de profil utilisateur"
             />
             <Text style={styles.title}>
               {" "}

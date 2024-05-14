@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  ImageBackground,
   Image,
   TouchableOpacity,
   Text,
@@ -11,7 +10,7 @@ import {
   TextInput,
   Modal,
 } from "react-native";
-import { login, logout } from "../reducers/user";
+import { login } from "../reducers/user";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -73,8 +72,11 @@ export default function SignInScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      
-      <Image source={require("../assets/logo.png")} style={styles.logo} />
+      <Image
+        source={require("../assets/logo.png")}
+        style={styles.logo}
+        alt="logo Harmony Home"
+      />
       <View style={styles.sloganTitle}>
         <Text style={styles.slogan}>L'accord parfait entre jeunes et </Text>
         <Text style={styles.slogan}>sages dans une colocation pleine</Text>
@@ -113,9 +115,9 @@ export default function SignInScreen({ navigation }) {
       >
         <Text style={styles.signInButtonText}>Connexion</Text>
       </TouchableOpacity>
-      
+
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
-      
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -146,8 +148,6 @@ export default function SignInScreen({ navigation }) {
               <TouchableOpacity
                 style={styles.sendButton}
                 onPress={() => {
-                  // Ajoutez ici la logique pour envoyer le lien de réinitialisation
-                  // et fermer la modal après l'envoi
                   setModalVisible(false);
                 }}
               >
@@ -157,7 +157,6 @@ export default function SignInScreen({ navigation }) {
           </View>
         </View>
       </Modal>
-     
     </KeyboardAvoidingView>
   );
 }
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop:30,
+    marginTop: 30,
   },
   logo: {
     marginTop: 20,
@@ -227,7 +226,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     marginTop: 30,
-    width:130,
+    width: 130,
   },
   signInButtonText: {
     color: "white",

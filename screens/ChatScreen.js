@@ -23,27 +23,11 @@ export default function ChatScreen() {
   const currentChannel = "Harmony-Home";
   const theme = "light";
 
-  // const myUser = {
-  //   id: user.token,
-  //   name: user.nom,
-  //   // profileUrl: user.photoProfil,
-  // };
-
   const pubnub = new PubNub({
     publishKey: process.env.EXPO_PUBLIC_PUBLISH_KEY,
     subscribeKey: process.env.EXPO_PUBLIC_SUSCRIBE_KEY,
     userId: user.token,
   });
-  //  const renderMessage = (props) => {
-  //    return (
-  //      <View>
-  //        <Text>
-  //          <Text style={{ fontWeight: "bold" }}>{props.userId}</Text> {props.time}
-  //        </Text>
-  //        <Text>{props.message.message.text}</Text>
-  //      </View>
-  //    );
-  //  };
 
   return (
     <SafeAreaView>

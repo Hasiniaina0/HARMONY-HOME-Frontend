@@ -14,7 +14,6 @@ import {
   Switch,
   ImageBackground,
 } from "react-native";
-//import { DatePickerInput } from "react-native-paper-dates";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -92,7 +91,6 @@ export default function LocataireProfilScreen() {
           });
         }
         console.log("photoProfil", photoProfil);
-        // console.log("formData" , formData.get("photoProfil"));
 
         fetch(`${BACKEND_URL}/updates/photos/${token}`, {
           method: "POST",
@@ -164,6 +162,7 @@ export default function LocataireProfilScreen() {
     <ImageBackground
       source={require("../assets/fond8.jpg")}
       style={styles.backgroundImage}
+      alt="image de fond colorée"
     >
       <SafeAreaView style={styles.inputsContainer}>
         <KeyboardAvoidingView
@@ -188,6 +187,7 @@ export default function LocataireProfilScreen() {
                       : require("../assets/photoProfil.png")
                   }
                   style={styles.profileImage}
+                  alt="image de photo de profil utilisateur"
                 />
               </TouchableOpacity>
             </View>
@@ -236,6 +236,7 @@ export default function LocataireProfilScreen() {
                   key={index}
                   source={{ uri: image.uri }}
                   style={styles.image}
+                  alt="photo utilisateur partagées"
                 />
               ))}
               <Button

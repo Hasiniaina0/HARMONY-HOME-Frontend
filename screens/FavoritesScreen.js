@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -19,6 +19,7 @@ export default function FavoritesScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const defaultAvatar = require("../assets/annonce.png");
+
   // Définir les options de navigation pour le header
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     right: 10,
     padding: 10, // Ajoute du padding pour agrandir la zone cliquable
     zIndex: 10,
-    },
+  },
   location: {
     color: "#666",
     marginBottom: 5,

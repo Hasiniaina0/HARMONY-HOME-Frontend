@@ -134,7 +134,10 @@ export default function DescriptionProfilScreen() {
                   />
                 )}
                 <Text style={styles.desc}>Les avis</Text>
-                <Image source={require("../assets/avis1.png")} style />
+                <Image
+                  source={require("../assets/avis1.png")}
+                  alt="photo des avis"
+                />
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     onPress={() => handleComment()}

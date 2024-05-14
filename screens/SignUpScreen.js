@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout } from "../reducers/user";
+import { login } from "../reducers/user";
 import * as Yup from "yup";
 import { Formik } from "formik";
 
@@ -96,7 +96,7 @@ export default function SignUpScreen({ navigation }) {
               nom: "",
               prenom: "",
               email: "",
-              numPhone: numPhone, // Pré-rempli avec +33
+              numPhone: numPhone,
               password: "",
               confirmPassword: "",
             }}

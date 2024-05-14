@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { options } from "../../HARMONY-HOMY-Backend/routes/updates";
 
 const initialState = {
   value: {},
