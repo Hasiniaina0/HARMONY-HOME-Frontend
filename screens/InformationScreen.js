@@ -109,11 +109,7 @@ export default function SignInScreen() {
   });
 
   return (
-    <ImageBackground
-      source={require("../assets/fond8.jpg")}
-      style={styles.backgroundImage}
-      alt="image de fond bleue"
-    >
+   
       <SafeAreaView style={styles.inputsContainer}>
         <KeyboardAvoidingView
           style={styles.container}
@@ -217,6 +213,7 @@ export default function SignInScreen() {
                     <TextInput
                       style={styles.input}
                       placeholder="Mot de passe actuel"
+                      placeholderTextColor="#796D8C"
                       secureTextEntry={true}
                       value={currentPassword}
                       onChangeText={(currentPassword) =>
@@ -237,7 +234,7 @@ export default function SignInScreen() {
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
-    </ImageBackground>
+ 
   );
 }
 const styles = StyleSheet.create({
