@@ -1,4 +1,4 @@
-import PubNub from "pubnub";
+import PubNub from "pubnub"; // pubnub pour gérer la communication en temps réel.
 import { PubNubProvider } from "pubnub-react";
 import {
   KeyboardAvoidingView,
@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Text,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
@@ -16,6 +17,8 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 
+const { width, height } = Dimensions.get("window"); // Obtenir les dimensions de l'écran
+
 export default function ChatScreen() {
   const navigation = useNavigation();
   const user = useSelector((state) => state.user);
@@ -23,6 +26,7 @@ export default function ChatScreen() {
   const currentChannel = "Harmony-Home";
   const theme = "light";
 
+  // Initialisation de PubNub avec les clés et l'utilisateur
   const pubnub = new PubNub({
     publishKey: process.env.EXPO_PUBLIC_PUBLISH_KEY,
     subscribeKey: process.env.EXPO_PUBLIC_SUSCRIBE_KEY,
@@ -30,10 +34,10 @@ export default function ChatScreen() {
   });
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <MaterialIcons
         name="keyboard-backspace"
-        size={50}
+        size={width * 0.1}
         onPress={() => navigation.goBack()}
         style={styles.back}
       />
@@ -51,33 +55,45 @@ export default function ChatScreen() {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   greetingText: {
     color: "black",
     fontWeight: "bold",
-    fontSize: 18,
-    marginLeft: 15,
+    fontSize: width * 0.045,
+    marginLeft: width * 0.04,
   },
+
   back: {
     color: "#4FAAAF",
+    marginLeft: width * 0.03,
+    marginTop: height * 0.04,
   },
+
   messageContainer: {
-    marginVertical: 5,
-    padding: 10,
+    marginVertical: height * 0.01,
+    padding: width * 0.03,
     borderRadius: 10,
   },
+
   myMessage: {
-    backgroundColor: "#DCF8C6", // Couleur des messages de l'utilisateur
-    alignSelf: "flex-end", // Alignement à droite
+    backgroundColor: "#DCF8C6",
+    alignSelf: "flex-end",
+    maxWidth: width * 0.7,
   },
+
   otherMessage: {
-    backgroundColor: "#FFFFFF", // Couleur des messages des autres
-    alignSelf: "flex-start", // Alignement à gauche
+    backgroundColor: "#FFFFFF",
+    alignSelf: "flex-start",
+    maxWidth: width * 0.7,
   },
+
   messageText: {
     color: "black",
+    fontSize: width * 0.04,
   },
 });

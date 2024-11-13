@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  Dimensions,
 } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -53,42 +56,40 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: width * 0.05, // Padding basé sur la largeur de l'écran
   },
   logo: {
-    width: 360,
-    height: 320,
+    width: width * 0.8, // 90% de la largeur de l'écran
+    height: height * 0.5, // 35% de la hauteur de l'écran
   },
   slogan: {
-    fontSize: 16,
+    fontSize: width * 0.045, // La taille du texte basée sur la largeur
     color: "white",
-    alignItems: "center",
-    justifyContent: "center",
+    textAlign:"center",
   },
   button: {
     backgroundColor: "#4FAAAF",
-    padding: 10,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.05,
     borderRadius: 20,
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
-    marginTop: 30,
+    marginBottom: height * 0.02,
+    marginTop: height * 0.05,
   },
   buttonText: {
     color: "white",
-    fontSize: 15,
+    fontSize: width * 0.04, // Taille dynamique
   },
   signUpButton: {
-    padding: 10,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.1,
     borderRadius: 20,
   },
   signUpButtonText: {
     color: "white",
     backgroundColor: "#4FAAAF",
-    padding: 10,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.05,
     borderRadius: 20,
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
-    fontSize: 15,
+    fontSize: width * 0.04,
   },
 });

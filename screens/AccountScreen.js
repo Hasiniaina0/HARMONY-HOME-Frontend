@@ -12,11 +12,14 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../reducers/user";
+
+const { width, height } = Dimensions.get("window");
 
 export default function AccountScreen() {
   const navigation = useNavigation();
@@ -60,11 +63,12 @@ export default function AccountScreen() {
       style={styles.backgroundImage}
       alt="image de fond bleu"
     >
-      <SafeAreaView style={{ flex: 1 }}>
+     
         <KeyboardAvoidingView
           style={styles.container}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
+        <SafeAreaView>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
               <View style={styles.title}>
@@ -176,15 +180,16 @@ export default function AccountScreen() {
               </View>
             </Modal>
           </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
+      
     </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    marginTop: 30,
   },
   backgroundImage: {
     flex: 1,
@@ -196,45 +201,35 @@ const styles = StyleSheet.create({
     justifyContent: "center", // Centrer les éléments verticalement
     alignItems: "center", // Centrer les éléments horizontalement
   },
-  logo: {
-    marginBottom: 20,
-  },
+ 
   profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 100,
+    width: width * 0.4, // 40% de la largeur de l'écran
+    height: width * 0.4, // 40% de la largeur de l'écran
+    borderRadius: width * 0.2, // Cercle parfait
     alignSelf: "center",
     borderColor: "#4FAAAF",
-    borderWidth: 4,
+    borderWidth: width*0.01,
   },
-  containerText: {
-    flex: 1,
-  },
+ 
   textNom: {
-    fontSize: 30,
+    fontSize: width * 0.08,
     fontWeight: "bold",
-    marginBottom: 50,
-    marginTop: 30,
+    marginBottom: height * 0.04,
+    marginTop: height * 0.03,
     textAlign: "center",
     color: "#4FAAAF",
   },
   text: {
     color: "black",
-    marginLeft: 40,
-    marginBottom: 20,
-    fontSize: 16,
+    marginLeft: width * 0.1,
+    marginBottom: height * 0.03,
+    fontSize: width * 0.04,
     fontWeight: "bold",
   },
-  profil: {
-    alignItems: "center",
-    marginTop: 25,
-    justifyContent: "center",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   button: {
     backgroundColor: "white",
-    width: 200,
+    width: width * 0.5,
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
@@ -247,7 +242,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#eb7134",
-    fontSize: 15,
+    fontSize: width * 0.04,
   },
   modalContainer: {
     flex: 1,
@@ -257,21 +252,20 @@ const styles = StyleSheet.create({
   },
   modalInnerContainer: {
     backgroundColor: "#fff",
-    margin: 20,
+    margin: width * 0.05,
     borderRadius: 10,
-    padding: 20,
-    position: "relative",
+    padding: width * 0.05,
   },
   modalContent: {
     backgroundColor: "#fff",
-    padding: 20,
+    padding: width * 0.05,
     borderRadius: 10,
     alignItems: "center",
   },
   modalTitle: {
-    fontSize: 25,
+    fontSize: width * 0.06,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: height * 0.02,
     color: "#eb7134",
   },
   modalEmailInput: {
@@ -293,9 +287,9 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     backgroundColor: "#007BFF",
-    padding: 10,
+    paddingVertical: height * 0.02,
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: height * 0.02,
     width: "100%",
     alignItems: "center",
     backgroundColor: "#eb7134",

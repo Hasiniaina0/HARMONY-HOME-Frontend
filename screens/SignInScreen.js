@@ -9,11 +9,14 @@ import {
   Platform,
   TextInput,
   Modal,
+  Dimensions,
 } from "react-native";
 import { login } from "../reducers/user";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+
+const { width, height } = Dimensions.get("window"); // pour obtenir les dimensions de l'écran
 
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -159,46 +162,42 @@ export default function SignInScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   container: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 30,
+    flex: 1,
+    justifyContent: "center", // centrer les éléments verticalement dans le conteneur, et cela s'adapte à la hauteur de l'écran.
+    alignItems: "center", // Centre horizontalement
+    paddingHorizontal: 20,
   },
   logo: {
-    marginTop: 20,
-    width: 310,
-    height: 300,
+    width: width * 0.9, // 90% de la largeur de l'écran
+    height: undefined, //La hauteur sera déterminée par le rapport d'aspect
+    aspectRatio: 1.5, //  pour maintenir le rapport d'aspect souhaité
+    resizeMode: "contain", //  l'image s'ajuste correctement dans le conteneur
   },
-  errorMessage:{
-    color:"red",
-    fontStyle:"italic",
+  errorMessage: {
+    color: "red",
+    fontStyle: "italic",
   },
   sloganTitle: {
-    marginBottom: 20,
+    alignItems: "center",
+    marginBottom: height * 0.02,
   },
   slogan: {
-    fontSize: 15,
+    fontSize: width * 0.04, // le texte reste lisible sur de petits et grands écrans
     color: "black",
-    alignItems: "center",
-    justifyContent: "center",
     textAlign: "center",
   },
   inputTitle: {
-    marginBottom: 15,
+    marginBottom: height * 0.01,
+    fontSize: width * 0.04,
   },
   inputsContainer: {
-    width: "90%",
+    width: "90%", // S'adapte à la largeur de l'écran
     marginTop: 20,
   },
   input: {
-    height: 40,
-    width: 250,
+    height: height * 0.05,
+    fontSize: width * 0.045,
     borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 5,
@@ -206,33 +205,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: "black",
     backgroundColor: "white",
+    width: "100%", // S'étend sur toute la largeur du conteneur parent
   },
   forgotPassword: {
-    margin: 10,
     color: "#1877F2",
     textDecorationLine: "underline",
-    textAlign: "right",
+    fontSize: width * 0.035,
   },
   forgotPasswordContainer: {
-    width: "100%", // Prend toute la largeur disponible
+    width: "90%", // Prend toute la largeur disponible
     alignItems: "flex-end", // Aligne le contenu à droite
-    marginRight: 80,
+    marginTop: 10,
   },
 
   signInButton: {
     backgroundColor: "#4FAAAF",
-    padding: 10,
+    padding: height * 0.015, // maintenir un espacement proportionnel à la taille de l'écran
+    width: width * 0.4,
     borderRadius: 20,
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
-    marginTop: 30,
-    width: 130,
+    marginBottom: height * 0.02, // Espace sous le bouton en fonction de la hauteur de l'écran
+    alignItems: "center",
+    marginTop: height * 0.03, // Espace supérieur dynamique
   },
+
   signInButtonText: {
     color: "white",
-    fontSize: 15,
-    alignSelf: "center",
+    fontSize: width * 0.045,
   },
   modalContainer: {
     flex: 1,
@@ -245,16 +243,10 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 10,
     padding: 20,
-    position: "relative",
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
+    width: width * 0.9, // l'élément prend 90% de la largeur de l'écran, peu importe l'appareil.
   },
   modalTitle: {
-    fontSize: 25,
+    fontSize: width * 0.06,
     fontWeight: "bold",
     marginBottom: 10,
     color: "#4FAAAF",
@@ -265,22 +257,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-    width: "100%",
+    width: "100%", // S'étend sur toute la largeur du conteneur parent
+    height: height * 0.06,
+    fontSize: width * 0.045,
   },
   sendButton: {
-    backgroundColor: "#007BFF",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    width: "100%",
-    alignItems: "center",
     backgroundColor: "#4FAAAF",
+    borderRadius: 5,
+    padding: height * 0.02,
+    width: "100%", // S'étend sur toute la largeur
+    alignItems: "center",
   },
+
   sendButtonText: {
     color: "#fff",
     fontWeight: "bold",
-  },
-  inputsContainer: {
-    marginLeft: 10,
+    fontSize: width * 0.045,
   },
 });

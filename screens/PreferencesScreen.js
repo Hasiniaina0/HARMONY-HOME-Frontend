@@ -10,11 +10,15 @@ import {
   TextInput,
   Switch,
   ImageBackground,
+  ScrollView,
+  Dimensions,
 } from "react-native";
 import { useSelector } from "react-redux";
 import WheelPickerExpo from "react-native-wheel-picker-expo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
+
+const { width, height } = Dimensions.get("window"); 
 
 export default function PreferencesScreen() {
   const [citySearch, setCitySearch] = useState("");
@@ -106,17 +110,19 @@ export default function PreferencesScreen() {
       style={styles.backgroundImage}
       alt="image de fond colorée"
     >
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView
-          style={styles.keyboardAvoidingContainer}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <MaterialIcons
+     
+      <MaterialIcons
             name="keyboard-backspace"
             size={60}
             onPress={() => navigation.goBack()}
             style={styles.back}
-          />
+       />
+       <ScrollView contentContainerStyle={styles.scrollContainer}>
+       <KeyboardAvoidingView
+          style={styles.keyboardAvoidingContainer}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+         <SafeAreaView style={styles.container}>
           <View style={styles.inputContainer}>
             {user.statut === "locataire" && (
               <TextInput
@@ -138,8 +144,8 @@ export default function PreferencesScreen() {
           <View style={styles.pickerContainer}>
             <Text>Type de logement :</Text>
             <WheelPickerExpo
-              height={150}
-              width={150}
+              height={180}
+              width={180}
               selectedStyle={{ borderColor: COLORS.secondary, borderWidth: 1 }}
               initialSelectedIndex={1}
               backgroundColor={COLORS.primary}
@@ -236,8 +242,9 @@ export default function PreferencesScreen() {
           <TouchableOpacity style={styles.button} onPress={handleSaveOptions}>
             <Text style={styles.buttonText}>Mettre à jour</Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
       </SafeAreaView>
+      </KeyboardAvoidingView>
+      </ScrollView>
     </ImageBackground>
   );
 }
@@ -247,10 +254,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   keyboardAvoidingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
+    padding: width * 0.05,
   },
   backgroundImage: {
     flex: 1,
@@ -264,46 +268,54 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   inputContainer: {
-    width: "100%",
     marginBottom: 20,
-    alignItems: "center",
   },
   input: {
-    height: 40,
+    height: height * 0.05,
     borderColor: "#4FAAAF",
     borderWidth: 2,
-    marginLeft: 20,
-    marginRight: 20,
     marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
-    backgroundColor: "rgba(255, 255, 255,  0.3)",
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    width: "100%", 
+  },
+ 
+  pickerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%", 
+  },
+  pickerLabel: {
+    fontSize: width * 0.05, 
+    marginBottom: 10,
   },
   switchContainer: {
-    marginTop: 50,
+    marginTop: 10,
+    width: "90%", 
   },
   switchInput: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginVertical: 5,
   },
   switchText: {
-    marginRight: 50,
     color: "black",
-    fontSize: 16,
+    fontSize: width * 0.04, 
     fontWeight: "bold",
   },
   button: {
     backgroundColor: "#4FAAAF",
-    color: "white",
     marginTop: 30,
     padding: 10,
     borderRadius: 20,
     alignItems: "center",
+    width: "100%", 
   },
   buttonText: {
     color: "white",
-    fontSize: 15,
+    fontSize: width * 0.04, 
+
   },
 });

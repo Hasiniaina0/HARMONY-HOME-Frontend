@@ -7,12 +7,16 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { removeFavorite } from "../reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+
+// Obtenir les dimensions de l'écran
+const { width, height } = Dimensions.get("window");
 
 export default function FavoritesScreen() {
   const userFavorites = useSelector((state) => state.user.favorites);
@@ -28,7 +32,9 @@ export default function FavoritesScreen() {
         backgroundColor: "#4FAAAF", // Couleur de fond du header
       },
       headerTitle: () => (
-        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+        <Text
+          style={{ color: "white", fontSize: width * 0.05, fontWeight: "bold" }}
+        >
           Mes favoris
         </Text>
       ),
@@ -36,9 +42,13 @@ export default function FavoritesScreen() {
       headerLeft: () => (
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{ marginLeft: 10 }}
+          style={{ marginLeft: width * 0.03 }}
         >
-          <MaterialIcons name="keyboard-backspace" size={24} color="white" />
+          <MaterialIcons
+            name="keyboard-backspace"
+            size={width * 0.07}
+            color="white"
+          />
         </TouchableOpacity>
       ),
     });
@@ -84,7 +94,7 @@ export default function FavoritesScreen() {
                     ? "heart"
                     : "heart-outline"
                 }
-                size={25}
+                size={width * 0.07}
                 color={
                   userFavorites.some((fav) => fav._id === favorite._id)
                     ? "red"
@@ -124,7 +134,7 @@ export default function FavoritesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: width * 0.05,
     paddingTop: 16,
     backgroundColor: "#fff",
   },
@@ -133,26 +143,28 @@ const styles = StyleSheet.create({
   },
   favoriteContainer: {
     flexDirection: "row",
-    marginVertical: 10, // Add vertical margins between announcements
-    backgroundColor: "#f0f0f0", // Set light gray background color
-    padding: 10, // Add padding around the announcement
-    borderRadius: 8, // Add rounded corners to the announcement container
+    marginVertical: 10,
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 8,
+    width: "100%", // Container utilise toute la largeur disponible
+    flexWrap: "wrap", // Permet aux éléments de se réorganiser si nécessaire
   },
   imageContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 8, // Add rounded corners to the image container
-    overflow: "hidden", // Hide overflow content
+    width: width * 0.3,
+    height: height * 0.15,
+    borderRadius: 8,
+    overflow: "hidden",
   },
   imageProfil: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover", // Use 'cover' mode to fill the container while preserving aspect ratio
-    borderRadius: 8, // Add rounded corners to the image
+    resizeMode: "cover",
+    borderRadius: 8,
   },
   textContainer: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: width * 0.04,
   },
   headerContainer: {
     flexDirection: "row",
@@ -161,14 +173,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   title: {
-    fontSize: 16,
+    fontSize: width * 0.05,
     fontWeight: "bold",
   },
   favoriteButton: {
     position: "absolute",
     top: 10,
     right: 10,
-    padding: 10, // Ajoute du padding pour agrandir la zone cliquable
+    padding: 10,
     zIndex: 10,
   },
   location: {
@@ -188,5 +200,13 @@ const styles = StyleSheet.create({
   contactButtonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  headerTitle: {
+    color: "white",
+    fontSize: width * 0.05,
+    fontWeight: "bold",
+  },
+  headerLeft: {
+    marginLeft: 10,
   },
 });

@@ -1,7 +1,7 @@
-import { LogBox } from 'react-native'; 
+import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native"; // initialisation stack navigation
+import { createNativeStackNavigator } from "@react-navigation/native-stack"; // initialisation stack navigation
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen"; // Page d'acceuil
 import AccountScreen from "./screens/AccountScreen"; // Page mon compte
@@ -40,8 +40,8 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator(); // création de la navigation par lien
+const Tab = createBottomTabNavigator(); //  création de la navigation par BottomTab.
 
 const TabNavigator = () => {
   return (

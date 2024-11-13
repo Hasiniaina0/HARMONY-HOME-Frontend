@@ -12,12 +12,15 @@ import {
   ScrollView,
   SafeAreaView,
   Switch,
+  Dimensions,
 } from "react-native";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
-import * as Yup from "yup";
+import * as Yup from "yup"; // pour valider les formulaires en combinaison avec la bibliothèque Formik
 import { Formik } from "formik";
+
+const { width, height } = Dimensions.get("window");
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -31,7 +34,8 @@ export default function SignUpScreen({ navigation }) {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const validationSchema = Yup.object().shape({
-    nom: Yup.string().required("Le nom est requis"),
+    // un objet Yup dans lequel chaque champ a ses propres règles de validation.
+    nom: Yup.string().required("Le nom est requis"), // .string(une chaine de caractère), .required(champ obligatoire)
     prenom: Yup.string().required("Le prénom est requis"),
     email: Yup.string()
       .matches(emailRegex, "Format email invalide")
@@ -57,9 +61,9 @@ export default function SignUpScreen({ navigation }) {
     }
 
     fetch(`${BACKEND_URL}/users/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      method: "POST", //envoyer les données du formulaire au serveur.
+      headers: { "Content-Type": "application/json" }, //le corps de la requête contient des données au format JSON.
+      body: JSON.stringify(values), // values sont converties en JSON et envoyées au backend dans le corps de la requête
     })
       .then((response) => response.json())
       .then((data) => {
@@ -76,7 +80,9 @@ export default function SignUpScreen({ navigation }) {
           setModalVisible(true);
         } else {
           // Échec : Afficher un message d'erreur
-          alert("Une erreur s'est produite lors de l'inscription. Veuillez vérifier tous les champs et vous assurer que l'email n'est pas déjà utilisé.");
+          alert(
+            "Une erreur s'est produite lors de l'inscription. Veuillez vérifier tous les champs et vous assurer que l'email n'est pas déjà utilisé."
+          );
         }
       })
       .catch((error) => {
@@ -268,8 +274,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    marginTop: 50,
-    padding: 16,
+    padding: width * 0.05,
+    marginTop: height * 0.02,
   },
   toggleContainer: {
     flexDirection: "row",
@@ -278,124 +284,75 @@ const styles = StyleSheet.create({
   },
   statut: {
     fontWeight: "bold",
-    fontSize: 15,
-    marginTop: 10,
+    fontSize: width * 0.04,
+    marginTop: height * 0.02,
   },
   toggleText: {
-    marginRight: 10,
+    marginRight: height * 0.02,
   },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  fieldset: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
-  },
-  legend: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
+
   input: {
-    height: 40,
-    borderColor: "#ccc",
+    height: height * 0.06, // 6% de la hauteur de l'écran
+    borderColor: "gray",
     borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  formContainer: {
+    marginBottom: height * 0.02,
+    paddingHorizontal: width * 0.03, // 3% de la largeur de l'écran
     width: "90%",
   },
+  formContainer: {
+    width: "90%", // valeurs en pourcentage pour la largeur permettant de s'ajuster en fonction de la taille de l'écran.
+  },
   text1: {
-    fontSize: 17,
+    fontSize: width * 0.04, // 4% de la largeur de l'écran
     marginBottom: 20,
     textAlign: "center",
   },
   input: {
-    height: 40,
+    height: height * 0.06, // 6% de la hauteur de l'écran
     borderColor: "gray",
-    borderWidth: 0.5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    borderWidth: 1,
+    marginBottom: height * 0.02,
+    paddingHorizontal: width * 0.03, // 3% de la largeur de l'écran
+    width: "100%",
   },
   error: {
+    fontSize: width * 0.04,
+    marginBottom: height * 0.01,
     color: "red",
-    marginBottom: 7,
   },
   connectWithContainer: {
     flexDirection: "row",
-    marginBottom: 20,
+    marginBottom: height * 0.02, // Margin proportionnel
     alignItems: "center",
     justifyContent: "center",
   },
   socialButton: {
-    marginHorizontal: 10,
+    borderColor: "gray",
+    borderWidth: 0.5,
+    borderRadius: width * 0.05,
+    padding: width * 0.03, // Padding proportionnel
   },
   socialIcon: {
-    width: 50,
-    height: 50,
+    width: width * 0.12, // 12% de la largeur de l'écran
+    height: width * 0.12, // 12% de la largeur de l'écran pour garder une forme carrée
   },
-  inputsContainer: {
-    width: "100%",
-  },
+
   connectButton: {
     backgroundColor: "#4FAAAF",
-    padding: 10,
     borderRadius: 20,
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
-    marginTop: 30,
+    paddingVertical: height * 0.02, // Ajuste le padding en fonction de la hauteur de l'écran
+    paddingHorizontal: width * 0.04, // Ajuste le padding horizontal en fonction de la largeur de l'écran
+    marginTop: height * 0.03,
     alignSelf: "center",
-    width: 130,
+    width: "45%",
   },
   connectButtonText: {
     color: "white",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalInnerContainer: {
-    backgroundColor: "#fff",
-    margin: 20,
-    borderRadius: 10,
-    padding: 20,
-  },
-  modalTitle: {
-    fontSize: 25,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "#4FAAAF",
-    textAlign: "center",
-  },
-  modalText: {
-    fontSize: 18,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  modalButton: {
-    backgroundColor: "#4FAAAF",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
     textAlign: "center",
   },
 });
