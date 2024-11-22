@@ -63,11 +63,10 @@ export default function AccountScreen() {
       style={styles.backgroundImage}
       alt="image de fond bleu"
     >
-     
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <SafeAreaView>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
@@ -182,7 +181,6 @@ export default function AccountScreen() {
           </ScrollView>
         </SafeAreaView>
       </KeyboardAvoidingView>
-      
     </ImageBackground>
   );
 }
@@ -201,16 +199,16 @@ const styles = StyleSheet.create({
     justifyContent: "center", // Centrer les éléments verticalement
     alignItems: "center", // Centrer les éléments horizontalement
   },
- 
+
   profileImage: {
     width: width * 0.4, // 40% de la largeur de l'écran
     height: width * 0.4, // 40% de la largeur de l'écran
     borderRadius: width * 0.2, // Cercle parfait
     alignSelf: "center",
     borderColor: "#4FAAAF",
-    borderWidth: width*0.01,
+    borderWidth: width * 0.01,
   },
- 
+
   textNom: {
     fontSize: width * 0.08,
     fontWeight: "bold",
@@ -296,6 +294,6 @@ const styles = StyleSheet.create({
   },
   sendButtonText: {
     color: "#fff",
-    fontWeight: "bold", 
+    fontWeight: "bold",
   },
 });

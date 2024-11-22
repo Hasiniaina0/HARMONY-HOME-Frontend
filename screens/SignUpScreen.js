@@ -355,4 +355,39 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalInnerContainer: {
+    width: width * 0.9,
+    padding: height * 0.03,
+    backgroundColor: "white",
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: width * 0.07,
+    fontWeight: "bold",
+    marginBottom: height * 0.02,
+    color: "#4FAAAF",
+    textAlign: "center",
+  },
+  modalText: {
+    fontSize: width * 0.05,
+    marginBottom: height * 0.03,
+    textAlign: "center",
+  },
+  modalButton: {
+    backgroundColor: "#4FAAAF",
+    paddingVertical: height * 0.015,
+    borderRadius: 5,
+    marginBottom: height * 0.02,
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
 });
