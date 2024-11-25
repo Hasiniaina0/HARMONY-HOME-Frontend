@@ -164,8 +164,8 @@ export default function SignInScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center", // centrer les éléments verticalement dans le conteneur, et cela s'adapte à la hauteur de l'écran.
-    alignItems: "center", // Centre horizontalement
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   logo: {
