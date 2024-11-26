@@ -297,27 +297,27 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    height: height * 0.06, // 6% de la hauteur de l'écran
+    height: height * 0.06,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: height * 0.02,
-    paddingHorizontal: width * 0.03, // 3% de la largeur de l'écran
+    paddingHorizontal: width * 0.03,
     width: "90%",
   },
   formContainer: {
     width: "90%", // valeurs en pourcentage pour la largeur permettant de s'ajuster en fonction de la taille de l'écran.
   },
   text1: {
-    fontSize: width * 0.04, // 4% de la largeur de l'écran
+    fontSize: width * 0.04,
     marginBottom: 20,
     textAlign: "center",
   },
   input: {
-    height: height * 0.06, // 6% de la hauteur de l'écran
+    height: height * 0.06,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: height * 0.02,
-    paddingHorizontal: width * 0.03, // 3% de la largeur de l'écran
+    paddingHorizontal: width * 0.03,
     width: "100%",
   },
   error: {
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     padding: width * 0.03, // Padding proportionnel
   },
   socialIcon: {
-    width: width * 0.12, // 12% de la largeur de l'écran
+    width: width * 0.12,
     height: width * 0.12, // 12% de la largeur de l'écran pour garder une forme carrée
   },
 
