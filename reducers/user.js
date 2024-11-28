@@ -67,6 +67,7 @@ export const userSlice = createSlice({
   },
 });
 
+// Export de l'action pour pouvoir l'utiliser ailleurs dans l'application
 export const {
   login,
   logout,
@@ -76,4 +77,5 @@ export const {
   addPhotoProfil,
   removeFavorite,
 } = userSlice.actions;
-export default userSlice.reducer;
+
+export default userSlice.reducer; // Export du reducer qui sera utilisé pour mettre à jour l'état dans le store

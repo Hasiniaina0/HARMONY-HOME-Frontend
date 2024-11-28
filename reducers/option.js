@@ -7,8 +7,12 @@ const initialState = {
 export const optionSlice = createSlice({
   name: "option",
   initialState,
+
+  // Définition des reducers
   reducers: {
+    // Action qui permet de mettre à jour les options sélectionnées
     updateOptions: (state, action) => {
+      // Extraction des différentes options à partir de l'action
       const {
         city,
         accommodationType,
@@ -35,5 +39,5 @@ export const optionSlice = createSlice({
   },
 });
 
-export const { updateOptions } = optionSlice.actions;
-export default optionSlice.reducer;
+export const { updateOptions } = optionSlice.actions; // Export de l'action pour pouvoir l'utiliser ailleurs dans l'application
+export default optionSlice.reducer; // Export du reducer qui sera utilisé pour mettre à jour l'état dans le store
