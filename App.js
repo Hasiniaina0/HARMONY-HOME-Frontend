@@ -26,16 +26,18 @@ import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+//Combine les reducers
 const reducers = combineReducers({ user, option });
 const persistConfig = {
   key: "harmonyhome",
   storage: AsyncStorage,
 };
 
+// Création du store Redux avec la persistance
 const store = configureStore({
-  reducer: persistReducer(persistConfig, reducers),
+  reducer: persistReducer(persistConfig, reducers), // Application de la persistance sur les reducers combinés
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+    getDefaultMiddleware({ serializableCheck: false }), // Désactive la vérification de sérialisation pour supporter AsyncStorage
 });
 
 const persistor = persistStore(store);
@@ -101,6 +103,7 @@ const TabNavigator = () => {
 };
 export default function App() {
   return (
+    // Enveloppe le store Redux et la persistance dans le Provider et PersistGate
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
