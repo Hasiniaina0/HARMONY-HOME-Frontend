@@ -18,7 +18,7 @@ import WheelPickerExpo from "react-native-wheel-picker-expo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 
-const { width, height } = Dimensions.get("window"); 
+const { width, height } = Dimensions.get("window");
 
 export default function PreferencesScreen() {
   const [citySearch, setCitySearch] = useState("");
@@ -101,7 +101,7 @@ export default function PreferencesScreen() {
   ];
   const COLORS = {
     primary: "#f0f0f0",
-    secondary: "#f0f0f0", // Remplace "YourSecondaryColor" par la couleur que tu souhaites utiliser
+    secondary: "#f0f0f0",
   };
 
   return (
@@ -110,140 +110,142 @@ export default function PreferencesScreen() {
       style={styles.backgroundImage}
       alt="image de fond colorée"
     >
-     
       <MaterialIcons
-            name="keyboard-backspace"
-            size={60}
-            onPress={() => navigation.goBack()}
-            style={styles.back}
-       />
-       <ScrollView contentContainerStyle={styles.scrollContainer}>
-       <KeyboardAvoidingView
+        name="keyboard-backspace"
+        size={60}
+        onPress={() => navigation.goBack()}
+        style={styles.back}
+      />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <KeyboardAvoidingView
           style={styles.keyboardAvoidingContainer}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-         <SafeAreaView style={styles.container}>
-          <View style={styles.inputContainer}>
-            {user.statut === "locataire" && (
+          <SafeAreaView style={styles.container}>
+            <View style={styles.inputContainer}>
+              {user.statut === "locataire" && (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Ville recherchée"
+                  placeholderTextColor="#4FAAAF"
+                  value={citySearch}
+                  onChangeText={(citySearch) => setCitySearch(citySearch)}
+                />
+              )}
               <TextInput
                 style={styles.input}
-                placeholder="Ville recherchée"
+                placeholder="Durée de colocation souhaitée"
                 placeholderTextColor="#4FAAAF"
-                value={citySearch}
-                onChangeText={(citySearch) => setCitySearch(citySearch)}
-              />
-            )}
-            <TextInput
-              style={styles.input}
-              placeholder="Durée de colocation souhaitée"
-              placeholderTextColor="#4FAAAF"
-              value={duration}
-              onChangeText={(duration) => setDuration(duration)}
-            />
-          </View>
-          <View style={styles.pickerContainer}>
-            <Text>Type de logement :</Text>
-            <WheelPickerExpo
-              height={180}
-              width={180}
-              selectedStyle={{ borderColor: COLORS.secondary, borderWidth: 1 }}
-              initialSelectedIndex={1}
-              backgroundColor={COLORS.primary}
-              items={typeChoices.map((typeChoice) => ({
-                label: typeChoice,
-                value: typeChoice.toLowerCase(),
-              }))}
-              onChange={({ item }) => setAccommodationType(item.value)}
-            />
-          </View>
-          <View style={styles.switchContainer}>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Fumeur autorisé</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={smoke ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setSmoke(value)}
-                value={smoke}
+                value={duration}
+                onChangeText={(duration) => setDuration(duration)}
               />
             </View>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Animaux autorisés</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={animals ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setAnimals(value)}
-                value={animals}
+            <View style={styles.pickerContainer}>
+              <Text>Type de logement :</Text>
+              <WheelPickerExpo
+                height={180}
+                width={180}
+                selectedStyle={{
+                  borderColor: COLORS.secondary,
+                  borderWidth: 1,
+                }}
+                initialSelectedIndex={1}
+                backgroundColor={COLORS.primary}
+                items={typeChoices.map((typeChoice) => ({
+                  label: typeChoice,
+                  value: typeChoice.toLowerCase(),
+                }))}
+                onChange={({ item }) => setAccommodationType(item.value)}
               />
             </View>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Visite autorisée</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={visit ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setVisit(value)}
-                value={visit}
-              />
+            <View style={styles.switchContainer}>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Fumeur autorisé</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={smoke ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setSmoke(value)}
+                  value={smoke}
+                />
+              </View>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Animaux autorisés</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={animals ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setAnimals(value)}
+                  value={animals}
+                />
+              </View>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Visite autorisée</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={visit ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setVisit(value)}
+                  value={visit}
+                />
+              </View>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Véhicule disponible</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={car ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setCar(value)}
+                  value={car}
+                />
+              </View>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Piscine</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={pool ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setPool(value)}
+                  value={pool}
+                />
+              </View>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Accès PMR</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={prmAccess ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setPrmAccess(value)}
+                  value={prmAccess}
+                />
+              </View>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Jardin</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={garden ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setGarden(value)}
+                  value={garden}
+                />
+              </View>
+              <View style={styles.switchInput}>
+                <Text style={styles.switchText}>Terrasse</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={balcon ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={(value) => setBalcon(value)}
+                  value={balcon}
+                />
+              </View>
             </View>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Véhicule disponible</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={car ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setCar(value)}
-                value={car}
-              />
-            </View>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Piscine</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={pool ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setPool(value)}
-                value={pool}
-              />
-            </View>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Accès PMR</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={prmAccess ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setPrmAccess(value)}
-                value={prmAccess}
-              />
-            </View>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Jardin</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={garden ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setGarden(value)}
-                value={garden}
-              />
-            </View>
-            <View style={styles.switchInput}>
-              <Text style={styles.switchText}>Terrasse</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={balcon ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => setBalcon(value)}
-                value={balcon}
-              />
-            </View>
-          </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleSaveOptions}>
-            <Text style={styles.buttonText}>Mettre à jour</Text>
-          </TouchableOpacity>
-      </SafeAreaView>
-      </KeyboardAvoidingView>
+            <TouchableOpacity style={styles.button} onPress={handleSaveOptions}>
+              <Text style={styles.buttonText}>Mettre à jour</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
       </ScrollView>
     </ImageBackground>
   );
@@ -278,21 +280,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     backgroundColor: "rgba(255, 255, 255, 0.3)",
-    width: "100%", 
+    width: "100%",
   },
- 
+
   pickerContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: "90%", 
+    width: "90%",
   },
   pickerLabel: {
-    fontSize: width * 0.05, 
+    fontSize: width * 0.05,
     marginBottom: 10,
   },
   switchContainer: {
     marginTop: 10,
-    width: "90%", 
+    width: "90%",
   },
   switchInput: {
     flexDirection: "row",
@@ -302,7 +304,7 @@ const styles = StyleSheet.create({
   },
   switchText: {
     color: "black",
-    fontSize: width * 0.04, 
+    fontSize: width * 0.04,
     fontWeight: "bold",
   },
   button: {
@@ -311,11 +313,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     alignItems: "center",
-    width: "100%", 
+    width: "100%",
   },
   buttonText: {
     color: "white",
-    fontSize: width * 0.04, 
-
+    fontSize: width * 0.04,
   },
 });
