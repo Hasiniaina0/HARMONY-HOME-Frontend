@@ -56,16 +56,16 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: width * 0.05, // Padding basé sur la largeur de l'écran
+    paddingHorizontal: width * 0.05,
   },
   logo: {
-    width: width * 0.8, // 90% de la largeur de l'écran
-    height: height * 0.5, // 35% de la hauteur de l'écran
+    width: width * 0.8,
+    height: height * 0.5,
   },
   slogan: {
     fontSize: width * 0.045, // La taille du texte basée sur la largeur
     color: "white",
-    textAlign:"center",
+    textAlign: "center",
   },
   button: {
     backgroundColor: "#4FAAAF",

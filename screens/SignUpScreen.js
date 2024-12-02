@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   formContainer: {
-    width: "90%", // valeurs en pourcentage pour la largeur permettant de s'ajuster en fonction de la taille de l'écran.
+    width: "90%",
   },
   text1: {
     fontSize: width * 0.04,
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
   },
   connectWithContainer: {
     flexDirection: "row",
-    marginBottom: height * 0.02, // Margin proportionnel
+    marginBottom: height * 0.02,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -335,11 +335,11 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: width * 0.05,
-    padding: width * 0.03, // Padding proportionnel
+    padding: width * 0.03,
   },
   socialIcon: {
     width: width * 0.12,
-    height: width * 0.12, // 12% de la largeur de l'écran pour garder une forme carrée
+    height: width * 0.12,
   },
 
   connectButton: {

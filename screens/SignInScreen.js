@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     marginBottom: height * 0.02,
   },
   slogan: {
-    fontSize: width * 0.04, // le texte reste lisible sur de petits et grands écrans
+    fontSize: width * 0.04,
     color: "black",
     textAlign: "center",
   },
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: "black",
     backgroundColor: "white",
-    width: "100%", // S'étend sur toute la largeur du conteneur parent
+    width: "100%",
   },
   forgotPassword: {
     color: "#1877F2",
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
     fontSize: width * 0.035,
   },
   forgotPasswordContainer: {
-    width: "90%", // Prend toute la largeur disponible
-    alignItems: "flex-end", // Aligne le contenu à droite
+    width: "90%",
+    alignItems: "flex-end",
     marginTop: 10,
   },
 
@@ -223,9 +223,9 @@ const styles = StyleSheet.create({
     padding: height * 0.015, // maintenir un espacement proportionnel à la taille de l'écran
     width: width * 0.4,
     borderRadius: 20,
-    marginBottom: height * 0.02, // Espace sous le bouton en fonction de la hauteur de l'écran
+    marginBottom: height * 0.02,
     alignItems: "center",
-    marginTop: height * 0.03, // Espace supérieur dynamique
+    marginTop: height * 0.03,
   },
 
   signInButtonText: {
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 10,
     padding: 20,
-    width: width * 0.9, // l'élément prend 90% de la largeur de l'écran, peu importe l'appareil.
+    width: width * 0.9,
   },
   modalTitle: {
     fontSize: width * 0.06,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-    width: "100%", // S'étend sur toute la largeur du conteneur parent
+    width: "100%",
     height: height * 0.06,
     fontSize: width * 0.045,
   },
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#4FAAAF",
     borderRadius: 5,
     padding: height * 0.02,
-    width: "100%", // S'étend sur toute la largeur
+    width: "100%",
     alignItems: "center",
   },
 
