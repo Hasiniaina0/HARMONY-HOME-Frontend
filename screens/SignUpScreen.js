@@ -110,12 +110,12 @@ export default function SignUpScreen({ navigation }) {
             onSubmit={(values) => handleConnection(values)}
           >
             {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
+              handleChange, // Fonction Formik:gérer le changement de valeur des champs du formulaire
+              handleBlur, // Fonction Formik:gérer la perte de focus des champs
+              handleSubmit, // Fonction Formik:soumettre le formulaire
+              values, // Objet contenant les valeurs actuelles des champs du formulaire
+              errors, // Objet contenant les erreurs de validation, avec un message d'erreur pour chaque champ
+              touched, // Objet contenant un booléen indiquant si un champ a été touché par l'utilisateur
             }) => (
               <View style={styles.formContainer}>
                 <Text style={styles.text1}>Se connecter avec :</Text>
